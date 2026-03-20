@@ -108,3 +108,46 @@ CREATE TABLE ReclamationResponses (
     FOREIGN KEY (reclamation_id) REFERENCES Reclamations(id) ON DELETE CASCADE,
     FOREIGN KEY (responder_id) REFERENCES Users(id) ON DELETE CASCADE
 );
+
+-- 10. PaymentMethods Table
+CREATE TABLE PaymentMethods (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    provider ENUM('stripe', 'paypal', 'other') NOT NULL DEFAULT 'stripe',
+    provider_customer_id VARCHAR(255) NOT NULL,
+    provider_payment_method_id VARCHAR(255) NOT NULL,
+    card_brand VARCHAR(50),
+    card_last4 CHAR(4),
+    card_exp_month TINYINT UNSIGNED,
+    card_exp_year SMALLINT UNSIGNED,
+    is_default BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+-- 11. Transactions Table
+CREATE TABLE Transactions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    order_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED NOT NULL,
+    provider ENUM('stripe', 'paypal', 'other') NOT NULL,
+    provider_transaction_id VARCHAR(255) NOT NULL UNIQUE,
+    amount DECIMAL(10,2) NOT NULL,
+    currency CHAR(3) NOT NULL DEFAULT 'EUR',
+    status ENUM('pending', 'success', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+-- 12. DeliveryPartners Table
+CREATE TABLE DeliveryPartners (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    contact_email VARCHAR(255),
+    contact_phone VARCHAR(50),
+    website VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

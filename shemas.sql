@@ -1,6 +1,6 @@
 -- 1. Users Table
 CREATE TABLE Users (
-    id SERIAL PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE Users (
 
 -- 2. Products Table
 CREATE TABLE Products (
-    id SERIAL PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE Products (
 
 -- 3. Newsletter Table
 CREATE TABLE Newsletter (
-    id SERIAL PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status ENUM('active', 'unsubscribed') DEFAULT 'active'
@@ -39,9 +39,9 @@ CREATE TABLE Newsletter (
 
 -- 4. Internal Messages Table
 CREATE TABLE InternalMessages (
-    id SERIAL PRIMARY KEY,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT UNSIGNED NOT NULL,
+    receiver_id INT UNSIGNED NOT NULL,
     subject VARCHAR(255),
     message_body TEXT,
     read_status BOOLEAN DEFAULT FALSE,
@@ -52,8 +52,8 @@ CREATE TABLE InternalMessages (
 
 -- 5. Orders Table
 CREATE TABLE Orders (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL,
     payment_status ENUM('pending', 'paid', 'failed') DEFAULT 'pending',
     shipping_status ENUM('pending', 'shipped', 'delivered', 'canceled') DEFAULT 'pending',
@@ -65,11 +65,11 @@ CREATE TABLE Orders (
 
 -- 6. OrderItems Table
 CREATE TABLE OrderItems (
-    id SERIAL PRIMARY KEY,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    order_id INT UNSIGNED NOT NULL,
+    product_id INT UNSIGNED NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
-    price DECIMAL(10,2) NOT NULL, -- price at the time of order
+    price DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE,

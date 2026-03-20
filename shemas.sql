@@ -83,40 +83,28 @@ CREATE TABLE ForumCategories (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 8. Forum Threads Table
-CREATE TABLE ForumThreads (
+-- 8. Reclamations Table
+CREATE TABLE Reclamations (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    category_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    is_pinned BOOLEAN DEFAULT FALSE,
-    is_locked BOOLEAN DEFAULT FALSE,
+    order_id INT UNSIGNED,
+    subject VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    status ENUM('open', 'in_progress', 'resolved', 'rejected') NOT NULL DEFAULT 'open',
+    priority ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES ForumCategories(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE SET NULL
 );
 
--- 9. Forum Posts Table
-CREATE TABLE ForumPosts (
+-- 9. Reclamation Responses Table
+CREATE TABLE ReclamationResponses (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    thread_id INT UNSIGNED NOT NULL,
-    user_id INT UNSIGNED NOT NULL,
-    body TEXT NOT NULL,
-    is_edited BOOLEAN DEFAULT FALSE,
+    reclamation_id INT UNSIGNED NOT NULL,
+    responder_id INT UNSIGNED NOT NULL,
+    response_body TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (thread_id) REFERENCES ForumThreads(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
-);
-
--- 10. Forum Post Likes Table
-CREATE TABLE ForumPostLikes (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    post_id INT UNSIGNED NOT NULL,
-    user_id INT UNSIGNED NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_like (post_id, user_id),
-    FOREIGN KEY (post_id) REFERENCES ForumPosts(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+    FOREIGN KEY (reclamation_id) REFERENCES Reclamations(id) ON DELETE CASCADE,
+    FOREIGN KEY (responder_id) REFERENCES Users(id) ON DELETE CASCADE
 );

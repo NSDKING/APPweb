@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+  <title>APPweb</title>
+
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+</head>
+<body>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar">
+        <h1 id="nav-logo" class="navbar__logo">ShoeBox</h1>
+      <ul id="nav-links" class="navbar__links">
+        <li class="navbar__item"><a class="navbar__link" href="#">Acceuil</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="#">Boutique</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+      </ul>
+      <div id="nav-actions" class="navbar__actions">
+        <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+
+        <button id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span id="cart-count" class="navbar__cart-count">0</span>
+        </button>
+      </div>
+    </nav>
+  <main>
+
+    <!-- Carousel -->
+    <section id="carousel" class="carousel">
+      <div class="carousel__track-wrapper">
+        <div id="carousel-track" class="carousel__track"></div>
+      </div>
+
+      <button id="carousel-prev" class="carousel__btn carousel__btn--prev" aria-label="Previous">&#8592;</button>
+      <button id="carousel-next" class="carousel__btn carousel__btn--next" aria-label="Next">&#8594;</button>
+
+      <div id="carousel-dots" class="carousel__dots"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <div class="features__grid">
+
+        <div class="features__card">
+          <div class="features__icon features__icon--red">
+            <!-- Package icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
+          <h3 class="features__title">Livraison Express</h3>
+          <p class="features__desc">Offerte dès 100€ d'achat. Recevez vos pépites en 48h maximum.</p>
+        </div>
+
+        <div class="features__card">
+          <div class="features__icon features__icon--dark">
+            <!-- Award icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+            </svg>
+          </div>
+          <h3 class="features__title">Authenticité Check</h3>
+          <p class="features__desc">Chaque paire est minutieusement inspectée par nos experts certifiés.</p>
+        </div>
+
+        <div class="features__card">
+          <div class="features__icon features__icon--yellow">
+            <!-- TrendingUp icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+            </svg>
+          </div>
+          <h3 class="features__title">Hype du moment</h3>
+          <p class="features__desc">Accédez aux sorties limitées et aux dernières collaborations exclusives.</p>
+        </div>
+
+      </div>
+    </section>
+    <!-- Featured Products -->
+    <section id="featured" class="featured">
+      <div class="featured__header">
+        <div>
+          <h2 class="featured__heading">Drops récents</h2>
+          <p class="featured__subheading">Ne manquez pas les dernières paires arrivées en stock.</p>
+        </div>
+        <a href="/pages/shop/index.html" class="featured__see-all">
+          VOIR TOUT
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+      <div id="products-grid" class="featured__grid"></div>
+    </section>
+
+    <!-- Banner Promotion -->
+    <section id="banner" class="banner">
+      <div class="banner__inner">
+        <div class="banner__overlay">
+          <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=1080" alt="Banner" />
+        </div>
+        <div class="banner__content">
+          <h2 class="banner__title">DESTOCKAGE <br><span class="banner__title--accent">SNEAKERS</span></h2>
+          <p class="banner__desc">Jusqu'à -50% sur Nike, Jordan et Adidas. <br> Stocks limités, premier arrivé, premier servi.</p>
+          <a href="/pages/shop/index.html?category=promo" class="banner__cta">
+            EN PROFITER MAINTENANT
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="footer__brand">
+      <div class="footer__logo-box">
+        <span class="footer__logo-text">SB</span>
+      </div>
+      <span class="footer__name">SHOEBOX</span>
+    </div>
+    <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

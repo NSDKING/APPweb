@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+.navbar {
+    display: flex;
+    align-items: center;    
+    justify-content: space-around;
+    color: black;
+ }
+.navbar__logo { }
+.navbar__links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    text-decoration: none;
+    padding: 0;
+ }
+.navbar__links a {
+    color: black;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+ }
+ .navbar__actions {
+  display: flex;
+  gap: 0.5rem;  
+}   
+.navbar__icon-btn {
+  background: none;
+  border: none;
+  color: black;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navbar__icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.navbar__icon-btn--cart {
+  position: relative;
+}
+
+.navbar__cart-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #e94560;
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

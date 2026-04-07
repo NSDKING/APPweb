@@ -1,0 +1,155 @@
+main {
+    padding-left: 80px;
+    padding-right: 80px;
+    margin-top: 40px;
+}
+
+nav {
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+main .main-top p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: -10px;
+}
+
+/* ── Shop layout ── */
+.shop-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* ── Sidebar ── */
+.shop-filters {
+    width: 240px;
+    flex-shrink: 0;
+    background: #f7f7f7;
+    border-radius: 16px;
+    padding: 24px;
+    position: sticky;
+    top: 90px;
+}
+
+.filters-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.filters-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.filters-reset {
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    color: #666;
+    cursor: pointer;
+}
+
+.filters-reset:hover { color: #000; }
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-group__title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 12px;
+}
+
+.filter-group__options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.filter-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #000;
+    cursor: pointer;
+}
+
+/* ── Products area ── */
+.shop-content {
+    flex: 1;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 48px 0;
+    color: #888;
+    font-size: 1.1rem;
+}
+
+/* ── Mobile filter toggle ── */
+.filter-toggle {
+    display: none;
+    margin-bottom: 16px;
+    padding: 10px 20px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    main {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .shop-layout {
+        flex-direction: column;
+    }
+
+    .shop-filters {
+        display: none;
+        width: 100%;
+        position: static;
+    }
+
+    .shop-filters.filters-sidebar--open {
+        display: block;
+    }
+
+    .filter-toggle {
+        display: block;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <title>Boutique – ShoeBox</title>
+
+        <link rel="stylesheet" href="../../assets/css/main.css" />
+        <link rel="stylesheet" href="../../assets/css/shop.css" />
+        <link rel="stylesheet" href="../../assets/css/layout.css" />
+        <link rel="stylesheet" href="../../assets/css/components.css" />
+    </head>
+    <body>
+        <!-- Navbar -->
+        <nav id="navbar" class="navbar">
+            <h1 id="nav-logo" class="navbar__logo">ShoeBox</h1>
+            <ul id="nav-links" class="navbar__links">
+                <li class="navbar__item"><a class="navbar__link" href="../../index.html">Acceuil</a></li>
+                <li class="navbar__item"><a class="navbar__link" href="boutique.html">Boutique</a></li>
+                <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+                <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+            </ul>
+            <div id="nav-actions" class="navbar__actions">
+                <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </button>
+                <button id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span id="cart-count" class="navbar__cart-count">0</span>
+                </button>
+            </div>
+        </nav>
+
+        <main>
+            <div class="main-top">
+                <h1 class="page-title">Toutes les sneakers</h1>
+                <p id="product-count"></p>
+            </div>
+
+            <div class="shop-layout">
+                <!-- Sidebar Filters -->
+                <aside class="shop-filters" id="filters-sidebar">
+                    <div class="filters-header">
+                        <h2 class="filters-title">Filtres</h2>
+                        <button id="filters-reset" class="filters-reset">Réinitialiser</button>
+                    </div>
+
+                    <!-- Brand -->
+                    <div class="filter-group">
+                        <h3 class="filter-group__title">Marque</h3>
+                        <div class="filter-group__options" id="brand-options">
+                            <label class="filter-option">
+                                <input type="radio" name="brand" value="all" checked /> Toutes les marques
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="brand" value="nike" /> Nike
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="brand" value="adidas" /> Adidas
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="brand" value="jordan" /> Jordan
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="brand" value="new balance" /> New Balance
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="filter-group">
+                        <h3 class="filter-group__title">Prix</h3>
+                        <div class="filter-group__options" id="price-options">
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="all" checked /> Tous les prix
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="under100" /> Moins de 100€
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="100to150" /> 100€ – 150€
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="over150" /> Plus de 150€
+                            </label>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Products -->
+                <div class="shop-content">
+                    <!-- Mobile filter toggle -->
+                    <button id="filter-toggle" class="filter-toggle">Afficher les filtres</button>
+
+                    <div id="products-grid" class="products-grid"></div>
+
+                    <div id="no-results" class="no-results" style="display:none;">
+                        Aucun produit ne correspond à vos critères.
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    <script src="../../assets/js/boutique.js"></script>
+    </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produit – ShoeBox</title>
+
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/product.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar">
+    <a href="../../index.html"><h1 class="navbar__logo">ShoeBox</h1></a>
+    <ul class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="../../index.html">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="../boutique/boutique.html">Boutique</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+    </ul>
+    <div class="navbar__actions">
+      <button class="navbar__icon-btn" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      <button class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="product-page">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a href="../../index.html">Accueil</a>
+      <span>/</span>
+      <a href="../boutique/boutique.html">Boutique</a>
+      <span>/</span>
+      <span id="breadcrumb-name">Produit</span>
+    </nav>
+
+    <!-- Product Layout -->
+    <div class="product-layout" id="product-container">
+
+      <!-- Image Gallery -->
+      <div class="product-gallery">
+        <div class="product-gallery__main">
+          <img id="product-img" src="" alt="" class="product-gallery__img" />
+          <span id="product-badge" class="product-gallery__badge" style="display:none;">New Drop</span>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <p id="product-brand" class="product-info__brand"></p>
+        <h1 id="product-name" class="product-info__name"></h1>
+
+        <div class="product-info__pricing">
+          <span id="product-price" class="product-info__price"></span>
+          <span id="product-original" class="product-info__original" style="display:none;"></span>
+        </div>
+
+        <!-- Size selector -->
+        <div class="product-info__sizes">
+          <p class="product-info__label">Taille (EU)</p>
+          <div class="size-grid" id="size-grid"></div>
+        </div>
+
+        <!-- CTA -->
+        <button class="product-info__add-btn" id="add-to-cart-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          Ajouter au panier
+        </button>
+
+        <!-- Features -->
+        <ul class="product-info__features">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Livraison express offerte dès 100€
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Authenticité garantie — vérifiée par nos experts
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Retours gratuits sous 30 jours
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Not found state -->
+    <div id="not-found" class="not-found" style="display:none;">
+      <h2>Produit introuvable</h2>
+      <p>Ce produit n'existe pas ou a été supprimé.</p>
+      <a href="../boutique/boutique.html" class="not-found__btn">Retour à la boutique</a>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__brand">
+      <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
+      <span class="footer__name">SHOEBOX</span>
+    </div>
+    <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+  </footer>
+
+  <script src="../../assets/js/product.js"></script>
+</body>
+</html>

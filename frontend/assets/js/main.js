@@ -75,22 +75,22 @@ const grid = document.getElementById('products-grid');
 
 featuredProducts.forEach(product => {
   grid.innerHTML += `
-    <div class="product-card">
-      <div class="product-card__img-wrapper">
-        ${product.isNew ? `<span class="product-card__badge">New Drop</span>` : ''}
-        <img src="${product.image}" alt="${product.name}" class="product-card__img" />
-        <button class="product-card__quick-add" aria-label="Ajouter au panier">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
-          </svg>
-        </button>
-      </div>
-      <p class="product-card__brand">${product.brand}</p>
-      <h3 class="product-card__name">${product.name}</h3>
-      <div class="product-card__pricing">
-        <span class="product-card__price">${product.price}€</span>
-        ${product.originalPrice ? `<span class="product-card__original">${product.originalPrice}€</span>` : ''}
-      </div>
-    </div>
+      <a href="pages/shop/product.html?id=${product.id}" class="product-card">
+         <div class="product-card__img-wrapper">
+          ${product.isNew ? `<span class="product-card__badge">New Drop</span>` : ''}
+          <img src="${product.image}" alt="${product.name}" class="product-card__img" />
+          <button class="product-card__quick-add" aria-label="Ajouter au panier">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+          </button>
+        </div>
+        <p class="product-card__brand">${product.brand}</p>
+        <h3 class="product-card__name">${product.name}</h3>
+        <div class="product-card__pricing">
+          <span class="product-card__price">${product.price}€</span>
+          ${product.originalPrice ? `<span class="product-card__original">${product.originalPrice}€</span>` : ''}
+        </div>
+     </a>
   `;
 });

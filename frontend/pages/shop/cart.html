@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+  <title>APPweb</title>
+
+  <link rel="stylesheet" href="../../assets/css/shop.css" />
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/components.css" />
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar">
+        <h1 id="nav-logo" class="navbar__logo">ShoeBox</h1>
+      <ul id="nav-links" class="navbar__links">
+        <li class="navbar__item"><a class="navbar__link" href="#">Accueil</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="pages/boutique/boutique.html">Boutique</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+      </ul>
+      <div id="nav-actions" class="navbar__actions">
+        <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+
+        <button id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span id="cart-count" class="navbar__cart-count">0</span>
+        </button>
+      </div>
+    </nav>
+
+  <main>
+    <section id="cart" class="cart">
+      <h2 class="cart__title">Panier (2)</h2>
+      <div id="cart-items" class="cart__items">
+        <!-- Les éléments du panier seront ajoutés ici dynamiquement -->
+         <div class="cart__item">
+          <img src="https://images.unsplash.com/photo-1631482665588-d3a6f88e65f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aGl0ZSUyMHNuZWFrZXJzJTIwcHJvZHVjdHxlbnwxfHx8fDE3NzI0Nzc3Mjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Chaussure 1" class="cart__item-image" />
+          <div class="cart__item-details">
+            <h3 class="cart__item-name">Air Force classic</h3>
+            <p class="cart__item-price">129€</p>
+            <div class="cart__item-actions">
+              <button class="cart__item-btn cart__item-btn--decrease">-</button>
+              <span class="cart__item-quantity">1</span>
+              <button class="cart__item-btn cart__item-btn--increase">+</button>
+              <button class="cart__item-btn cart__item-btn--remove">Supprimer</button>
+            </div>
+          </div>
+        </div>
+            <div class="cart__item">
+            <img src="https://images.unsplash.com/photo-1704311875950-c9b90ffc5148?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMGpvcmRhbiUyMHNuZWFrZXJzfGVufDF8fHx8MTc3MjU0NjQ0OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Chaussure 2" class="cart__item-image" />
+            <div class="cart__item-details">
+                <h3 class="cart__item-name">Air Jordan 1 High</h3>
+                <p class="cart__item-price">189€</p>
+                <div class="cart__item-actions">
+                <button class="cart__item-btn cart__item-btn--decrease">-</button>
+                <span class="cart__item-quantity">1</span>
+                <button class="cart__item-btn cart__item-btn--increase">+</button>
+                <button class="cart__item-btn cart__item-btn--remove">Supprimer</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    
+      <div class="cart__summary">
+        <h2 class="cart__summary-title">Récapitulatif</h2>
+        <p class="cart__Sous-total">Sous-total: <span id="cart-total">0.00 €</span></p>
+        <button id="checkout-btn" class="cart__checkout-btn">Passer à la Caisse</button>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="footer__brand">
+      <div class="footer__logo-box">
+        <span class="footer__logo-text">SB</span>
+      </div>
+      <span class="footer__name">SHOEBOX</span>
+    </div>
+    <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+  </footer>
+
+  <script src="assets/js/shop.js"></script>
+</body>
+</html>

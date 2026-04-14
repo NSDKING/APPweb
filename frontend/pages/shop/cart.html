@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../../assets/css/shop.css" />
   <link rel="stylesheet" href="../../assets/css/layout.css" />
   <link rel="stylesheet" href="../../assets/css/components.css" />
+  <link rel="stylesheet" href="../../assets/css/cart.css" />
 </head>
 
 <body>
@@ -18,7 +19,7 @@
         <h1 id="nav-logo" class="navbar__logo">ShoeBox</h1>
       <ul id="nav-links" class="navbar__links">
         <li class="navbar__item"><a class="navbar__link" href="#">Accueil</a></li>
-        <li class="navbar__item"><a class="navbar__link" href="pages/boutique/boutique.html">Boutique</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="../boutique/boutique.html">Boutique</a></li>
         <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
         <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
       </ul>
@@ -38,16 +39,22 @@
       </div>
     </nav>
 
+    <!-- Main Content Cart -->
   <main>
     <section id="cart" class="cart">
-      <h2 class="cart__title">Panier (2)</h2>
+      <h1 class="cart__title">Panier (2)</h1>
       <div id="cart-items" class="cart__items">
         <!-- Les éléments du panier seront ajoutés ici dynamiquement -->
          <div class="cart__item">
           <img src="https://images.unsplash.com/photo-1631482665588-d3a6f88e65f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aGl0ZSUyMHNuZWFrZXJzJTIwcHJvZHVjdHxlbnwxfHx8fDE3NzI0Nzc3Mjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Chaussure 1" class="cart__item-image" />
           <div class="cart__item-details">
-            <h3 class="cart__item-name">Air Force classic</h3>
-            <p class="cart__item-price">129€</p>
+            <h3 class="cart__item-brand">Nike</h3>
+            <h2 class="cart__item-name">Air Force classic</h2>
+            <div class="cart__item-size">
+                <p class="cart__item-size-label">Taille:</p>
+                <span class="cart__item-size-value">42</span>
+            </div>
+            <span class="cart__item-price">129€</span>
             <div class="cart__item-actions">
               <button class="cart__item-btn cart__item-btn--decrease">-</button>
               <span class="cart__item-quantity">1</span>
@@ -59,8 +66,13 @@
             <div class="cart__item">
             <img src="https://images.unsplash.com/photo-1704311875950-c9b90ffc5148?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMGpvcmRhbiUyMHNuZWFrZXJzfGVufDF8fHx8MTc3MjU0NjQ0OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Chaussure 2" class="cart__item-image" />
             <div class="cart__item-details">
-                <h3 class="cart__item-name">Air Jordan 1 High</h3>
-                <p class="cart__item-price">189€</p>
+                <h3 class="cart__item-brand">Jordan</h3>
+                <h2 class="cart__item-name">Air Jordan 1 High</h2>
+                <div class="cart__item-size">
+                    <p class="cart__item-size-label">Taille:</p>
+                    <span class="cart__item-size-value">43</span>
+                </div>
+                <span class="cart__item-price">189€</span>
                 <div class="cart__item-actions">
                 <button class="cart__item-btn cart__item-btn--decrease">-</button>
                 <span class="cart__item-quantity">1</span>
@@ -73,8 +85,13 @@
     
       <div class="cart__summary">
         <h2 class="cart__summary-title">Récapitulatif</h2>
-        <p class="cart__Sous-total">Sous-total: <span id="cart-total">0.00 €</span></p>
-        <button id="checkout-btn" class="cart__checkout-btn">Passer à la Caisse</button>
+        <p class="cart__Sous-total">Sous-total <span id="cart-total">318.00 €</span></p>
+        <p class="cart__shipping">Frais de livraison <span id="cart-shipping">Gratuit</span></p>
+        <p class="cart__total">Total <span id="cart-final-total">318.00 €</span></p>
+        <button id="checkout-btn" class="cart__checkout-btn">Passer la commande</button>
+        <p class="cart__continue-purchase">
+          <a href="../boutique/boutique.html" class="cart__continue-link">Continuer vos achats</a>
+        </p>
       </div>
     </section>
   </main>

@@ -37,7 +37,7 @@
                     <line x1="3" y1="6" x2="21" y2="6" />
                     <path d="M16 10a4 4 0 01-8 0" />
                 </svg>
-                <span id="cart-count" class="navbar__cart-count">3</span>
+                <span id="cart-count" class="navbar__cart-count">0</span>
             </button>
         </div>
     </nav>
@@ -50,35 +50,19 @@
 
         <div class="commande-container">
 
-            <!-- Colonne gauche : récapitulatif (lecture seule) -->
+            <!-- Colonne gauche : récapitulatif (rempli par commande.js) -->
             <div class="card">
                 <p class="card-title">Récapitulatif</p>
 
+                <!-- Produits injectés dynamiquement -->
                 <div id="cart-items-list">
-                    <!-- Rempli dynamiquement par commande.js -->
-                    <div class="produit">
-                        <img src="https://via.placeholder.com/64" alt="Nike Air Max 270">
-                        <div class="produit-info">
-                            <h4>Nike Air Max 270</h4>
-                            <p>Taille 42 · Noir · Qté 1</p>
-                        </div>
-                        <span class="produit-price">120€</span>
-                    </div>
-
-                    <div class="produit">
-                        <img src="https://via.placeholder.com/64" alt="Adidas Ultraboost 23">
-                        <div class="produit-info">
-                            <h4>Adidas Ultraboost 23</h4>
-                            <p>Taille 41 · Blanc · Qté 2</p>
-                        </div>
-                        <span class="produit-price">280€</span>
-                    </div>
+                    <!-- Skeleton produit affiché pendant le chargement -->
                 </div>
 
                 <div class="recap-rows">
                     <div class="recap-row">
                         <span>Sous-total</span>
-                        <span id="subtotal">400€</span>
+                        <span id="subtotal">—</span>
                     </div>
                     <div class="recap-row">
                         <span>Livraison</span>
@@ -86,7 +70,7 @@
                     </div>
                     <div class="recap-row total">
                         <span>Total</span>
-                        <span id="total-amount">400€</span>
+                        <span id="total-amount">—</span>
                     </div>
                 </div>
             </div>
@@ -95,7 +79,7 @@
             <div class="card commande-formulaire">
 
                 <!-- Bandeau de préremplissage (visible uniquement si connecté) -->
-                <div id="autofill-banner" class="autofill-banner">
+                <div id="autofill-banner" class="autofill-banner" style="display:none;">
                     <div class="autofill-banner__info">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
@@ -114,7 +98,6 @@
                     <p class="section-title">Livraison</p>
                     <input id="field-nom" type="text" name="nom" placeholder="Nom complet" required />
                     <input id="field-email" type="text" name="email" placeholder="Email" required />
-
                     <input id="field-adresse" type="text" name="adresse" placeholder="Adresse" required />
                     <div class="row-2">
                         <input id="field-ville" type="text" name="ville" placeholder="Ville" required />
@@ -129,7 +112,7 @@
                         <input id="field-cvv" type="text" name="cvv" placeholder="CVV" maxlength="3" required />
                     </div>
 
-                    <button type="submit" class="btn-pay" id="btn-pay">Payer 400€</button>
+                    <button type="submit" class="btn-pay" id="btn-pay">Payer —</button>
 
                     <p class="secure-note">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24"

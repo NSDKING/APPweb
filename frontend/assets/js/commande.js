@@ -68,6 +68,7 @@ function initAutofill() {
       const adresseParts = parseAdresse(profile.adresse ?? '');
 
       document.getElementById('field-nom').value = profile.name ?? '';
+      document.getElementById('field-email').value = profile.email ?? '';
       document.getElementById('field-adresse').value = adresseParts.rue ?? profile.adresse ?? '';
       document.getElementById('field-ville').value = adresseParts.ville ?? '';
       document.getElementById('field-cp').value = adresseParts.cp ?? '';
@@ -110,6 +111,7 @@ async function submitCommande(event) {
 
   // Collecte des champs du formulaire
   const nom = document.getElementById('field-nom').value.trim();
+  const email = document.getElementById('field-email').value.trim();
   const adresse = document.getElementById('field-adresse').value.trim();
   const ville = document.getElementById('field-ville').value.trim();
   const codePostal = document.getElementById('field-cp').value.trim();
@@ -127,6 +129,7 @@ async function submitCommande(event) {
   const payload = {
     shipping: {
       nom,
+      email,
       adresse: shippingAddress,
     },
     payment: {
@@ -144,16 +147,18 @@ async function submitCommande(event) {
   };
 
   console.log('Payload de commande :', JSON.stringify(payload, null, 2)); // pour debug
+  localStorage.removeItem('shoebox_cart');
+  window.location.href = `confirmation.html?email=${encodeURIComponent(email)}`;
 
-  /*try {
+  try {
     const headers = { 'Content-Type': 'application/json' };
-    const token   = getToken();
+    const token = getToken();
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
     const res = await fetch(`${API_BASE}/api/orders`, {
-      method  : 'POST',
+      method: 'POST',
       headers,
-      body    : JSON.stringify(payload),
+      body: JSON.stringify(payload),
     });
 
     const data = await res.json();
@@ -171,7 +176,7 @@ async function submitCommande(event) {
     showToast(err.message || 'Une erreur est survenue.', 'error');
     btn.disabled = false;
     btn.textContent = `Payer ${totalAmount}€`;
-  }*/
+  }
 }
 
 // ── Formatage carte ───────────────────────────────────────────

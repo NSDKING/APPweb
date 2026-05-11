@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeBox — Historique des commandes</title>
+    <link rel="stylesheet" href="../../assets/css/layout.css" />
+    <link rel="stylesheet" href="../../assets/css/commande.css" />
+    <link rel="stylesheet" href="../../assets/css/historiqueCommande.css" />
+
+</head>
+
+<body>
+
+    <!-- ── Navbar ── -->
+    <nav class="navbar">
+        <div class="navbar__logo">ShoeBox</div>
+        <ul class="navbar__links">
+            <li class="navbar__item"><a class="navbar__link" href="../../index.html">Accueil</a></li>
+            <li class="navbar__item"><a class="navbar__link" href="../boutique/boutique.html">Boutique</a></li>
+            <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+            <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+        </ul>
+        <div class="navbar__actions">
+            <button class="navbar__icon-btn" aria-label="Recherche">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+            </button>
+            <button class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Panier">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                <span id="cart-count" class="navbar__cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ── Contenu ── -->
+    <main>
+        <div class="historique-container">
+
+            <div class="page-header">
+                <a href="../profil/profil.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Mon profil
+                </a>
+                <h1>Historique des commandes</h1>
+            </div>
+
+            <!-- Skeleton pendant le chargement -->
+            <div id="skeleton" class="skeleton-list">
+                <div class="skeleton-card">
+                    <div style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap">
+                        <div class="skel skel-text-sm"></div>
+                        <div class="skel skel-text-md"></div>
+                        <div class="skel skel-text-lg"></div>
+                    </div>
+                    <div style="display:flex;gap:.5rem">
+                        <div class="skel skel-badge"></div>
+                        <div class="skel skel-badge"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap">
+                        <div class="skel skel-text-sm"></div>
+                        <div class="skel skel-text-md"></div>
+                        <div class="skel skel-text-lg"></div>
+                    </div>
+                    <div style="display:flex;gap:.5rem">
+                        <div class="skel skel-badge"></div>
+                        <div class="skel skel-badge"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap">
+                        <div class="skel skel-text-sm"></div>
+                        <div class="skel skel-text-md"></div>
+                        <div class="skel skel-text-lg"></div>
+                    </div>
+                    <div style="display:flex;gap:.5rem">
+                        <div class="skel skel-badge"></div>
+                        <div class="skel skel-badge"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste réelle des commandes -->
+            <div id="orders-list"></div>
+
+            <!-- État vide -->
+            <div id="empty-state" class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="1.2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <p>Aucune commande passée pour l'instant.</p>
+                <a href="../boutique/boutique.html">Découvrir la boutique</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 ShoeBox</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="../../assets/js/historiqueCommande.js"></script>
+</body>
+
+</html>

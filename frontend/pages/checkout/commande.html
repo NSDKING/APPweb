@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Finaliser la commande — ShoeBox" />
+    <title>ShoeBox — Commande</title>
+
+    <link rel="stylesheet" href="../../assets/css/layout.css" />
+    <link rel="stylesheet" href="../../assets/css/commande.css" />
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar">
+        <h1 id="nav-logo" class="navbar__logo">ShoeBox</h1>
+        <ul id="nav-links" class="navbar__links">
+            <li class="navbar__item"><a class="navbar__link" href="../../index.html">Accueil</a></li>
+            <li class="navbar__item"><a class="navbar__link" href="../boutique/boutique.html">Boutique</a></li>
+            <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+            <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+        </ul>
+        <div id="nav-actions" class="navbar__actions">
+            <button id="search-btn" class="navbar__icon-btn" aria-label="Recherche">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+            </button>
+            <button id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Panier">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                <span id="cart-count" class="navbar__cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <p class="page-title">Finaliser la commande</p>
+
+        <!-- Toast notification -->
+        <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+        <div class="commande-container">
+
+            <!-- Colonne gauche : récapitulatif (rempli par commande.js) -->
+            <div class="card">
+                <p class="card-title">Récapitulatif</p>
+
+                <!-- Produits injectés dynamiquement -->
+                <div id="cart-items-list">
+                    <!-- Skeleton produit affiché pendant le chargement -->
+                </div>
+
+                <div class="recap-rows">
+                    <div class="recap-row">
+                        <span>Sous-total</span>
+                        <span id="subtotal">—</span>
+                    </div>
+                    <div class="recap-row">
+                        <span>Livraison</span>
+                        <span>Gratuite</span>
+                    </div>
+                    <div class="recap-row total">
+                        <span>Total</span>
+                        <span id="total-amount">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne droite : formulaire livraison + paiement -->
+            <div class="card commande-formulaire">
+
+                <!-- Bandeau de préremplissage (visible uniquement si connecté) -->
+                <div id="autofill-banner" class="autofill-banner" style="display:none;">
+                    <div class="autofill-banner__info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <span id="autofill-username">Connecté en tant que …</span>
+                    </div>
+                    <button type="button" id="btn-autofill" class="btn-autofill">
+                        Préremplir mes infos
+                    </button>
+                </div>
+
+                <form id="commande-form" onsubmit="submitCommande(event)">
+
+                    <p class="section-title">Livraison</p>
+                    <input id="field-nom" type="text" name="nom" placeholder="Nom complet" required />
+                    <input id="field-email" type="text" name="email" placeholder="Email" required />
+                    <input id="field-adresse" type="text" name="adresse" placeholder="Adresse" required />
+                    <div class="row-2">
+                        <input id="field-ville" type="text" name="ville" placeholder="Ville" required />
+                        <input id="field-cp" type="text" name="code_postal" placeholder="Code postal" required />
+                    </div>
+
+                    <p class="section-title">Paiement</p>
+                    <input id="field-carte" type="text" name="carte" placeholder="Numéro de carte" maxlength="19"
+                        required />
+                    <div class="row-2">
+                        <input id="field-expiry" type="text" name="expiry" placeholder="MM/AA" maxlength="5" required />
+                        <input id="field-cvv" type="text" name="cvv" placeholder="CVV" maxlength="3" required />
+                    </div>
+
+                    <button type="submit" class="btn-pay" id="btn-pay">Payer —</button>
+
+                    <p class="secure-note">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                            <path d="M7 11V7a5 5 0 0110 0v4" />
+                        </svg>
+                        Paiement sécurisé
+                    </p>
+
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 ShoeBox</p>
+    </footer>
+
+    <script src="../../assets/js/commande.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+  <title>APPweb</title>
+
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+</head>
+<body>
+<!-- Navbar -->
+    <nav id="navbar" class="navbar">
+        <img src="../../assets/img/logo_shoebox.png" width="100" height="100">
+      <ul id="nav-links" class="navbar__links">
+        <li class="navbar__item"><a class="navbar__link" href="../../index.html">Accueil</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="../../pages/boutique/boutique.html">Boutique</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="../../pages/auth/login.html">Compte</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+        <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+      </ul>
+      <div id="nav-actions" class="navbar__actions">
+        <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+
+        <a href="../../pages/shop/cart.html" id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span id="cart-count" class="navbar__cart-count">0</span>
+        </a>
+      </div>
+    </nav>
+        <hr>
+    </header>
+
+    <!-- SECTION PROFIL -->
+    <main>
+
+        <section>
+            <h2>Mon Profil</h2>
+
+            <p><strong>Nom :</strong> Dupont</p>
+            <p><strong>Prénom :</strong> Julien</p>
+            <p><strong>Email :</strong> julien.dupont@email.com</p>
+            <p><strong>Téléphone :</strong> 06 12 34 56 78</p>
+            <p><strong>Adresse :</strong> 15 Rue de Paris, 75000 Paris</p>
+
+            <button>Modifier le profil</button>
+        </section>
+
+        <hr>
+        <!-- MODIFICATION MOT DE PASSE -->
+        <section>
+
+            <h2>Changer le mot de passe</h2>
+
+            <form>
+
+                <div>
+                    <label>Ancien mot de passe :</label><br>
+                    <input type="password" required>
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Nouveau mot de passe :</label><br>
+                    <input type="password" required>
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Confirmation du mot de passe :</label><br>
+                    <input type="password" required>
+                </div>
+
+                <br>
+
+                <button type="submit">
+                    Modifier le mot de passe
+                </button>
+
+            </form>
+
+        </section>
+
+        <hr>
+
+        <!-- DÉCONNEXION -->
+        <section>
+            <button>
+                Se déconnecter
+            </button>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+
+        <hr>
+
+        <p>
+            © 2026 MaBoutiqueChaussures - Tous droits réservés
+        </p>
+
+        <nav>
+            <a href="#">Mentions légales</a> |
+            <a href="#">Conditions générales</a> |
+            <a href="#">Contact</a>
+        </nav>
+
+    </footer>
+
+</body>
+</html>

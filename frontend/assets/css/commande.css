@@ -34,7 +34,7 @@ body {
 }
 
 .navbar__links a {
-    color: #ccc;
+    color: #444;
     text-decoration: none;
     padding: .4rem .75rem;
     border-radius: 6px;

@@ -19,10 +19,11 @@
         <div class="container">
             <div id="loginForm">
                 <h2>Connexion</h2>
-                <form>
-                    <input type="email" placeholder="Email" required>
+                <form id="login-form">
+                    <div id="login-error" style="color:red;display:none;margin-bottom:8px;"></div>
+                    <input type="email" id="login-email" placeholder="Email" required>
                     <div style="position:relative;">
-                        <input type="password" class="password" placeholder="Mot de passe" required>
+                        <input type="password" id="login-password" class="password" placeholder="Mot de passe" required>
                             <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
                     </div>
                     <button type="submit">Se connecter</button>
@@ -35,6 +36,7 @@
                 </a>
             </div>
         </div> 
+        <script src="../../assets/js/api.js"></script>
         <script src="../../assets/js/auth.js"></script>
     </body>
 </html>

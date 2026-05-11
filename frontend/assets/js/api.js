@@ -1,0 +1,26 @@
+const API_BASE = '/api';
+
+async function apiFetch(path, options = {}) {
+  const token = localStorage.getItem('token');
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  const res = await fetch(API_BASE + path, { ...options, headers });
+  return res.json();
+}
+
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart') || '[]');
+}
+
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+}
+
+function updateCartCount() {
+  const count = getCart().reduce((sum, item) => sum + item.quantity, 0);
+  document.querySelectorAll('#cart-count').forEach(el => el.textContent = count);
+}
+
+document.addEventListener('DOMContentLoaded', updateCartCount);

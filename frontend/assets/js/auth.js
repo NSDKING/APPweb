@@ -1,49 +1,64 @@
- function toggleForms() {
-      document.getElementById('loginForm').classList.toggle('hidden');
-      document.getElementById('registerForm').classList.toggle('hidden');
+function togglePassword(icon) {
+  const input = icon.previousElementSibling;
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+// LOGIN
+const loginForm = document.getElementById('login-form');
+if (loginForm) {
+  loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errorEl  = document.getElementById('login-error');
+
+    const res = await apiFetch('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.success) {
+      errorEl.textContent = res.message;
+      errorEl.style.display = 'block';
+      return;
     }
 
-    function showForgot() {
-      document.getElementById('loginForm').classList.add('hidden');
-      document.getElementById('forgotForm').classList.remove('hidden');
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('user', JSON.stringify(res.data.user));
+    window.location.href = '/';
+  });
+}
+
+// REGISTER
+const registerForm = document.getElementById('register-form');
+if (registerForm) {
+  registerForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const nom      = document.getElementById('reg-nom').value.trim();
+    const prenom   = document.getElementById('reg-prenom').value.trim();
+    const email    = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const confirm  = document.getElementById('reg-confirm').value;
+    const errorEl  = document.getElementById('register-error');
+
+    if (password !== confirm) {
+      errorEl.textContent = 'Les mots de passe ne correspondent pas.';
+      errorEl.style.display = 'block';
+      return;
     }
 
-    function backToLogin() {
-      document.getElementById('forgotForm').classList.add('hidden');
-      document.getElementById('loginForm').classList.remove('hidden');
+    const res = await apiFetch('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ name: `${prenom} ${nom}`, email, password }),
+    });
+
+    if (!res.success) {
+      errorEl.textContent = res.message;
+      errorEl.style.display = 'block';
+      return;
     }
 
-    function fakeEmailSent() {
-      alert("Un lien de réinitialisation a été envoyé (simulation)");
-      document.getElementById('forgotForm').classList.add('hidden');
-      document.getElementById('resetForm').classList.remove('hidden');
-      return false;
-    }
-
-    function resetPassword() {
-      const pass = document.getElementById('newPass').value;
-      const confirm = document.getElementById('confirmPass').value;
-
-      if(pass !== confirm) {
-        alert("Les mots de passe ne correspondent pas");
-        return false;
-      }
-
-      alert("Mot de passe modifié avec succès (simulation)");
-      document.getElementById('resetForm').classList.add('hidden');
-      document.getElementById('loginForm').classList.remove('hidden');
-      return false;
-    }
-  
-  function togglePassword(icon) {
-    const input = icon.previousElementSibling;
-    if (input.type === "password") {
-      input.type = "text";
-      icon.src = "assets/img/eye-open.png";
-      icon.alt = "Hide password";
-    } else {
-      input.type = "password";
-      icon.src = "assets/img/eye-closed.png";
-      icon.alt = "Show password";
-    }
-  }
+    localStorage.setItem('token', res.data.token);
+    window.location.href = '/';
+  });
+}

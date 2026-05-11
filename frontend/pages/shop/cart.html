@@ -14,32 +14,37 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav id="navbar" class="navbar">
-        <h1 id="nav-logo" class="navbar__logo">ShoeBox</h1>
-      <ul id="nav-links" class="navbar__links">
-        <li class="navbar__item"><a class="navbar__link" href="#">Accueil</a></li>
-        <li class="navbar__item"><a class="navbar__link" href="../boutique/boutique.html">Boutique</a></li>
-        <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
-        <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
-      </ul>
-      <div id="nav-actions" class="navbar__actions">
-        <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-        </button>
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar">
+    <h1 id="nav-logo" class="navbar__logo">ShoeBox</h1>
+    <ul id="nav-links" class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="../../index.html">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="../boutique/boutique.html">Boutique</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="#">Nouveauté</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="#">Promotions</a></li>
+    </ul>
+    <div id="nav-actions" class="navbar__actions">
+      <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </button>
 
-        <button id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
-          </svg>
-          <span id="cart-count" class="navbar__cart-count">0</span>
-        </button>
-      </div>
-    </nav>
+      <button id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <path d="M16 10a4 4 0 01-8 0" />
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </button>
+    </div>
+  </nav>
 
-    <!-- Main Content Cart -->
+  <!-- Main Content Cart -->
   <main>
     <section id="cart" class="cart">
       <h1 id="cart-title" class="cart__title">Panier</h1>
@@ -50,7 +55,9 @@
         <p class="cart__Sous-total">Sous-total <span id="cart-total">318.00 €</span></p>
         <p class="cart__shipping">Frais de livraison <span id="cart-shipping">Gratuit</span></p>
         <p class="cart__total">Total <span id="cart-final-total">318.00 €</span></p>
-        <button id="checkout-btn" class="cart__checkout-btn">Passer la commande</button>
+        <a href="../checkout/commande.html">
+          <button id="checkout-btn" class="cart__checkout-btn">Passer la commande</button>
+        </a>
         <p class="cart__continue-purchase">
           <a href="../boutique/boutique.html" class="cart__continue-link">Continuer vos achats</a>
         </p>
@@ -69,6 +76,8 @@
   </footer>
 
   <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/navbar.js"></script>
   <script src="../../assets/js/cart.js"></script>
 </body>
+
 </html>

@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   } else {
     const loginBtn = document.createElement('a');
-    loginBtn.href = 'D:/code/appweb/APPweb/frontend/pages/auth/login.html';
+    loginBtn.href = '/pages/auth/login.html';
     loginBtn.className = 'navbar__icon-btn navbar__login';
     loginBtn.textContent = 'Se connecter';
     actions.appendChild(loginBtn);

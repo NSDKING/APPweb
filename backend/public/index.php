@@ -1,5 +1,8 @@
 <?php
 declare(strict_types=1);
+ini_set('display_errors', '0');
+ini_set('html_errors', '0');
+error_reporting(E_ALL);
 
 // Load .env
 $env = parse_ini_file(dirname(__DIR__) . '/.env');

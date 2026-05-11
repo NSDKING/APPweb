@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-      <header>
-     <a href="../../index.html">
-        <img src="../../assets/img/logo_shoebox.png" alt="Logo du site" class="logo">
-    </a>
+<header>
+  <a href="../../index.html">
+    <img src="../../assets/img/logo_shoebox.png" alt="Logo du site" class="logo">
+  </a>
 </header>
+
 <head>
   <meta charset="UTF-8">
   <title>Connexion / Inscription</title>
@@ -12,11 +13,12 @@
   <link rel="stylesheet" href="../../assets/css/auth.css" />
 
 </head>
+
 <body>
 
   <div class="container">
 
-     <!-- REGISTER -->
+    <!-- REGISTER -->
     <div id="registerForm">
       <h2>Créer un compte</h2>
       <form>
@@ -24,13 +26,15 @@
         <input type="text" placeholder="Prénom" required>
         <input type="email" placeholder="Email" required>
         <div style="position:relative;">
-        <input type="password" class="password" placeholder="Mot de passe" required>
-        <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
-      </div>
+          <input type="password" class="password" placeholder="Mot de passe" required>
+          <span onclick="togglePassword(this)"
+            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+        </div>
         <div style="position:relative;">
-        <input type="password" class="password" placeholder="Confirmation de mot de passe" required>
-        <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
-      </div>
+          <input type="password" class="password" placeholder="Confirmation de mot de passe" required>
+          <span onclick="togglePassword(this)"
+            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+        </div>
         <button type="submit">S'inscrire</button>
       </form>
       <a class="link" href=./login.html>
@@ -39,8 +43,12 @@
     </div>
   </div>
 
-   <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/auth.js"></script>
 
 
 </body>
+<footer>
+  <p>© 2026 ShoeBox</p>
+</footer>
+
 </html>

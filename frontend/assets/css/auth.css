@@ -1,0 +1,83 @@
+header {
+    text-align: center;
+    margin-bottom: 20px; /* espace entre logo et formulaire */
+}
+
+.logo {
+    display: block;
+    margin: 0 auto; /* centre le logo */
+    width: 150px;
+}
+
+.inscription {
+    text-align: center;
+}
+   body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column; /* empile logo + formulaire */
+  align-items: center;    /* centre horizontalement */
+  justify-content: flex-start; /* aligne en haut */
+  min-height: 100vh;
+  margin: 0;
+}
+
+    .container {
+      background: rgb(211, 210, 210);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 95%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #000000;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #000000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #b82e2e;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #555;
+    }
+
+    .link {
+      display: block;
+      text-align: center;
+      margin-top: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #000;
+      text-decoration: none;
+    }
+
+    .hidden {
+      display: none;
+    }

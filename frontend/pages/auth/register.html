@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+      <header>
+     <a href="../../index.html">
+        <img src="../../assets/img/logo_shoebox.png" alt="Logo du site" class="logo">
+    </a>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion / Inscription</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../assets/css/auth.css" />
+
+</head>
+<body>
+
+  <div class="container">
+
+     <!-- REGISTER -->
+    <div id="registerForm">
+      <h2>Créer un compte</h2>
+      <form>
+        <input type="text" placeholder="Nom" required>
+        <input type="text" placeholder="Prénom" required>
+        <input type="email" placeholder="Email" required>
+        <div style="position:relative;">
+        <input type="password" class="password" placeholder="Mot de passe" required>
+        <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+      </div>
+        <div style="position:relative;">
+        <input type="password" class="password" placeholder="Confirmation de mot de passe" required>
+        <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+      </div>
+        <button type="submit">S'inscrire</button>
+      </form>
+      <a class="link" href=./login.html>
+        Déjà un compte ? Se connecter
+      </a>
+    </div>
+  </div>
+
+   <script src="../../assets/js/auth.js"></script>
+
+
+</body>
+</html>

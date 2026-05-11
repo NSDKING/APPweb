@@ -1,0 +1,161 @@
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#f5f5f5;
+      color:#222;
+    }
+
+    /* HEADER */
+
+    header{
+      background:#111;
+      color:white;
+      padding:20px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:bold;
+      letter-spacing:2px;
+    }
+
+    nav a{
+      color:white;
+      text-decoration:none;
+      margin-left:20px;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      color:#ff4d4d;
+    }
+
+    /* SECTION CONTACT */
+
+    .contact-section{
+      width:90%;
+      max-width:1200px;
+      margin:60px auto;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+    }
+
+    /* INFORMATIONS */
+
+    .contact-info{
+      background:white;
+      padding:40px;
+      border-radius:15px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .contact-info h1{
+      margin-bottom:20px;
+      font-size:36px;
+    }
+
+    .contact-info p{
+      margin-bottom:15px;
+      line-height:1.6;
+      color:#555;
+    }
+
+    .info-box{
+      margin-top:30px;
+    }
+
+    .info-item{
+      margin-bottom:20px;
+    }
+
+    .info-item h3{
+      margin-bottom:5px;
+      color:#ff4d4d;
+    }
+
+    /* FORMULAIRE */
+
+    .contact-form{
+      background:white;
+      padding:40px;
+      border-radius:15px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .contact-form h2{
+      margin-bottom:25px;
+      font-size:30px;
+    }
+
+    .input-group{
+      margin-bottom:20px;
+    }
+
+    .input-group input,
+    .input-group textarea{
+      width:100%;
+      padding:15px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      outline:none;
+      font-size:16px;
+      transition:0.3s;
+    }
+
+    .input-group input:focus,
+    .input-group textarea:focus{
+      border-color:#ff4d4d;
+    }
+
+    .input-group textarea{
+      resize:none;
+      height:150px;
+    }
+
+    button{
+      background:#111;
+      color:white;
+      border:none;
+      padding:15px 30px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:16px;
+      transition:0.3s;
+    }
+
+    button:hover{
+      background:#ff4d4d;
+    }
+
+    /* FOOTER */
+
+    footer{
+      background:#111;
+      color:white;
+      text-align:center;
+      padding:20px;
+      margin-top:40px;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:900px){
+
+      .contact-section{
+        grid-template-columns:1fr;
+      }
+
+      header{
+        flex-direction:column;
+        gap:15px;
+      }
+    }

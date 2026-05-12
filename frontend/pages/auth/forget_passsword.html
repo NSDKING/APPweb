@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-        <header>
+<header>
     <a href="../../index.html">
-        <img src="../../assets/img/logo_shoebox.png" alt="Logo du site" class="logo">
+        <img src="../../assets/img/logo_ShoeBox.png" alt="Logo du site" class="logo">
     </a>
 </header>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <title>APPweb</title>
 
-        <link rel="stylesheet" href="../../assets/css/auth.css" />
-        <link rel="stylesheet" href="assets/css/layout.css" />
-       
-    </head>
-    <body>
-        <div class="container">
-            <div id="forgotForm">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <title>APPweb</title>
+
+    <link rel="stylesheet" href="../../assets/css/auth.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div id="forgotForm">
             <h2>Mot de passe oublié</h2>
             <form onsubmit="return fakeEmailSent()">
                 <input type="email" placeholder="Entrez votre email" required>
@@ -26,25 +28,28 @@
             <a class="link" href=./login.html>
                 Retour à la connexion
             </a>
-            </div>
+        </div>
 
-            <!-- RESET PASSWORD -->
-            <div id="resetForm" class="hidden">
+        <!-- RESET PASSWORD -->
+        <div id="resetForm" class="hidden">
             <h2>Nouveau mot de passe</h2>
             <form onsubmit="return resetPassword()">
                 <div style="position:relative;">
-                <input type="password" id="newPass" class="password" placeholder="Nouveau mot de passe" required>
-                    <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
-             </div>
+                    <input type="password" id="newPass" class="password" placeholder="Nouveau mot de passe" required>
+                    <span onclick="togglePassword(this)"
+                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+                </div>
                 <div style="position:relative;">
-                <input type="password" id="confirmPass" class="password" placeholder="Confirmer" required>
-                    <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+                    <input type="password" id="confirmPass" class="password" placeholder="Confirmer" required>
+                    <span onclick="togglePassword(this)"
+                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
 
-            </div>
+                </div>
                 <button type="submit">Changer le mot de passe</button>
             </form>
-            </div>
-        </div> 
-        <script src="../../assets/js/auth.js"></script>
-    </body>
+        </div>
+    </div>
+    <script src="../../assets/js/auth.js"></script>
+</body>
+
 </html>

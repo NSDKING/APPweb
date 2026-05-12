@@ -1,0 +1,30 @@
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.profile-info input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.profile-info input:disabled {
+    background-color: #f5f5f5;
+}
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    margin-bottom: 5px;
+}
+
+.form-row label {
+    width: 100px;
+    font-weight: bold;
+}
+
+.form-row input {
+    flex: 1;
+}

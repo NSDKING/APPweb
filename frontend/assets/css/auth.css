@@ -17,7 +17,7 @@ header {
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #fff;
+  background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
   /* empile logo + formulaire */

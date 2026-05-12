@@ -2,36 +2,39 @@
 <html lang="en">
 <header>
     <a href="../../index.html">
-        <img src="../../assets/img/logo_shoebox.png" alt="Logo du site" class="logo">
+        <img src="../../assets/img/logo_ShoeBox.png" alt="Logo du site" class="logo">
     </a>
 </header>
 
-        <link rel="stylesheet" href="../../assets/css/auth.css" />
-        <link rel="stylesheet" href="assets/css/layout.css" />
-       
-    </head>
-    <body>
-        <div class="container">
-            <div id="loginForm">
-                <h2>Connexion</h2>
-                <form id="login-form">
-                    <div id="login-error" style="color:red;display:none;margin-bottom:8px;"></div>
-                    <input type="email" id="login-email" placeholder="Email" required>
-                    <div style="position:relative;">
-                        <input type="password" id="login-password" class="password" placeholder="Mot de passe" required>
-                            <span onclick="togglePassword(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
-                    </div>
-                    <button type="submit">Se connecter</button>
-                </form>
-                <a class="link" href="./register.html">
-                     Pas de compte ? S'inscrire
-                </a>
-                <a class="link" href="./forget_passsword.html">
-                    Mot de passe oublié ?
-                </a>
-            </div>
-        </div> 
-        <script src="../../assets/js/api.js"></script>
-        <script src="../../assets/js/auth.js"></script>
-    </body>
+<link rel="stylesheet" href="../../assets/css/auth.css" />
+<link rel="stylesheet" href="assets/css/layout.css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div id="loginForm">
+            <h2>Connexion</h2>
+            <form id="login-form">
+                <div id="login-error" style="color:red;display:none;margin-bottom:8px;"></div>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <div style="position:relative;">
+                    <input type="password" id="login-password" class="password" placeholder="Mot de passe" required>
+                    <span onclick="togglePassword(this)"
+                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+                </div>
+                <button type="submit">Se connecter</button>
+            </form>
+            <a class="link" href="./register.html">
+                Pas de compte ? S'inscrire
+            </a>
+            <a class="link" href="./forget_passsword.html">
+                Mot de passe oublié ?
+            </a>
+        </div>
+    </div>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+</body>
+
 </html>

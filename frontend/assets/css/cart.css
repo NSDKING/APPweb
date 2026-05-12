@@ -63,6 +63,11 @@
 }
 
 .cart__item-btn {
-  background-color: #f0f0f0;
+  background-color: #f00;
   border: none;
+}
+
+.cart__item-btn:hover {
+  background-color: #b00;
+  cursor: pointer;
 }

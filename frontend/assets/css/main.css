@@ -1,3 +1,53 @@
+/* Search Overlay */
+#search-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+#search-overlay.search-overlay--open {
+  display: block;
+}
+.search-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+.search-overlay__box {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  gap: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.search-overlay__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 10px 0;
+  background: transparent;
+}
+.search-overlay__close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 8px;
+}
+.search-overlay__close:hover {
+  color: #000;
+}
+
 /* Carousel */
 .carousel {
   position: relative;

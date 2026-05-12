@@ -1,6 +1,7 @@
 let allProducts = [];
 let selectedBrand = 'all';
 let selectedPrice = 'all';
+let searchQuery   = new URLSearchParams(window.location.search).get('search') || '';
 
 const grid      = document.getElementById('products-grid');
 const count     = document.getElementById('product-count');
@@ -15,9 +16,11 @@ function matchesPrice(product) {
 }
 
 function render() {
-  const filtered = allProducts.filter(p =>
-    (selectedBrand === 'all' || p.brand.toLowerCase() === selectedBrand) && matchesPrice(p)
-  );
+  const filtered = allProducts.filter(p => {
+    const matchesBrand  = selectedBrand === 'all' || p.brand.toLowerCase() === selectedBrand;
+    const matchesSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.brand.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesBrand && matchesPrice(p) && matchesSearch;
+  });
 
   count.textContent = `${filtered.length} produit${filtered.length !== 1 ? 's' : ''} disponible${filtered.length !== 1 ? 's' : ''}`;
   grid.innerHTML = '';

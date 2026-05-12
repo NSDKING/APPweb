@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CGU & CGV – ShoeBox</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <style>
+    .legal-page {
+      max-width: 860px;
+      margin: 48px auto;
+      padding: 0 24px 80px;
+    }
+
+    .legal-page h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #111;
+    }
+
+    .legal-page .legal-subtitle {
+      color: #777;
+      font-size: 0.9rem;
+      margin-bottom: 40px;
+    }
+
+    .legal-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid #e5e5e5;
+      margin-bottom: 40px;
+    }
+
+    .legal-tab {
+      background: none;
+      border: none;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #777;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .legal-tab:hover {
+      color: #111;
+    }
+
+    .legal-tab.active {
+      color: #111;
+      border-bottom-color: #111;
+    }
+
+    .legal-content {
+      display: none;
+    }
+
+    .legal-content.active {
+      display: block;
+    }
+
+    .legal-content h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 36px 0 12px;
+      color: #111;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .legal-content h2:first-child {
+      margin-top: 0;
+    }
+
+    .legal-content p {
+      color: #444;
+      line-height: 1.8;
+      margin: 0 0 16px;
+    }
+
+    .legal-content ul {
+      color: #444;
+      line-height: 1.8;
+      padding-left: 20px;
+      margin: 0 0 16px;
+    }
+
+    .legal-content ul li {
+      margin-bottom: 6px;
+    }
+
+    .legal-content strong {
+      color: #111;
+      font-weight: 700;
+    }
+
+    .legal-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #777;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .legal-back:hover {
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar">
+    <a href="/"><img src="../../assets/img/logo_shoebox.png" width="80" height="80" alt="ShoeBox" /></a>
+    <ul id="nav-links" class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="/">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html">Boutique</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html?category=new">Nouveauté</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
+    </ul>
+    <div id="nav-actions" class="navbar__actions">
+      <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      <a href="/pages/shop/cart.html" id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="legal-page">
+
+    <a class="legal-back" href="/">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Retour à l'accueil
+    </a>
+
+    <h1>Conditions Générales</h1>
+    <p class="legal-subtitle">Dernière mise à jour : mai 2026</p>
+
+    <!-- Tabs -->
+    <div class="legal-tabs">
+      <button class="legal-tab active" data-tab="cgu">CGU — Utilisation</button>
+      <button class="legal-tab" data-tab="cgv">CGV — Vente</button>
+    </div>
+
+    <!-- CGU -->
+    <div id="tab-cgu" class="legal-content active">
+
+      <h2>Introduction / Préambule</h2>
+      <p>Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») ont pour objet de définir les modalités et conditions d'accès et d'utilisation du site ShoeBox.</p>
+      <p>Le site ShoeBox est une plateforme de vente en ligne spécialisée dans la commercialisation de chaussures, notamment de sneakers de différentes marques. Il propose au grand public une large gamme de produits à des prix accessibles, avec un service de livraison rapide et une sélection de modèles tendances.</p>
+      <p>L'accès et l'utilisation du site impliquent l'acceptation pleine et entière des présentes CGU par tout utilisateur. Ces dernières ont pour objectif d'encadrer les relations entre ShoeBox, en tant qu'éditeur du site, et les utilisateurs.</p>
+      <p>ShoeBox se réserve le droit de modifier à tout moment les présentes CGU afin de les adapter aux évolutions du site, des services proposés ou de la législation en vigueur.</p>
+
+      <h2>Définitions</h2>
+
+      <p><strong>Utilisateur</strong><br/>
+      Désigne toute personne naviguant sur le site ShoeBox, qu'elle consulte simplement le site ou qu'elle effectue une commande.</p>
+
+      <p><strong>Compte utilisateur</strong><br/>
+      Désigne l'espace personnel créé par un Utilisateur sur le site ShoeBox lui permettant notamment d'enregistrer ses informations personnelles afin de faciliter ses futures commandes. La création d'un compte n'est pas obligatoire pour effectuer un achat. Un Utilisateur peut également passer commande en tant qu'invité.</p>
+
+      <p><strong>Produits</strong><br/>
+      Désigne l'ensemble des chaussures proposées à la vente sur le site ShoeBox.</p>
+
+      <p><strong>Commande</strong><br/>
+      Désigne le processus d'achat réalisé par un Utilisateur sur le site ShoeBox. Pour effectuer une commande, l'Utilisateur sélectionne un ou plusieurs Produits qu'il ajoute à son panier. Lors de la validation de la commande, l'Utilisateur doit renseigner :</p>
+      <ul>
+        <li>nom et prénom</li>
+        <li>adresse postale</li>
+        <li>ville</li>
+        <li>code postal</li>
+        <li>adresse e-mail</li>
+        <li>informations de paiement</li>
+      </ul>
+      <p>Une fois la commande validée, ShoeBox adresse à l'Utilisateur un e-mail récapitulatif ainsi qu'une confirmation de commande.</p>
+
+      <p><strong>Livraison</strong><br/>
+      Désigne l'acheminement des Produits commandés à l'adresse indiquée par l'Utilisateur. Les livraisons proposées par ShoeBox sont exclusivement effectuées en France métropolitaine et uniquement à domicile.</p>
+
+      <p><strong>Contenu</strong><br/>
+      Désigne l'ensemble des éléments présents sur le site ShoeBox, notamment les textes, images, photographies, visuels de produits, logos et éléments graphiques. Les photographies des chaussures présentées sur le site sont fournies à titre illustratif et non contractuel.</p>
+
+    </div>
+
+    <!-- CGV -->
+    <div id="tab-cgv" class="legal-content">
+
+      <h2>1. Objet</h2>
+      <p>Les présentes Conditions Générales de Vente (ci-après « CGV ») ont pour objet de définir les conditions et modalités de vente des produits proposés sur le site ShoeBox.</p>
+      <p>ShoeBox est un site de vente en ligne spécialisé dans la commercialisation de chaussures de différentes marques auprès du grand public, avec livraison à domicile en France métropolitaine. Toute commande effectuée sur le site implique l'acceptation pleine et entière des présentes CGV par le client.</p>
+
+      <h2>2. Produits</h2>
+      <p>Les produits proposés à la vente sur le site ShoeBox sont des chaussures présentées avec la plus grande exactitude possible au moyen de descriptions et de photographies. Les photographies et visuels présents sur le site sont fournis à titre illustratif et ne sont pas contractuels. Les offres de produits sont valables dans la limite des stocks disponibles.</p>
+
+      <h2>3. Prix</h2>
+      <p>Les prix affichés sur le site ShoeBox sont indiqués en euros (€) toutes taxes comprises (TTC). ShoeBox se réserve le droit de modifier ses prix à tout moment. Toutefois, les produits sont facturés sur la base du tarif en vigueur au moment de la validation de la commande.</p>
+      <p>Les frais de livraison sont indiqués avant la validation finale de la commande :</p>
+      <ul>
+        <li>Livraison gratuite pour toute commande supérieure ou égale à 100 €</li>
+        <li>Frais de livraison de 10 € pour toute commande inférieure à 100 €</li>
+      </ul>
+
+      <h2>4. Commande</h2>
+      <p>Le client sélectionne les produits qu'il souhaite acheter et les ajoute à son panier. Afin de finaliser sa commande, le client doit fournir :</p>
+      <ul>
+        <li>nom et prénom</li>
+        <li>adresse postale</li>
+        <li>ville</li>
+        <li>code postal</li>
+        <li>adresse e-mail</li>
+        <li>informations de paiement</li>
+      </ul>
+      <p>Le client peut créer un compte utilisateur afin d'enregistrer ses informations personnelles et faciliter ses futures commandes. Il est également possible de commander en tant qu'invité.</p>
+      <p>Une fois la commande validée et le paiement accepté, un e-mail récapitulatif ainsi qu'une confirmation de commande sont envoyés au client. ShoeBox se réserve le droit de refuser ou d'annuler toute commande en cas d'indisponibilité de stock.</p>
+
+      <h2>5. Paiement</h2>
+      <p>Les paiements effectués sur le site ShoeBox peuvent être réalisés par :</p>
+      <ul>
+        <li>Carte Bancaire (CB)</li>
+        <li>Visa</li>
+        <li>Mastercard</li>
+      </ul>
+      <p>La commande est considérée comme validée uniquement après confirmation du paiement.</p>
+
+      <h2>6. Livraison</h2>
+      <p>Les livraisons sont effectuées exclusivement en France métropolitaine à l'adresse indiquée par le client lors de la commande. Le mode de livraison proposé est exclusivement la livraison à domicile.</p>
+      <p>Les délais de livraison estimés sont compris entre 2 et 3 semaines à compter de la validation de la commande. ShoeBox ne pourra être tenu responsable des retards de livraison imputables au transporteur ou à des circonstances exceptionnelles indépendantes de sa volonté.</p>
+
+      <h2>7. Retours et remboursements</h2>
+      <p>En cas d'indisponibilité d'un produit après validation de la commande, le client sera informé dans les meilleurs délais. Le montant correspondant au produit indisponible sera remboursé au client via le moyen de paiement utilisé lors de la commande.</p>
+
+      <h2>8. Droit de rétractation</h2>
+      <p>Conformément à la législation applicable, le client dispose d'un délai de 30 jours à compter de la réception de sa commande pour retourner un produit. Les retours sont gratuits. Les produits retournés doivent être non portés, en bon état et retournés dans leur emballage d'origine.</p>
+      <p>Après réception et vérification du produit retourné, ShoeBox procédera au remboursement dans un délai raisonnable via le moyen de paiement utilisé lors de l'achat.</p>
+
+      <h2>9. Service client</h2>
+      <p>Pour toute question, demande d'information ou réclamation, le client peut contacter le service client à l'adresse suivante : <strong>support.cs@shoebox.com</strong></p>
+
+      <h2>10. Modification des CGV</h2>
+      <p>ShoeBox se réserve le droit de modifier les présentes Conditions Générales de Vente à tout moment. Les CGV applicables sont celles en vigueur à la date de la commande effectuée par le client.</p>
+
+      <h2>11. Droit applicable</h2>
+      <p>Les présentes CGV sont soumises au droit français. En cas de litige, et à défaut de résolution amiable, les tribunaux français seront compétents conformément aux règles légales applicables.</p>
+
+    </div>
+
+  </main>
+
+  <footer id="footer" class="footer" style="background:#111;color:#fff;text-align:center;padding:24px;">
+    <p style="margin:0;">© 2026 ShoeBox Ltd. Tous droits réservés. —
+      <a href="/pages/legal/cgu-cgv.html" style="color:#aaa;text-decoration:none;">CGU / CGV</a>
+    </p>
+  </footer>
+
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/navbar.js"></script>
+  <script src="../../assets/js/search.js"></script>
+  <script>
+    document.querySelectorAll('.legal-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.legal-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.legal-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../../assets/css/layout.css" />
   <link rel="stylesheet" href="../../assets/css/components.css" />
 </head>
+
 <body>
 <!-- Navbar -->
     <nav id="navbar" class="navbar">
@@ -43,21 +44,41 @@
         <link rel="stylesheet" href="assets/css/layout.css" />
 
     <!-- SECTION PROFIL -->
-    <main>
+<section>
 
-        <section>
-            <h2>Mon Profil</h2>
+    <h2>Mon Profil</h2>
 
-            <p><strong>Nom :</strong> Dupont</p>
-            <p><strong>Prénom :</strong> Julien</p>
-            <p><strong>Email :</strong> julien.dupont@email.com</p>
-            <p><strong>Téléphone :</strong> 06 12 34 56 78</p>
-            <p><strong>Adresse :</strong> 15 Rue de Paris, 75000 Paris</p>
+    <div class="profile-info">
+        <div class="form-row">
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" value="Dupont" disabled>
+    </div>
 
-            <button>Modifier le profil</button>
-        </section>
+    <div class="form-row">
+    <label for="prenom">Prénom :</label>
+    <input type="text" id="prenom" value="Julien" disabled>
+    </div>
 
-        <hr>
+    <div class="form-row">
+    <label for="email">Email :</label>
+    <input type="email" id="email" value="julien.dupont@email.com" disabled>
+    </div>
+
+    <div class="form-row">
+    <label for="telephone">Téléphone :</label>
+    <input type="text" id="telephone" value="06 12 34 56 78" disabled>
+    </div>
+
+    <div class="form-row">
+        <label for="adresse">Adresse :</label>
+        <input type="text" id="adresse" value="15 Rue de Paris, 75000 Paris" disabled>
+    </div>
+
+    <button id="edit-profile-btn">
+        Modifier le profil
+    </button>
+
+</section>
         <!-- MODIFICATION MOT DE PASSE -->
         <section>
 
@@ -117,6 +138,6 @@
         </nav>
 
     </footer>
-
+<script src="../../assets/js/profile.js"></script>
 </body>
 </html>

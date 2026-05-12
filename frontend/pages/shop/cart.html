@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="" />
-  <title>APPweb</title>
+  <title>Panier – ShoeBox</title>
 
+  <link rel="stylesheet" href="../../assets/css/main.css" />
   <link rel="stylesheet" href="../../assets/css/shop.css" />
   <link rel="stylesheet" href="../../assets/css/layout.css" />
   <link rel="stylesheet" href="../../assets/css/components.css" />
@@ -16,14 +16,12 @@
 <body>
   <!-- Navbar -->
   <nav id="navbar" class="navbar">
-    <img src="../../assets/img/logo_ShoeBox.png" width="100" height="100">
+    <a href="/"><img src="../../assets/img/logo_shoebox.png" width="80" height="80" alt="ShoeBox" /></a>
     <ul id="nav-links" class="navbar__links">
       <li class="navbar__item"><a class="navbar__link" href="/">Accueil</a></li>
       <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html">Boutique</a></li>
-      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html?category=new">Nouveauté</a>
-      </li>
-      <li class="navbar__item"><a class="navbar__link"
-          href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html?category=new">Nouveauté</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
     </ul>
     <div id="nav-actions" class="navbar__actions">
       <button id="search-btn" class="navbar__icon-btn" aria-label="Search">
@@ -34,7 +32,7 @@
         </svg>
       </button>
 
-      <button id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
+      <a href="/pages/shop/cart.html" id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
           stroke="currentColor" stroke-width="2">
           <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -42,43 +40,76 @@
           <path d="M16 10a4 4 0 01-8 0" />
         </svg>
         <span id="cart-count" class="navbar__cart-count">0</span>
-      </button>
+      </a>
     </div>
   </nav>
 
-  <!-- Main Content Cart -->
+  <!-- Main Content -->
   <main>
     <section id="cart" class="cart">
       <h1 id="cart-title" class="cart__title">Panier</h1>
+
       <div id="cart-items" class="cart__items"></div>
 
       <div class="cart__summary">
         <h2 class="cart__summary-title">Récapitulatif</h2>
-        <p class="cart__Sous-total">Sous-total <span id="cart-total">318.00 €</span></p>
-        <p class="cart__shipping">Frais de livraison <span id="cart-shipping">Gratuit</span></p>
-        <p class="cart__total">Total <span id="cart-final-total">318.00 €</span></p>
-        <a href="../checkout/commande.html">
-          <button id="checkout-btn" class="cart__checkout-btn">Passer la commande</button>
-        </a>
+        <p class="cart__Sous-total">Sous-total <span id="cart-total">0.00 €</span></p>
+        <p class="cart__shipping">Livraison <span id="cart-shipping">Gratuite</span></p>
+        <p class="cart__total">Total <span id="cart-final-total">0.00 €</span></p>
+        <button id="checkout-btn" class="cart__checkout-btn">Passer la commande</button>
         <p class="cart__continue-purchase">
-          <a href="../boutique/boutique.html" class="cart__continue-link">Continuer vos achats</a>
+          <a href="/pages/boutique/boutique.html" class="cart__continue-link">← Continuer vos achats</a>
         </p>
       </div>
     </section>
   </main>
 
   <footer id="footer" class="footer">
-    <div class="footer__brand">
-      <div class="footer__logo-box">
-        <span class="footer__logo-text">SB</span>
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
+          <span class="footer__name">SHOEBOX</span>
+        </div>
+        <p class="footer__tagline">La référence sneakers en France.</p>
       </div>
-      <span class="footer__name">SHOEBOX</span>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Boutique</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/boutique/boutique.html">Tous les produits</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=new">Nouveautés</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Mon compte</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/auth/login.html">Se connecter</a></li>
+          <li><a href="/pages/auth/register.html">Créer un compte</a></li>
+          <li><a href="/pages/shop/cart.html">Mon panier</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Informations</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/legal/cgu-cgv.html">CGU / CGV</a></li>
+          <li><a href="/pages/reclamations/sav.html">SAV</a></li>
+          <li><a href="/pages/forum/index.html">Forum</a></li>
+        </ul>
+      </div>
     </div>
-    <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+    </div>
   </footer>
 
   <script src="../../assets/js/api.js"></script>
   <script src="../../assets/js/navbar.js"></script>
+  <script src="../../assets/js/search.js"></script>
   <script src="../../assets/js/cart.js"></script>
 </body>
 

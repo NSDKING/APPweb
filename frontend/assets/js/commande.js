@@ -2,7 +2,7 @@
    commande.js — Logique de la page de commande ShoeBox
    ============================================================= */
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = '/api';
 
 // ── Placeholders ─────────────────────────────────────────────
 // Utilisés quand le panier est vide (démo / navigation directe)
@@ -47,16 +47,16 @@ function showToast(message, type = 'success') {
 }
 
 function getToken() {
-  return localStorage.getItem('shoebox_token') || null;
+  return localStorage.getItem('token') || null;
 }
 
 function getUser() {
-  const raw = localStorage.getItem('shoebox_user');
+  const raw = localStorage.getItem('user');
   try { return raw ? JSON.parse(raw) : null; } catch { return null; }
 }
 
 function getCart() {
-  const raw = localStorage.getItem('shoebox_cart');
+  const raw = localStorage.getItem('cart');
   try { return raw ? JSON.parse(raw) : []; } catch { return []; }
 }
 
@@ -268,7 +268,7 @@ async function submitCommande(event) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Erreur lors de la commande.');
 
-      localStorage.removeItem('shoebox_cart');
+      localStorage.removeItem('cart');
       showToast('Commande confirmée ! Redirection…');
       setTimeout(() => {
           window.location.href = `confirmation.html?email=${encodeURIComponent(email)}`;
@@ -282,7 +282,7 @@ async function submitCommande(event) {
   */
 
   // ── Simulation (retirer quand l'API est active) ──
-  localStorage.removeItem('shoebox_cart');
+  localStorage.removeItem('cart');
   showToast('Commande confirmée ! Redirection…');
   setTimeout(() => {
     window.location.href = `confirmation.html?email=${encodeURIComponent(email)}`;

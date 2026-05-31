@@ -5,8 +5,12 @@ async function apiFetch(path, options = {}) {
   const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(API_BASE + path, { ...options, headers });
-  return res.json();
+  try {
+    const res = await fetch(API_BASE + path, { ...options, headers });
+    return await res.json();
+  } catch (e) {
+    return { success: false, message: 'Impossible de joindre le serveur.' };
+  }
 }
 
 function getCart() {

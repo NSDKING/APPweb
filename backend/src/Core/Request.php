@@ -33,6 +33,11 @@ class Request
         return array_merge($_GET, $this->body);
     }
 
+    public function json(): array
+    {
+        return $this->body;
+    }
+
     public function bearerToken(): ?string
     {
         $header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';

@@ -3,7 +3,7 @@ const sizes = [38, 39, 40, 41, 42, 43, 44, 45];
 const params = new URLSearchParams(window.location.search);
 const id     = parseInt(params.get('id'));
 
-apiFetch(`/products/${id}`).then(res => {
+Promise.all([apiFetch(`/products/${id}`), loadFavourites()]).then(([res]) => {
   if (!res.success) {
     document.getElementById('product-container').style.display = 'none';
     document.getElementById('not-found').style.display = 'block';
@@ -44,6 +44,23 @@ apiFetch(`/products/${id}`).then(res => {
       selectedSize = size;
     });
     sizeGrid.appendChild(btn);
+  });
+
+  // Fav button
+  const favBtn = document.getElementById('fav-btn');
+  const setFavState = (active) => {
+    favBtn.classList.toggle('product-info__fav-btn--active', active);
+    favBtn.querySelector('svg').setAttribute('fill', active ? 'currentColor' : 'none');
+    favBtn.setAttribute('aria-label', active ? 'Retirer des favoris' : 'Ajouter aux favoris');
+  };
+
+  setFavState(isFavourite(id));
+
+  favBtn.addEventListener('click', async () => {
+    favBtn.style.opacity = '0.6';
+    const added = await toggleFavouriteApi(id);
+    favBtn.style.opacity = '';
+    if (added !== null) setFavState(added);
   });
 
   document.getElementById('add-to-cart-btn').addEventListener('click', () => {

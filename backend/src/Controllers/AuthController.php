@@ -5,14 +5,17 @@ use Core\Request;
 use Core\Response;
 use Core\JWT;
 use Models\User;
+use Models\PasswordReset;
 
 class AuthController
 {
     private User $user;
+    private PasswordReset $passwordReset;
 
     public function __construct()
     {
-        $this->user = new User();
+        $this->user          = new User();
+        $this->passwordReset = new PasswordReset();
     }
 
     public function register(Request $request): void
@@ -82,5 +85,84 @@ class AuthController
     {
         // JWT is stateless — client just discards the token
         Response::success(null, 'Logged out');
+    }
+
+    public function forgotPassword(Request $request): void
+    {
+        $email = trim($request->input('email', ''));
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            Response::error('Adresse email invalide');
+            return;
+        }
+
+        $user = $this->user->findByEmail($email);
+
+        // Always return success to prevent email enumeration
+        if (!$user) {
+            Response::success(null, 'Si ce compte existe, un lien a été envoyé.');
+            return;
+        }
+
+        $token    = $this->passwordReset->create($email);
+        $appUrl   = $_ENV['APP_URL'] ?? 'http://localhost';
+        $resetUrl = $appUrl . '/pages/auth/forget_passsword.html?token=' . $token;
+
+        $this->sendResetEmail($email, $user['name'], $resetUrl);
+
+        $data = null;
+        // In development expose the link so it can be tested without email
+        if (($_ENV['APP_ENV'] ?? '') === 'development') {
+            $data = ['reset_url' => $resetUrl];
+        }
+
+        Response::success($data, 'Si ce compte existe, un lien a été envoyé.');
+    }
+
+    public function resetPassword(Request $request): void
+    {
+        $token    = trim($request->input('token', ''));
+        $password = $request->input('password', '');
+
+        if (!$token || !$password) {
+            Response::error('Token et mot de passe requis');
+            return;
+        }
+
+        if (strlen($password) < 8) {
+            Response::error('Le mot de passe doit contenir au moins 8 caractères');
+            return;
+        }
+
+        $reset = $this->passwordReset->findValid($token);
+
+        if (!$reset) {
+            Response::error('Lien invalide ou expiré', 400);
+            return;
+        }
+
+        $user = $this->user->findByEmail($reset['email']);
+        if (!$user) {
+            Response::error('Compte introuvable', 404);
+            return;
+        }
+
+        $this->user->updatePassword($user['id'], $password);
+        $this->passwordReset->markUsed($token);
+
+        Response::success(null, 'Mot de passe mis à jour. Vous pouvez vous connecter.');
+    }
+
+    private function sendResetEmail(string $to, string $name, string $resetUrl): void
+    {
+        $subject = 'Réinitialisation de votre mot de passe — ShoeBox';
+        $message = "Bonjour $name,\n\n"
+            . "Vous avez demandé à réinitialiser votre mot de passe.\n\n"
+            . "Cliquez sur ce lien (valable 1 heure) :\n$resetUrl\n\n"
+            . "Si vous n'avez pas fait cette demande, ignorez cet email.\n\n"
+            . "— L'équipe ShoeBox";
+        $headers = "From: noreply@shoebox.fr\r\nContent-Type: text/plain; charset=UTF-8";
+
+        @mail($to, $subject, $message, $headers);
     }
 }

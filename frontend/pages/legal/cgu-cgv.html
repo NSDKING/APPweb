@@ -131,6 +131,12 @@
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
       </button>
+      <a href="/pages/shop/favourites.html" class="navbar__icon-btn navbar__icon-btn--fav" aria-label="Favoris">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="navbar__fav-count"></span>
+      </a>
       <a href="/pages/shop/cart.html" id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart" aria-label="Cart">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
@@ -269,6 +275,7 @@
   </footer>
 
   <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/favourites.js"></script>
   <script src="../../assets/js/navbar.js"></script>
   <script src="../../assets/js/search.js"></script>
   <script>

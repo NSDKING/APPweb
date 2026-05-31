@@ -106,6 +106,144 @@ main .main-top p {
     font-size: 1.1rem;
 }
 
+/* ── Product card in boutique grid ── */
+.products-grid .product-card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.products-grid .product-card__img-wrapper {
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
+  overflow: visible; /* allow fav button to show over rounded corner */
+  background: #f4f4f5;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+/* clip the image itself to the rounded shape */
+.products-grid .product-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.products-grid .product-card:hover .product-card__img {
+  transform: scale(1.06);
+}
+
+/* ── Heart / fav button ── */
+.products-grid .product-card__fav {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background: #ffffff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.20);
+  color: #9ca3af;
+  cursor: pointer;
+  z-index: 30;
+  transition: color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.products-grid .product-card__fav:hover {
+  color: #c91310;
+  transform: scale(1.15);
+  box-shadow: 0 4px 14px rgba(201,19,16,.30);
+}
+
+.products-grid .product-card__fav--active {
+  color: #c91310;
+  box-shadow: 0 2px 10px rgba(201,19,16,.35);
+}
+
+/* ── Quick-add cart button ── */
+.products-grid .product-card__quick-add {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  color: #c91310;
+  cursor: pointer;
+  z-index: 30;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.products-grid .product-card:hover .product-card__quick-add {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.products-grid .product-card__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 30;
+  background: #EAFF00;
+  color: #000;
+  font-size: 0.6rem;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.products-grid .product-card__brand {
+  color: #a1a1aa;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.2rem;
+}
+
+.products-grid .product-card__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #18181b;
+  margin: 0 0 0.4rem;
+}
+
+.products-grid .product-card__pricing {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.products-grid .product-card__price {
+  color: #c91310;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.products-grid .product-card__original {
+  color: #d4d4d8;
+  text-decoration: line-through;
+  font-size: 0.85rem;
+}
+
 /* ── Mobile filter toggle ── */
 .filter-toggle {
     display: none;
@@ -120,36 +258,34 @@ main .main-top p {
 }
 
 @media (max-width: 768px) {
-    main {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
+  main {
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 20px;
+  }
 
-    .shop-layout {
-        flex-direction: column;
-    }
+  .main-top h1 { font-size: 1.5rem; }
 
-    .shop-filters {
-        display: none;
-        width: 100%;
-        position: static;
-    }
+  .shop-layout { flex-direction: column; }
 
-    .shop-filters.filters-sidebar--open {
-        display: block;
-    }
+  .shop-filters {
+    display: none;
+    width: 100%;
+    position: static;
+  }
 
-    .filter-toggle {
-        display: block;
-    }
+  .shop-filters.filters-sidebar--open { display: block; }
 
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .filter-toggle { display: block; }
+
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  /* Card adjustments for small screens */
+  .products-grid .product-card__img-wrapper { border-radius: 12px; }
+  .products-grid .product-card__name { font-size: 0.85rem; }
+  .products-grid .product-card__price { font-size: 1rem; }
 }
 
 @media (max-width: 480px) {
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
+  .products-grid { grid-template-columns: 1fr; }
 }

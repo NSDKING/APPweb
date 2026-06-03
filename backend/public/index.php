@@ -86,6 +86,14 @@ $router->put('/api/admin/carousel/{id}',         [\Controllers\Admin\CarouselCon
 $router->delete('/api/admin/carousel/{id}',      [\Controllers\Admin\CarouselController::class, 'destroy']);
 $router->put('/api/admin/carousel/{id}/move',    [\Controllers\Admin\CarouselController::class, 'move']);
 
+// Forum public routes
+$router->get('/api/forum/categories',                    [\Controllers\ForumController::class, 'categories']);
+$router->get('/api/forum/categories/{id}/threads',       [\Controllers\ForumController::class, 'threads']);
+$router->get('/api/forum/threads/{id}',                  [\Controllers\ForumController::class, 'thread']);
+$router->post('/api/forum/threads',                      [\Controllers\ForumController::class, 'createThread']);
+$router->post('/api/forum/threads/{id}/posts',           [\Controllers\ForumController::class, 'createPost']);
+$router->post('/api/forum/posts/{id}/like',              [\Controllers\ForumController::class, 'likePost']);
+
 // Review routes
 $router->get('/api/products/{id}/reviews',    [\Controllers\ReviewController::class, 'index']);
 $router->post('/api/products/{id}/reviews',   [\Controllers\ReviewController::class, 'store']);

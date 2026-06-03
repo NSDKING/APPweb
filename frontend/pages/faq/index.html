@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — ShoeBox</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <style>
+    .faq-page { max-width: 780px; margin: 40px auto; padding: 0 16px 80px; }
+
+    .faq-hero { text-align: center; margin-bottom: 48px; }
+    .faq-hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+    .faq-hero p  { color: #666; font-size: .95rem; }
+
+    .faq-search-wrap {
+      display: flex; justify-content: center; margin-bottom: 40px;
+    }
+    .faq-search {
+      width: 100%; max-width: 480px;
+      padding: 12px 18px; border: 1.5px solid #e5e7eb; border-radius: 12px;
+      font-size: .95rem; outline: none; font-family: inherit;
+    }
+    .faq-search:focus { border-color: #c91310; }
+
+    .faq-section { margin-bottom: 36px; }
+    .faq-section__title {
+      font-size: .75rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .1em; color: #c91310; margin-bottom: 12px;
+    }
+
+    .faq-item {
+      border: 1.5px solid #e5e7eb; border-radius: 12px; margin-bottom: 8px;
+      background: #fff; overflow: hidden; transition: border-color .15s;
+    }
+    .faq-item:hover { border-color: #d1d5db; }
+    .faq-item--open { border-color: #c91310; }
+
+    .faq-question {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 20px; cursor: pointer; gap: 16px;
+      font-weight: 700; font-size: .92rem; color: #111; user-select: none;
+    }
+
+    .faq-chevron {
+      flex-shrink: 0; width: 20px; height: 20px;
+      transition: transform .25s; color: #888;
+    }
+    .faq-item--open .faq-chevron { transform: rotate(180deg); color: #c91310; }
+
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height .3s ease, padding .3s ease;
+      padding: 0 20px; color: #444; font-size: .88rem; line-height: 1.7;
+    }
+    .faq-item--open .faq-answer { max-height: 400px; padding: 0 20px 18px; }
+
+    .faq-answer a { color: #c91310; font-weight: 600; text-decoration: none; }
+    .faq-answer a:hover { text-decoration: underline; }
+
+    .faq-empty { text-align: center; color: #aaa; padding: 40px 0; display: none; }
+
+    .faq-contact-banner {
+      background: #111; color: #fff; border-radius: 16px;
+      padding: 32px; text-align: center; margin-top: 48px;
+    }
+    .faq-contact-banner h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+    .faq-contact-banner p  { color: #aaa; font-size: .88rem; margin-bottom: 20px; }
+    .faq-contact-btn {
+      display: inline-block; background: #c91310; color: #fff;
+      padding: 11px 28px; border-radius: 10px; font-weight: 700;
+      text-decoration: none; font-size: .9rem; transition: background .15s;
+    }
+    .faq-contact-btn:hover { background: #a81010; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar">
+    <a href="/"><img src="../../assets/img/logo_shoebox.png" width="90" height="90" alt="ShoeBox"></a>
+    <ul id="nav-links" class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="/">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html">Boutique</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/forum/index.html">Forum</a></li>
+    </ul>
+    <div id="nav-actions" class="navbar__actions">
+      <a href="/pages/shop/cart.html" class="navbar__icon-btn navbar__icon-btn--cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="faq-page">
+
+    <div class="faq-hero">
+      <h1>Questions fréquentes</h1>
+      <p>Trouvez rapidement une réponse à vos questions sur ShoeBox.</p>
+    </div>
+
+    <div class="faq-search-wrap">
+      <input class="faq-search" type="text" id="faq-search" placeholder="Rechercher une question…" oninput="filterFaq()" />
+    </div>
+
+    <p class="faq-empty" id="faq-empty">Aucune question ne correspond à votre recherche.</p>
+
+    <!-- Commandes & Livraison -->
+    <div class="faq-section" data-section>
+      <p class="faq-section__title">Commandes & Livraison</p>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Comment passer une commande ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Ajoutez les articles souhaités à votre panier, puis cliquez sur <strong>"Passer la commande"</strong>. Renseignez votre adresse de livraison et vos informations de paiement. Vous recevrez un e-mail de confirmation après validation.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Quels sont les délais de livraison ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          La livraison standard est estimée entre <strong>3 et 5 jours ouvrés</strong>. La livraison express (sous 24h) est disponible pour les commandes passées avant 14h. La livraison est offerte dès 100 € d'achat.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Comment suivre ma commande ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Connectez-vous à votre compte et accédez à <strong>"Mes commandes"</strong>. Vous y trouverez le statut de chaque commande ainsi que le numéro de suivi dès l'expédition. Un e-mail de suivi vous est également envoyé automatiquement.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Puis-je modifier ou annuler une commande ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Une commande peut être modifiée ou annulée dans les <strong>2 heures</strong> suivant sa validation. Passé ce délai, contactez notre service client via la page <a href="/pages/reclamations/contact.html">Contact</a> ou ouvrez une <a href="/pages/reclamations/sav.html">réclamation</a>.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Livrez-vous à l'international ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Pour le moment, ShoeBox livre uniquement en <strong>France métropolitaine</strong>. Nous travaillons à l'extension de nos zones de livraison. Inscrivez-vous à notre <strong>newsletter</strong> pour être informé dès que la livraison internationale sera disponible.
+        </div>
+      </div>
+    </div>
+
+    <!-- Retours & Remboursements -->
+    <div class="faq-section" data-section>
+      <p class="faq-section__title">Retours & Remboursements</p>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Quelle est la politique de retour ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Vous disposez de <strong>30 jours</strong> après réception pour retourner un article dans son état d'origine (non porté, emballage intact). Les retours sont <strong>gratuits</strong> depuis la France métropolitaine.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Comment effectuer un retour ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          1. Connectez-vous et accédez à <strong>"Mes commandes"</strong>.<br>
+          2. Sélectionnez l'article à retourner et ouvrez une <a href="/pages/reclamations/sav.html">demande de retour</a>.<br>
+          3. Imprimez l'étiquette retour reçue par e-mail.<br>
+          4. Déposez le colis dans un point relais ou bureau de poste.<br>
+          Le remboursement est effectué sous 5 à 10 jours ouvrés après réception du colis.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Que faire si je reçois un article défectueux ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Contactez-nous immédiatement via la page <a href="/pages/reclamations/contact.html">Contact</a> en joignant des photos de l'article défectueux. Nous organiserons un échange ou un remboursement complet sans frais, en priorité.
+        </div>
+      </div>
+    </div>
+
+    <!-- Compte & Paiement -->
+    <div class="faq-section" data-section>
+      <p class="faq-section__title">Compte & Paiement</p>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Comment créer un compte ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Cliquez sur <strong>"Se connecter"</strong> dans la barre de navigation, puis sur <strong>"Créer un compte"</strong>. Renseignez votre nom, e-mail, adresse et un mot de passe (8 caractères minimum). Votre compte est immédiatement actif.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          J'ai oublié mon mot de passe, que faire ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Sur la page de connexion, cliquez sur <strong>"Mot de passe oublié ?"</strong>. Saisissez votre adresse e-mail et vous recevrez un lien de réinitialisation valable <strong>1 heure</strong>.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Quels moyens de paiement acceptez-vous ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Nous acceptons les <strong>cartes bancaires</strong> (Visa, Mastercard, American Express). Les paiements via PayPal et Apple Pay sont en cours d'intégration. Toutes les transactions sont sécurisées par chiffrement SSL.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Comment utiliser un code promo ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Sur la page de commande, un champ <strong>"Code promo"</strong> est disponible dans le récapitulatif. Saisissez votre code et cliquez sur <strong>"Appliquer"</strong>. La réduction est automatiquement déduite du total.
+        </div>
+      </div>
+    </div>
+
+    <!-- Produits -->
+    <div class="faq-section" data-section>
+      <p class="faq-section__title">Produits & Authenticité</p>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Les produits sont-ils authentiques ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          <strong>Oui, à 100 %.</strong> Chaque paire vendue sur ShoeBox est vérifiée par notre équipe d'experts avant expédition. Nous travaillons directement avec des revendeurs agréés et des marques officielles. Aucune contrefaçon n'est tolérée.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Comment choisir ma taille ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Consultez notre <a href="/pages/sizes/index.html">guide de conversion des pointures</a> qui vous permet de convertir votre taille entre les normes EU, US, UK et la longueur du pied en centimètres. En cas de doute, nous recommandons de prendre la taille supérieure.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Un produit est en rupture de stock, puis-je être alerté ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Abonnez-vous à notre <strong>newsletter</strong> pour être informé des réassorts et nouvelles arrivées. Vous pouvez également ajouter un produit à vos <strong>favoris</strong> pour le retrouver facilement dès qu'il est disponible.
+        </div>
+      </div>
+
+      <div class="faq-item" data-faq>
+        <div class="faq-question" onclick="toggle(this)">
+          Comment laisser un avis sur un produit ?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Connectez-vous à votre compte, rendez-vous sur la fiche du produit et faites défiler jusqu'à la section <strong>"Avis clients"</strong>. Sélectionnez votre note (1 à 5 étoiles) et rédigez un commentaire. Un seul avis par produit et par utilisateur.
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact CTA -->
+    <div class="faq-contact-banner">
+      <h2>Vous n'avez pas trouvé votre réponse ?</h2>
+      <p>Notre équipe est disponible du lundi au vendredi de 9h à 18h.</p>
+      <a href="/pages/reclamations/contact.html" class="faq-contact-btn">Contacter le support</a>
+    </div>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
+          <span class="footer__name">SHOEBOX</span>
+        </div>
+        <p class="footer__tagline">La référence sneakers en France.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Boutique</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/boutique/boutique.html">Tous les produits</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=new">Nouveautés</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Communauté</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/forum/index.html"><strong>Forum</strong></a></li>
+          <li><a href="/pages/reclamations/contact.html">Contact</a></li>
+          <li><a href="/pages/reclamations/sav.html">SAV</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Informations</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/faq/index.html">FAQ</a></li>
+          <li><a href="/pages/sizes/index.html">Guide des tailles</a></li>
+          <li><a href="/pages/auth/login.html">Se connecter</a></li>
+          <li><a href="/pages/legal/cgu-cgv.html">CGU / CGV</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/navbar.js"></script>
+  <script>
+    function toggle(questionEl) {
+      const item = questionEl.closest('.faq-item');
+      item.classList.toggle('faq-item--open');
+    }
+
+    function filterFaq() {
+      const q = document.getElementById('faq-search').value.toLowerCase().trim();
+      let anyVisible = false;
+
+      document.querySelectorAll('[data-faq]').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const match = !q || text.includes(q);
+        item.style.display = match ? '' : 'none';
+        if (match) anyVisible = true;
+      });
+
+      document.querySelectorAll('[data-section]').forEach(section => {
+        const visibleItems = [...section.querySelectorAll('[data-faq]')].some(i => i.style.display !== 'none');
+        section.style.display = visibleItems ? '' : 'none';
+      });
+
+      document.getElementById('faq-empty').style.display = anyVisible ? 'none' : 'block';
+
+      // Auto-ouvrir si recherche active
+      if (q) {
+        document.querySelectorAll('[data-faq]').forEach(item => {
+          if (item.style.display !== 'none') item.classList.add('faq-item--open');
+        });
+      }
+    }
+  </script>
+</body>
+</html>

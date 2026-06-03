@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use Core\Mailer;
 use Core\Request;
 use Core\Response;
 use Core\JWT;
@@ -108,11 +109,11 @@ class AuthController
         $appUrl   = $_ENV['APP_URL'] ?? 'http://localhost';
         $resetUrl = $appUrl . '/pages/auth/forget_passsword.html?token=' . $token;
 
-        $this->sendResetEmail($email, $user['name'], $resetUrl);
+        $sent = $this->sendResetEmail($email, $user['name'], $resetUrl);
 
+        // En développement ou si l'envoi échoue : retourner l'URL directement
         $data = null;
-        // In development expose the link so it can be tested without email
-        if (($_ENV['APP_ENV'] ?? '') === 'development') {
+        if (!$sent || ($_ENV['APP_ENV'] ?? 'production') !== 'production') {
             $data = ['reset_url' => $resetUrl];
         }
 
@@ -153,16 +154,10 @@ class AuthController
         Response::success(null, 'Mot de passe mis à jour. Vous pouvez vous connecter.');
     }
 
-    private function sendResetEmail(string $to, string $name, string $resetUrl): void
+    private function sendResetEmail(string $to, string $name, string $resetUrl): bool
     {
         $subject = 'Réinitialisation de votre mot de passe — ShoeBox';
-        $message = "Bonjour $name,\n\n"
-            . "Vous avez demandé à réinitialiser votre mot de passe.\n\n"
-            . "Cliquez sur ce lien (valable 1 heure) :\n$resetUrl\n\n"
-            . "Si vous n'avez pas fait cette demande, ignorez cet email.\n\n"
-            . "— L'équipe ShoeBox";
-        $headers = "From: noreply@shoebox.fr\r\nContent-Type: text/plain; charset=UTF-8";
-
-        @mail($to, $subject, $message, $headers);
+        $html    = Mailer::resetPasswordHtml($name, $resetUrl);
+        return Mailer::send($to, $subject, $html);
     }
 }

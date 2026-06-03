@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forum — ShoeBox</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <style>
+    .forum-page { max-width: 860px; margin: 36px auto; padding: 0 16px; }
+    .forum-page h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+    .forum-subtitle { color: #666; font-size: .9rem; margin-bottom: 28px; }
+    .forum-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .forum-cat { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
+                 margin-bottom: 12px; overflow: hidden; }
+    .forum-cat__header { display: flex; align-items: center; justify-content: space-between;
+                          padding: 18px 22px; cursor: pointer; transition: background .15s; }
+    .forum-cat__header:hover { background: #fafafa; }
+    .forum-cat__name { font-size: 1rem; font-weight: 800; color: #111; }
+    .forum-cat__desc { font-size: .84rem; color: #666; margin-top: 3px; }
+    .forum-cat__stats { font-size: .8rem; color: #888; text-align: right; white-space: nowrap; }
+    .forum-threads { border-top: 1px solid #e5e7eb; }
+    .forum-thread { display: flex; align-items: center; gap: 14px; padding: 14px 22px;
+                    border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #111;
+                    transition: background .15s; }
+    .forum-thread:last-child { border-bottom: none; }
+    .forum-thread:hover { background: #f9fafb; }
+    .thread-icon { width: 38px; height: 38px; border-radius: 10px; background: #f4f4f4;
+                   display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .thread-icon--pinned { background: #fef3c7; }
+    .thread-title { font-weight: 700; font-size: .92rem; margin-bottom: 2px; }
+    .thread-meta  { font-size: .78rem; color: #888; }
+    .thread-replies { font-size: .8rem; color: #888; margin-left: auto; white-space: nowrap; text-align: right; }
+    .btn-new-thread { background: #c91310; color: #fff; border: none; border-radius: 10px;
+                       padding: 10px 22px; font-weight: 700; cursor: pointer; font-size: .9rem; text-decoration: none; }
+    .forum-empty { color: #aaa; font-size: .88rem; padding: 18px 22px; }
+    .threads-loading { padding: 18px 22px; color: #aaa; font-size: .87rem; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar">
+    <a href="/"><img src="../../assets/img/logo_shoebox.png" width="90" height="90" alt="ShoeBox"></a>
+    <ul id="nav-links" class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="/">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html">Boutique</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/forum/index.html" style="color:#c91310;font-weight:700;">Forum</a></li>
+    </ul>
+    <div id="nav-actions" class="navbar__actions">
+      <a href="/pages/shop/cart.html" class="navbar__icon-btn navbar__icon-btn--cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="forum-page">
+    <div class="forum-header-row">
+      <div>
+        <h1>Forum communautaire</h1>
+        <p class="forum-subtitle">Échangez avec la communauté ShoeBox</p>
+      </div>
+      <a href="/pages/forum/new-thread.html" class="btn-new-thread">+ Nouveau fil</a>
+    </div>
+
+    <div id="categories-list">
+      <p style="color:#aaa;text-align:center;padding:40px 0;">Chargement…</p>
+    </div>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
+          <span class="footer__name">SHOEBOX</span>
+        </div>
+        <p class="footer__tagline">La référence sneakers en France.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Boutique</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/boutique/boutique.html">Tous les produits</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=new">Nouveautés</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Communauté</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/forum/index.html"><strong>Forum</strong></a></li>
+          <li><a href="/pages/reclamations/contact.html">Contact</a></li>
+          <li><a href="/pages/reclamations/sav.html">SAV</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Mon compte</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/auth/login.html">Se connecter</a></li>
+          <li><a href="/pages/auth/register.html">Créer un compte</a></li>
+          <li><a href="/pages/shop/cart.html">Mon panier</a></li>
+          <li><a href="/pages/legal/cgu-cgv.html">CGU / CGV</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/navbar.js"></script>
+  <script src="../../assets/js/forum.js"></script>
+</body>
+</html>

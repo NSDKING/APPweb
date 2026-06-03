@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nouveau fil — ShoeBox Forum</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <style>
+    .new-thread-page { max-width: 680px; margin: 36px auto; padding: 0 16px 60px; }
+    .new-thread-page h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 24px; }
+    .form-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 28px; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+    .field label { font-size: .8rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .04em; }
+    .field select, .field input, .field textarea {
+      padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+      font-size: .9rem; font-family: inherit; outline: none; }
+    .field select:focus, .field input:focus, .field textarea:focus { border-color: #c91310; }
+    .field textarea { resize: vertical; min-height: 160px; }
+    .submit-btn { background: #c91310; color: #fff; border: none; border-radius: 10px;
+                   padding: 12px 28px; font-weight: 700; cursor: pointer; font-size: .95rem; width: 100%; }
+    .submit-btn:disabled { opacity: .5; }
+    .form-msg { font-size: .85rem; margin-top: 10px; text-align: center; }
+    .login-wall { text-align: center; padding: 60px 20px; color: #555; }
+    .login-wall a { color: #c91310; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar">
+    <a href="/"><img src="../../assets/img/logo_shoebox.png" width="90" height="90" alt="ShoeBox"></a>
+    <ul id="nav-links" class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="/">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html">Boutique</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/forum/index.html" style="color:#c91310;font-weight:700;">Forum</a></li>
+    </ul>
+    <div id="nav-actions" class="navbar__actions">
+      <a href="/pages/shop/cart.html" class="navbar__icon-btn navbar__icon-btn--cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="new-thread-page">
+    <h1>Créer un nouveau fil de discussion</h1>
+
+    <div id="form-wrap">
+      <div class="form-card">
+        <div class="field">
+          <label>Catégorie *</label>
+          <select id="f-category"><option value="">Chargement…</option></select>
+        </div>
+        <div class="field">
+          <label>Titre *</label>
+          <input type="text" id="f-title" placeholder="Un titre clair et descriptif" maxlength="200" />
+        </div>
+        <div class="field">
+          <label>Message *</label>
+          <textarea id="f-body" placeholder="Rédigez votre message…"></textarea>
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="submitThread()">Publier le fil</button>
+        <p class="form-msg" id="form-msg"></p>
+      </div>
+    </div>
+    <div id="login-wall" class="login-wall" style="display:none;">
+      <p>Vous devez être connecté pour créer un fil de discussion.</p>
+      <a href="/pages/auth/login.html">Se connecter →</a>
+    </div>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
+          <span class="footer__name">SHOEBOX</span>
+        </div>
+        <p class="footer__tagline">La référence sneakers en France.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Communauté</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/forum/index.html"><strong>Forum</strong></a></li>
+          <li><a href="/pages/reclamations/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Mon compte</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/auth/login.html">Se connecter</a></li>
+          <li><a href="/pages/auth/register.html">Créer un compte</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/navbar.js"></script>
+  <script src="../../assets/js/forum.js"></script>
+</body>
+</html>

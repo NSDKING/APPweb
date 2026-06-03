@@ -34,4 +34,23 @@ class User
         $stmt->execute([$id]);
         return $stmt->fetch() ?: null;
     }
+
+    public function all(): array
+    {
+        $stmt = $this->db->prepare('SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC');
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function setRole(int $id, string $role): bool
+    {
+        $stmt = $this->db->prepare('UPDATE users SET role = ? WHERE id = ?');
+        return $stmt->execute([$role, $id]);
+    }
+
+    public function updatePassword(int $id, string $password): void
+    {
+        $stmt = $this->db->prepare('UPDATE users SET password_hash = ? WHERE id = ?');
+        $stmt->execute([password_hash($password, PASSWORD_BCRYPT), $id]);
+    }
 }

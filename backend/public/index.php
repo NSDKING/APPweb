@@ -43,13 +43,23 @@ $router->get('/api/ping', function () {
 });
 
 // Auth routes
-$router->post('/api/auth/register', [\Controllers\AuthController::class, 'register']);
-$router->post('/api/auth/login',    [\Controllers\AuthController::class, 'login']);
-$router->post('/api/auth/logout',   [\Controllers\AuthController::class, 'logout']);
+$router->post('/api/auth/register',         [\Controllers\AuthController::class, 'register']);
+$router->post('/api/auth/login',            [\Controllers\AuthController::class, 'login']);
+$router->post('/api/auth/logout',           [\Controllers\AuthController::class, 'logout']);
+$router->post('/api/auth/forgot-password',  [\Controllers\AuthController::class, 'forgotPassword']);
+$router->post('/api/auth/reset-password',   [\Controllers\AuthController::class, 'resetPassword']);
 
 // Product routes
 $router->get('/api/products',        [\Controllers\ProductController::class, 'index']);
 $router->get('/api/products/{id}',   [\Controllers\ProductController::class, 'show']);
+
+// Carousel routes (public)
+$router->get('/api/carousel', [\Controllers\CarouselController::class, 'index']);
+
+// Favourite routes
+$router->get('/api/favourites',                [\Controllers\FavouriteController::class, 'index']);
+$router->post('/api/favourites',               [\Controllers\FavouriteController::class, 'store']);
+$router->delete('/api/favourites/{productId}', [\Controllers\FavouriteController::class, 'destroy']);
 
 // Cart routes
 $router->get('/api/cart',            [\Controllers\CartController::class, 'index']);
@@ -60,5 +70,20 @@ $router->delete('/api/cart/{id}',    [\Controllers\CartController::class, 'remov
 // Order routes
 $router->post('/api/orders',         [\Controllers\OrderController::class, 'store']);
 $router->get('/api/orders',          [\Controllers\OrderController::class, 'index']);
+
+// Admin routes
+$router->get('/api/admin/products',           [\Controllers\Admin\ProductController::class, 'index']);
+$router->post('/api/admin/products',          [\Controllers\Admin\ProductController::class, 'store']);
+$router->put('/api/admin/products/{id}',      [\Controllers\Admin\ProductController::class, 'update']);
+$router->delete('/api/admin/products/{id}',   [\Controllers\Admin\ProductController::class, 'destroy']);
+$router->get('/api/admin/users',              [\Controllers\Admin\UserController::class, 'index']);
+$router->put('/api/admin/users/{id}/role',    [\Controllers\Admin\UserController::class, 'setRole']);
+
+// Admin carousel routes
+$router->get('/api/admin/carousel',              [\Controllers\Admin\CarouselController::class, 'index']);
+$router->post('/api/admin/carousel',             [\Controllers\Admin\CarouselController::class, 'store']);
+$router->put('/api/admin/carousel/{id}',         [\Controllers\Admin\CarouselController::class, 'update']);
+$router->delete('/api/admin/carousel/{id}',      [\Controllers\Admin\CarouselController::class, 'destroy']);
+$router->put('/api/admin/carousel/{id}/move',    [\Controllers\Admin\CarouselController::class, 'move']);
 
 $router->dispatch($request);

@@ -11,6 +11,41 @@
     <link rel="stylesheet" href="../../assets/css/shop.css" />
     <link rel="stylesheet" href="../../assets/css/layout.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
+    <style>
+      /* fav button — guaranteed override */
+      .product-card__img-wrapper {
+        overflow: visible !important;
+        position: relative;
+      }
+      .product-card__img {
+        border-radius: 16px;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .product-card__fav {
+        position: absolute !important;
+        top: 10px !important;
+        right: 10px !important;
+        width: 36px !important;
+        height: 36px !important;
+        background: #fff !important;
+        border: none !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,.25) !important;
+        color: #9ca3af !important;
+        cursor: pointer !important;
+        z-index: 50 !important;
+        padding: 0 !important;
+      }
+      .product-card__fav:hover  { color: #c91310 !important; transform: scale(1.12); }
+      .product-card__fav--active { color: #c91310 !important; }
+      .product-card__fav--active svg { fill: #c91310 !important; }
+    </style>
 </head>
 
 <body>
@@ -33,6 +68,12 @@
                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
             </button>
+            <a href="/pages/shop/favourites.html" class="navbar__icon-btn navbar__icon-btn--fav" aria-label="Favoris">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span class="navbar__fav-count"></span>
+            </a>
             <a href="/pages/shop/cart.html" id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart"
                 aria-label="Cart">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
@@ -119,6 +160,7 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/navbar.js"></script>
     <script src="../../assets/js/search.js"></script>
+    <script src="../../assets/js/favourites.js"></script>
     <script src="../../assets/js/boutique.js"></script>
 </body>
 

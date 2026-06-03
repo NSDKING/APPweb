@@ -4,11 +4,17 @@ body {
   background-color: #fff;
 }
 
+a {
+  text-decoration: none;
+}
+
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 1.5rem;
   color: #000;
+  position: relative;
 }
 
 .navbar__logo {}
@@ -59,6 +65,31 @@ body {
   position: relative;
 }
 
+.navbar__icon-btn--fav {
+  position: relative;
+}
+
+.navbar__fav-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #c91310;
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.navbar__fav-count:empty {
+  display: none;
+}
+
 .navbar__cart-count {
   position: absolute;
   top: 0;
@@ -73,4 +104,90 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.navbar__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar__username {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.navbar__logout,
+.navbar__login {
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+/* ── Hamburger ── */
+.navbar__hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: #000;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.navbar__hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #000;
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+.navbar__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar__hamburger.open span:nth-child(2) { opacity: 0; }
+.navbar__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 0 1rem;
+    gap: 0;
+  }
+
+  .navbar__hamburger {
+    display: flex;
+  }
+
+  .navbar__links {
+    display: none;
+    order: 4;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 0 1rem;
+    border-top: 1px solid #eee;
+    margin: 0;
+  }
+
+  .navbar__links.open {
+    display: flex;
+  }
+
+  .navbar__links a {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #f4f4f5;
+    border-radius: 0;
+  }
+
+  .navbar__username {
+    display: none;
+  }
+
+  .navbar__actions {
+    gap: 2px;
+  }
 }

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShoeBox — Admin</title>
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar__brand">
+      <img src="../../assets/img/logo_shoebox.png" width="48" height="48" alt="ShoeBox" />
+      <span>Admin</span>
+    </div>
+    <nav class="admin-sidebar__nav">
+      <button class="admin-nav-btn active" data-tab="products">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <path d="M8 21h8M12 17v4"/>
+        </svg>
+        Produits
+      </button>
+      <button class="admin-nav-btn" data-tab="users">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+        Utilisateurs
+      </button>
+      <button class="admin-nav-btn" data-tab="carousel">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="6" width="20" height="12" rx="2"/>
+          <path d="M2 12h20M7 6v12M17 6v12"/>
+        </svg>
+        Carrousel
+      </button>
+    </nav>
+    <a href="/" class="admin-sidebar__back">← Retour au site</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="admin-main">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <h1 id="admin-page-title">Produits</h1>
+      <div class="admin-header__right">
+        <span id="admin-username" class="admin-header__user"></span>
+        <button id="admin-logout-btn" class="admin-btn admin-btn--ghost">Déconnexion</button>
+      </div>
+    </header>
+
+    <!-- ===== PRODUCTS TAB ===== -->
+    <section id="tab-products" class="admin-tab active">
+
+      <div class="admin-tab__toolbar">
+        <input id="product-search" type="text" placeholder="Rechercher un produit…" class="admin-input" />
+        <button id="open-add-product" class="admin-btn admin-btn--primary">+ Ajouter</button>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="products-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Nom</th>
+              <th>Marque</th>
+              <th>Prix</th>
+              <th>Promo</th>
+              <th>Nouveau</th>
+              <th>Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="9" class="admin-table__loading">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== USERS TAB ===== -->
+    <section id="tab-users" class="admin-tab">
+
+      <div class="admin-tab__toolbar">
+        <input id="user-search" type="text" placeholder="Rechercher un utilisateur…" class="admin-input" />
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Rôle</th>
+              <th>Inscrit le</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody">
+            <tr><td colspan="6" class="admin-table__loading">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== CAROUSEL TAB ===== -->
+    <section id="tab-carousel" class="admin-tab">
+
+      <div class="admin-tab__toolbar">
+        <p class="admin-tab__hint">Les modifications sont appliquées immédiatement sur la page d'accueil.</p>
+        <button id="open-add-slide" class="admin-btn admin-btn--primary">+ Ajouter une slide</button>
+      </div>
+
+      <div id="slides-list" class="admin-slides-list"></div>
+
+    </section>
+
+  </div><!-- /.admin-main -->
+
+  <!-- ===== PRODUCT MODAL ===== -->
+  <div id="product-modal" class="admin-modal" hidden>
+    <div class="admin-modal__backdrop"></div>
+    <div class="admin-modal__box">
+      <header class="admin-modal__header">
+        <h2 id="product-modal-title">Ajouter un produit</h2>
+        <button class="admin-modal__close" data-close-modal>&times;</button>
+      </header>
+
+      <form id="product-form" class="admin-form" novalidate>
+        <input type="hidden" id="product-id" />
+
+        <div class="admin-form__grid">
+          <div class="admin-form__field">
+            <label for="f-name">Nom *</label>
+            <input id="f-name" name="name" type="text" class="admin-input" required />
+          </div>
+          <div class="admin-form__field">
+            <label for="f-brand">Marque</label>
+            <input id="f-brand" name="brand" type="text" class="admin-input" />
+          </div>
+          <div class="admin-form__field">
+            <label for="f-price">Prix (€) *</label>
+            <input id="f-price" name="price" type="number" step="0.01" min="0" class="admin-input" required />
+          </div>
+          <div class="admin-form__field">
+            <label for="f-sale-price">Prix promo (€)</label>
+            <input id="f-sale-price" name="sale_price" type="number" step="0.01" min="0" class="admin-input" />
+          </div>
+          <div class="admin-form__field">
+            <label for="f-category">Catégorie</label>
+            <input id="f-category" name="category" type="text" class="admin-input" />
+          </div>
+          <div class="admin-form__field">
+            <label for="f-stock">Stock</label>
+            <input id="f-stock" name="stock" type="number" min="0" class="admin-input" value="0" />
+          </div>
+          <div class="admin-form__field admin-form__field--full">
+            <label for="f-img">URL image</label>
+            <input id="f-img" name="img_url" type="text" class="admin-input" />
+          </div>
+          <div class="admin-form__field admin-form__field--full">
+            <label for="f-desc">Description</label>
+            <textarea id="f-desc" name="description" class="admin-input admin-textarea" rows="3"></textarea>
+          </div>
+          <div class="admin-form__field admin-form__field--check">
+            <label class="admin-toggle">
+              <input id="f-is-new" name="is_new" type="checkbox" />
+              <span class="admin-toggle__track"></span>
+              Nouveau
+            </label>
+          </div>
+          <div class="admin-form__field admin-form__field--check">
+            <label class="admin-toggle">
+              <input id="f-is-promo" name="is_promo" type="checkbox" />
+              <span class="admin-toggle__track"></span>
+              Promotion
+            </label>
+          </div>
+        </div>
+
+        <div id="product-form-error" class="admin-form__error" hidden></div>
+
+        <footer class="admin-modal__footer">
+          <button type="button" class="admin-btn admin-btn--ghost" data-close-modal>Annuler</button>
+          <button type="submit" class="admin-btn admin-btn--primary" id="product-submit-btn">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div id="confirm-modal" class="admin-modal" hidden>
+    <div class="admin-modal__backdrop"></div>
+    <div class="admin-modal__box admin-modal__box--sm">
+      <header class="admin-modal__header">
+        <h2>Confirmer la suppression</h2>
+        <button class="admin-modal__close" data-close-confirm>&times;</button>
+      </header>
+      <p class="admin-modal__body">Cette action est irréversible. Supprimer ce produit ?</p>
+      <footer class="admin-modal__footer">
+        <button class="admin-btn admin-btn--ghost" data-close-confirm>Annuler</button>
+        <button id="confirm-delete-btn" class="admin-btn admin-btn--danger">Supprimer</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE MODAL ===== -->
+  <div id="slide-modal" class="admin-modal" hidden>
+    <div class="admin-modal__backdrop"></div>
+    <div class="admin-modal__box">
+      <header class="admin-modal__header">
+        <h2 id="slide-modal-title">Ajouter une slide</h2>
+        <button class="admin-modal__close" data-close-slide>&times;</button>
+      </header>
+      <form id="slide-form" class="admin-form" novalidate>
+        <input type="hidden" id="slide-index" value="-1" />
+        <div class="admin-form__grid">
+          <div class="admin-form__field admin-form__field--full">
+            <label for="s-image">URL de l'image *</label>
+            <input id="s-image" name="image" type="text" class="admin-input" placeholder="https://…" required />
+          </div>
+          <div class="admin-form__field admin-form__field--full">
+            <div id="slide-img-preview" class="admin-slide-preview"></div>
+          </div>
+          <div class="admin-form__field">
+            <label for="s-title">Titre *</label>
+            <input id="s-title" name="title" type="text" class="admin-input" required />
+          </div>
+          <div class="admin-form__field">
+            <label for="s-subtitle">Sous-titre</label>
+            <input id="s-subtitle" name="subtitle" type="text" class="admin-input" />
+          </div>
+          <div class="admin-form__field admin-form__field--full">
+            <label for="s-description">Description</label>
+            <textarea id="s-description" name="description" class="admin-input admin-textarea" rows="2"></textarea>
+          </div>
+          <div class="admin-form__field">
+            <label for="s-btn-text">Texte du bouton CTA</label>
+            <input id="s-btn-text" name="buttonText" type="text" class="admin-input" />
+          </div>
+          <div class="admin-form__field">
+            <label for="s-link">Lien du bouton</label>
+            <input id="s-link" name="link" type="text" class="admin-input" placeholder="/pages/boutique/boutique.html" />
+          </div>
+        </div>
+        <footer class="admin-modal__footer">
+          <button type="button" class="admin-btn admin-btn--ghost" data-close-slide>Annuler</button>
+          <button type="submit" class="admin-btn admin-btn--primary" id="slide-submit-btn">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/admin.js"></script>
+</body>
+</html>

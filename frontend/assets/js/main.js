@@ -1,4 +1,4 @@
-const slides = [
+const defaultSlides = [
   {
     title: "Nouvelle Collection",
     subtitle: "Printemps 2026",
@@ -25,51 +25,67 @@ const slides = [
   }
 ];
 
-const track = document.getElementById('carousel-track');
-const dotsContainer = document.getElementById('carousel-dots');
+async function initCarousel() {
+  let slides = defaultSlides;
+  try {
+    const res = await apiFetch('/carousel');
+    if (res.success && res.data?.length) slides = res.data;
+  } catch {}
 
-slides.forEach((slide, i) => {
-  track.innerHTML += `
-    <div class="carousel__slide" style="background-image: url('${slide.image}')">
-      <div class="carousel__content">
-        <p class="carousel__subtitle">${slide.subtitle}</p>
-        <h1 class="carousel__title">${slide.title}</h1>
-        <p class="carousel__description">${slide.description}</p>
-        <a href="${slide.link}" class="carousel__btn-cta">${slide.buttonText}</a>
+  const track = document.getElementById('carousel-track');
+  const dotsContainer = document.getElementById('carousel-dots');
+
+  slides.forEach((slide, i) => {
+    track.innerHTML += `
+      <div class="carousel__slide" style="background-image: url('${slide.image}')">
+        <div class="carousel__content">
+          <p class="carousel__subtitle">${slide.subtitle || ''}</p>
+          <h1 class="carousel__title">${slide.title}</h1>
+          <p class="carousel__description">${slide.description || ''}</p>
+          <a href="${slide.link || '#'}" class="carousel__btn-cta">${slide.buttonText || ''}</a>
+        </div>
       </div>
-    </div>
-  `;
-  dotsContainer.innerHTML += `<span class="carousel__dot ${i === 0 ? 'carousel__dot--active' : ''}"></span>`;
-});
+    `;
+    dotsContainer.innerHTML += `<span class="carousel__dot ${i === 0 ? 'carousel__dot--active' : ''}"></span>`;
+  });
 
-const dots = document.querySelectorAll('.carousel__dot');
-let current = 0;
+  const dots = document.querySelectorAll('.carousel__dot');
+  let current = 0;
 
-function goTo(index) {
-  current = (index + slides.length) % slides.length;
-  track.style.transform = `translateX(-${current * 100}%)`;
-  dots.forEach(d => d.classList.remove('carousel__dot--active'));
-  dots[current].classList.add('carousel__dot--active');
+  function goTo(index) {
+    current = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach(d => d.classList.remove('carousel__dot--active'));
+    dots[current].classList.add('carousel__dot--active');
+  }
+
+  document.getElementById('carousel-prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('carousel-next').addEventListener('click', () => goTo(current + 1));
+  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+  setInterval(() => goTo(current + 1), 4000);
 }
 
-document.getElementById('carousel-prev').addEventListener('click', () => goTo(current - 1));
-document.getElementById('carousel-next').addEventListener('click', () => goTo(current + 1));
-dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
-setInterval(() => goTo(current + 1), 4000);
+initCarousel();
 
 // Featured products from API
 const grid = document.getElementById('products-grid');
 
-apiFetch('/products').then(res => {
+Promise.all([apiFetch('/products'), loadFavourites()]).then(([res]) => {
   const products = (res.data || []).slice(0, 4);
   products.forEach(product => {
     const price = parseFloat(product.price);
     const sale  = product.sale_price ? parseFloat(product.sale_price) : null;
+    const isFav = isFavourite(product.id);
     grid.innerHTML += `
       <a href="/pages/shop/product.html?id=${product.id}" class="product-card">
         <div class="product-card__img-wrapper">
           ${sale ? `<span class="product-card__badge">Promo</span>` : ''}
           <img src="${product.img_url || 'https://via.placeholder.com/600x400'}" alt="${product.name}" class="product-card__img" />
+          <button class="product-card__fav ${isFav ? 'product-card__fav--active' : ''}" data-id="${product.id}" aria-label="Favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
           <button class="product-card__quick-add" aria-label="Ajouter au panier">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
@@ -85,4 +101,22 @@ apiFetch('/products').then(res => {
       </a>
     `;
   });
+});
+
+// Heart button — registered once, outside the .then()
+grid.addEventListener('click', async e => {
+  const btn = e.target.closest('.product-card__fav');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  btn.style.opacity = '0.5';
+  try {
+    const added = await toggleFavouriteApi(btn.dataset.id);
+    if (added === null) return;
+    btn.classList.toggle('product-card__fav--active', added);
+    const svg = btn.querySelector('svg');
+    if (svg) svg.setAttribute('fill', added ? 'currentColor' : 'none');
+  } finally {
+    btn.style.opacity = '';
+  }
 });

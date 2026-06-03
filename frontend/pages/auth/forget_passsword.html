@@ -1,55 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<header>
-    <a href="../../index.html">
-        <img src="../../assets/img/logo_ShoeBox.png" alt="Logo du site" class="logo">
-    </a>
-</header>
-
+<html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="" />
-    <title>APPweb</title>
-
-    <link rel="stylesheet" href="../../assets/css/auth.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mot de passe oublié — ShoeBox</title>
+  <link rel="stylesheet" href="../../assets/css/auth.css" />
 </head>
-
 <body>
-    <div class="container">
-        <div id="forgotForm">
-            <h2>Mot de passe oublié</h2>
-            <form onsubmit="return fakeEmailSent()">
-                <input type="email" placeholder="Entrez votre email" required>
-                <button type="submit">Envoyer le lien</button>
-            </form>
-            <a class="link" href=./login.html>
-                Retour à la connexion
-            </a>
-        </div>
 
-        <!-- RESET PASSWORD -->
-        <div id="resetForm" class="hidden">
-            <h2>Nouveau mot de passe</h2>
-            <form onsubmit="return resetPassword()">
-                <div style="position:relative;">
-                    <input type="password" id="newPass" class="password" placeholder="Nouveau mot de passe" required>
-                    <span onclick="togglePassword(this)"
-                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
-                </div>
-                <div style="position:relative;">
-                    <input type="password" id="confirmPass" class="password" placeholder="Confirmer" required>
-                    <span onclick="togglePassword(this)"
-                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+  <header>
+    <a href="../../index.html">
+      <img src="../../assets/img/logo_ShoeBox.png" alt="ShoeBox" class="logo" />
+    </a>
+  </header>
 
-                </div>
-                <button type="submit">Changer le mot de passe</button>
-            </form>
-        </div>
+  <div class="container">
+
+    <!-- STEP 1: Enter email -->
+    <div id="forgotForm">
+      <h2>Mot de passe oublié</h2>
+      <p style="text-align:center;color:#666;font-size:14px;margin-bottom:16px;">
+        Entrez votre email et nous vous enverrons un lien de réinitialisation.
+      </p>
+      <form id="forgot-form">
+        <div id="forgot-error" style="color:red;display:none;margin-bottom:8px;font-size:14px;"></div>
+        <div id="forgot-success" style="color:green;display:none;margin-bottom:8px;font-size:14px;"></div>
+        <input type="email" id="forgot-email" placeholder="Votre adresse email" required />
+        <button type="submit" id="forgot-btn">Envoyer le lien</button>
+      </form>
+      <a class="link" href="./login.html">← Retour à la connexion</a>
     </div>
-    <script src="../../assets/js/auth.js"></script>
-</body>
 
+    <!-- STEP 2: Enter new password (shown when ?token= is in URL) -->
+    <div id="resetForm" class="hidden">
+      <h2>Nouveau mot de passe</h2>
+      <form id="reset-form">
+        <div id="reset-error" style="color:red;display:none;margin-bottom:8px;font-size:14px;"></div>
+        <div id="reset-success" style="color:green;display:none;margin-bottom:8px;font-size:14px;"></div>
+        <div style="position:relative;">
+          <input type="password" id="newPass" class="password" placeholder="Nouveau mot de passe" required />
+          <span onclick="togglePassword(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;">👁️</span>
+        </div>
+        <div style="position:relative;">
+          <input type="password" id="confirmPass" class="password" placeholder="Confirmer le mot de passe" required />
+          <span onclick="togglePassword(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;">👁️</span>
+        </div>
+        <button type="submit" id="reset-btn">Changer le mot de passe</button>
+      </form>
+      <a class="link" href="./login.html">← Retour à la connexion</a>
+    </div>
+
+  </div>
+
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+</body>
 </html>

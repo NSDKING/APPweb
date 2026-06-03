@@ -15,6 +15,15 @@ CREATE TABLE IF NOT EXISTS ProductReviews (
     CONSTRAINT rating_range CHECK (rating BETWEEN 1 AND 5)
 );
 
+-- Messagerie groupe (chat interne employés)
+CREATE TABLE IF NOT EXISTS TeamMessages (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT UNSIGNED NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES Users(id) ON DELETE CASCADE
+);
+
 -- Codes promo
 CREATE TABLE IF NOT EXISTS PromoCodes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

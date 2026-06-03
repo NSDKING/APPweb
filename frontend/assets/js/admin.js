@@ -537,33 +537,67 @@ async function deleteThread(id) {
   loadForumThreads();
 }
 
-// ===== MESSAGERIE ADMIN =====
+// ===== MESSAGERIE GROUPE (TEAM CHAT) =====
 async function loadMessagesAdmin() {
-  const res = await apiFetch('/admin/messages');
-  const tbody = document.getElementById('messages-tbody');
-  if (!res || !res.success) { tbody.innerHTML = '<tr><td colspan="6">Erreur de chargement</td></tr>'; return; }
-
-  const msgs = res.data || [];
-  if (!msgs.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">Aucun message</td></tr>'; return; }
-
-  tbody.innerHTML = msgs.map(m => `
-    <tr style="cursor:pointer;" onclick="showAdminMessage(${JSON.stringify(m).replace(/"/g, '&quot;')})">
-      <td>${m.id}</td>
-      <td>${esc(m.sender_name || '—')}</td>
-      <td>${esc(m.receiver_name || '—')}</td>
-      <td>${esc(m.subject || '(Sans objet)')}</td>
-      <td>${m.read_status ? '<span class="admin-badge admin-badge--success">Lu</span>' : '<span class="admin-badge admin-badge--warn">Non lu</span>'}</td>
-      <td>${new Date(m.sent_at).toLocaleDateString('fr-FR')}</td>
-    </tr>`).join('');
+  await loadTeamChat();
 }
 
-function showAdminMessage(m) {
-  const detail = document.getElementById('msg-detail-admin');
-  document.getElementById('admin-msg-subject').textContent = m.subject || '(Sans objet)';
-  document.getElementById('admin-msg-meta').textContent = `De : ${m.sender_name}  →  À : ${m.receiver_name}  •  ${new Date(m.sent_at).toLocaleString('fr-FR')}`;
-  document.getElementById('admin-msg-body').textContent = m.message_body || '';
-  detail.style.display = '';
-  detail.scrollIntoView({ behavior: 'smooth' });
+async function loadTeamChat() {
+  const res = await apiFetch('/admin/team-messages');
+  const container = document.getElementById('team-chat-messages');
+  if (!container) return;
+
+  if (!res || !res.success) {
+    container.innerHTML = '<p class="team-chat__empty">Erreur de chargement. Vérifiez que la table TeamMessages existe (migration_new_features.sql).</p>';
+    return;
+  }
+
+  const msgs = res.data || [];
+  if (!msgs.length) {
+    container.innerHTML = '<p class="team-chat__empty">Aucun message pour l\'instant. Soyez le premier à écrire !</p>';
+    return;
+  }
+
+  // Récupérer l'ID de l'utilisateur courant depuis le token
+  const token = localStorage.getItem('token');
+  let currentUserId = null;
+  try { currentUserId = JSON.parse(atob(token.split('.')[1])).user_id; } catch {}
+
+  container.innerHTML = msgs.map(m => {
+    const initials = (m.sender_name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    const time = new Date(m.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    const date = new Date(m.created_at).toLocaleDateString('fr-FR');
+    const isMine = m.sender_id == currentUserId;
+    return `
+      <div class="team-chat__bubble" style="${isMine ? 'flex-direction:row-reverse;' : ''}">
+        <div class="team-chat__avatar" style="${isMine ? 'background:#111;' : ''}">${initials}</div>
+        <div class="team-chat__content" style="${isMine ? 'align-items:flex-end;display:flex;flex-direction:column;' : ''}">
+          <div class="team-chat__meta">
+            <span class="team-chat__name">${esc(m.sender_name)}</span>
+            <span>${date} ${time}</span>
+          </div>
+          <div class="team-chat__text">${esc(m.content)}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendTeamMessage() {
+  const input = document.getElementById('team-chat-input');
+  const content = input.value.trim();
+  if (!content) return;
+
+  input.value = '';
+  const res = await apiFetch('/admin/team-messages', {
+    method: 'POST',
+    body: JSON.stringify({ content }),
+  });
+
+  if (res?.success) {
+    await loadTeamChat();
+  }
 }
 
 function esc(str) {

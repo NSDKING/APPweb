@@ -108,7 +108,10 @@ $router->delete('/api/admin/promo/{id}',      [\Controllers\Admin\PromoCodeContr
 $router->put('/api/admin/promo/{id}/toggle',  [\Controllers\Admin\PromoCodeController::class, 'toggle']);
 
 // Admin messages route
-$router->get('/api/admin/messages', [\Controllers\Admin\MessageController::class, 'index']);
+$router->get('/api/admin/messages',                   [\Controllers\Admin\MessageController::class,     'index']);
+// Team chat (messagerie groupe)
+$router->get('/api/admin/team-messages',              [\Controllers\Admin\TeamMessageController::class, 'index']);
+$router->post('/api/admin/team-messages',             [\Controllers\Admin\TeamMessageController::class, 'store']);
 
 // Admin forum routes
 $router->get('/api/admin/forum/categories',           [\Controllers\Admin\ForumController::class, 'categories']);

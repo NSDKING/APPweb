@@ -142,6 +142,9 @@
       <div class="admin-tab__toolbar">
         <h2 style="font-size:1rem;font-weight:700;">Catégories</h2>
         <button id="open-add-category" class="admin-btn admin-btn--primary">+ Catégorie</button>
+        <a href="/pages/forum/index.html" target="_blank" class="admin-btn admin-btn--ghost admin-btn--sm" style="margin-left:auto;">
+          Voir le forum public →
+        </a>
       </div>
 
       <div class="admin-table-wrap" style="margin-bottom:24px;">
@@ -183,28 +186,22 @@
       </div>
     </section>
 
-    <!-- ===== MESSAGES TAB ===== -->
+    <!-- ===== MESSAGES TAB — Chat de groupe employés ===== -->
     <section id="tab-messages" class="admin-tab">
-
       <div class="admin-tab__toolbar">
-        <span style="font-size:.9rem;color:#666;">Toutes les conversations internes</span>
+        <span style="font-size:.88rem;color:#666;">Canal interne — visible uniquement par les administrateurs</span>
+        <button class="admin-btn admin-btn--ghost admin-btn--sm" onclick="loadTeamChat()">↻ Rafraîchir</button>
       </div>
 
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr><th>ID</th><th>Expéditeur</th><th>Destinataire</th><th>Sujet</th><th>Lu</th><th>Date</th></tr>
-          </thead>
-          <tbody id="messages-tbody"><tr><td colspan="6" class="admin-table__loading">Chargement…</td></tr></tbody>
-        </table>
-      </div>
-
-      <!-- Détail message -->
-      <div id="msg-detail-admin" style="display:none;margin-top:20px;background:#f9f9f9;border-radius:12px;padding:20px;">
-        <button onclick="document.getElementById('msg-detail-admin').style.display='none'" style="background:none;border:none;font-size:.9rem;text-decoration:underline;cursor:pointer;margin-bottom:12px;">← Retour</button>
-        <p style="font-weight:700;font-size:1.05rem;" id="admin-msg-subject"></p>
-        <p style="font-size:.82rem;color:#888;margin:6px 0 14px;" id="admin-msg-meta"></p>
-        <p style="white-space:pre-wrap;font-size:.92rem;" id="admin-msg-body"></p>
+      <div class="team-chat" id="team-chat">
+        <div class="team-chat__messages" id="team-chat-messages">
+          <p class="team-chat__empty">Chargement…</p>
+        </div>
+        <div class="team-chat__compose">
+          <input type="text" id="team-chat-input" placeholder="Écrire un message…" maxlength="500"
+                 onkeydown="if(event.key==='Enter')sendTeamMessage()" />
+          <button onclick="sendTeamMessage()">Envoyer</button>
+        </div>
       </div>
     </section>
 

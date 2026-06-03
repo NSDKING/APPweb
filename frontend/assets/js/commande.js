@@ -90,35 +90,33 @@ function fillForm(profile) {
   document.getElementById('field-cp').value      = cp;
 }
 
-function initAutofill() {
-  const user    = getUser();
-  const banner  = document.getElementById('autofill-banner');
-  const nameSpan = document.getElementById('autofill-username');
-  const btn     = document.getElementById('btn-autofill');
+async function initAutofill() {
+  const user   = getUser();
+  const banner = document.getElementById('autofill-banner');
 
-  if (!user) {
-    banner.style.display = 'none';
-    return;
+  if (!user) { if (banner) banner.style.display = 'none'; return; }
+
+  // Remplissage automatique depuis la BDD dès le chargement
+  if (banner) {
+    const nameSpan = document.getElementById('autofill-username');
+    if (nameSpan) nameSpan.textContent = `Connecté en tant que ${user.name || user.email}`;
+    banner.style.display = 'flex';
+
+    // Masquer le bouton — on remplit automatiquement
+    const btn = document.getElementById('btn-autofill');
+    if (btn) btn.style.display = 'none';
   }
 
-  nameSpan.textContent = `Connecté en tant que ${user.name || user.email}`;
-  banner.style.display = 'flex';
-
-  btn.addEventListener('click', async () => {
-    btn.disabled    = true;
-    btn.textContent = 'Chargement…';
-    try {
-      const res = await apiFetch('/users/me'); // from api.js — attaches Bearer token automatically
+  try {
+    const res = await apiFetch('/users/me');
+    if (res && (res.user || res.name)) {
       fillForm(res.user ?? res);
-      showToast('Informations préremplies ✓');
-    } catch {
-      fillForm(user); // fallback to stored login data
-      showToast('Prérempli depuis votre session.');
-    } finally {
-      btn.disabled    = false;
-      btn.textContent = 'Préremplir mes infos';
+    } else {
+      fillForm(user); // fallback localStorage
     }
-  });
+  } catch {
+    fillForm(user);
+  }
 }
 
 // ── Code promo ────────────────────────────────────────────────

@@ -121,6 +121,74 @@ function initAutofill() {
   });
 }
 
+// ── Code promo ────────────────────────────────────────────────
+
+let appliedPromo = null;
+
+function applyPromoDiscount(subtotal) {
+  if (!appliedPromo) return subtotal;
+  if (appliedPromo.discount_type === 'percentage') {
+    return subtotal - (subtotal * appliedPromo.discount_value / 100);
+  }
+  return Math.max(0, subtotal - appliedPromo.discount_value);
+}
+
+function updateTotalsWithPromo() {
+  const items    = getCart();
+  const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const total    = applyPromoDiscount(subtotal);
+
+  document.getElementById('total-amount').textContent = formatPrice(total);
+  document.getElementById('btn-pay').textContent      = `Payer ${formatPrice(total)}`;
+
+  const promoRow = document.getElementById('promo-recap-row');
+  if (appliedPromo) {
+    const saved = subtotal - total;
+    document.getElementById('promo-recap-label').textContent = `Code ${appliedPromo.code}`;
+    document.getElementById('promo-recap-value').textContent = `- ${formatPrice(saved)}`;
+    promoRow.style.display = '';
+  } else {
+    promoRow.style.display = 'none';
+  }
+}
+
+async function initPromoCode() {
+  const btn = document.getElementById('promo-btn');
+  const msg = document.getElementById('promo-msg');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    const code = document.getElementById('promo-input').value.trim();
+    if (!code) { msg.textContent = 'Saisissez un code.'; msg.style.color = '#c00'; return; }
+
+    const items    = getCart();
+    const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+    btn.disabled    = true;
+    btn.textContent = '…';
+
+    const res = await apiFetch('/promo/validate', {
+      method: 'POST',
+      body: JSON.stringify({ code, order_amount: subtotal }),
+    });
+
+    btn.disabled    = false;
+    btn.textContent = 'Appliquer';
+
+    if (res && res.success) {
+      appliedPromo = res.data;
+      msg.textContent = res.message || 'Code appliqué !';
+      msg.style.color = '#2a7a2a';
+      updateTotalsWithPromo();
+    } else {
+      appliedPromo = null;
+      msg.textContent = res?.message || 'Code invalide.';
+      msg.style.color = '#c00';
+      updateTotalsWithPromo();
+    }
+  });
+}
+
 // ── Soumission ────────────────────────────────────────────────
 
 async function submitCommande(event) {
@@ -182,6 +250,7 @@ async function submitCommande(event) {
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   initAutofill();
+  initPromoCode();
 
   document.getElementById('field-carte')?.addEventListener('input', e => {
     let v = e.target.value.replace(/\D/g, '').slice(0, 16);

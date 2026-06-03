@@ -140,14 +140,83 @@
       <a href="../boutique/boutique.html" class="not-found__btn">Retour à la boutique</a>
     </div>
 
+    <!-- Section avis -->
+    <section class="reviews-section" id="reviews-section">
+      <div class="reviews-inner">
+        <h2 class="reviews-title">Avis clients</h2>
+
+        <div class="reviews-summary" id="reviews-summary">
+          <span class="reviews-avg" id="reviews-avg">—</span>
+          <div class="reviews-stars" id="reviews-stars-avg"></div>
+          <span class="reviews-count" id="reviews-count"></span>
+        </div>
+
+        <!-- Formulaire (visible si connecté et pas encore noté) -->
+        <div class="review-form-wrap" id="review-form-wrap" style="display:none;">
+          <h3 class="review-form__title">Laisser un avis</h3>
+          <div class="star-picker" id="star-picker">
+            <button type="button" class="star-pick" data-v="1">★</button>
+            <button type="button" class="star-pick" data-v="2">★</button>
+            <button type="button" class="star-pick" data-v="3">★</button>
+            <button type="button" class="star-pick" data-v="4">★</button>
+            <button type="button" class="star-pick" data-v="5">★</button>
+          </div>
+          <textarea id="review-comment" class="review-comment" placeholder="Votre commentaire (optionnel)" rows="3"></textarea>
+          <button class="review-submit-btn" id="review-submit-btn">Publier mon avis</button>
+          <p class="review-msg" id="review-msg"></p>
+        </div>
+
+        <!-- Liste des avis -->
+        <div class="reviews-list" id="reviews-list">
+          <p class="reviews-empty" id="reviews-empty" style="display:none;">Aucun avis pour l'instant. Soyez le premier !</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <footer class="footer">
-    <div class="footer__brand">
-      <img src="../../assets/img/logo_ShoeBox.png" width="50" height="50">
-      <span class="footer__name">SHOEBOX</span>
+  <footer id="footer" class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
+          <span class="footer__name">SHOEBOX</span>
+        </div>
+        <p class="footer__tagline">La référence sneakers en France.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Boutique</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/boutique/boutique.html">Tous les produits</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=new">Nouveautés</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Mon compte</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/auth/login.html">Se connecter</a></li>
+          <li><a href="/pages/auth/register.html">Créer un compte</a></li>
+          <li><a href="/pages/shop/cart.html">Mon panier</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Informations</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/legal/cgu-cgv.html">CGU / CGV</a></li>
+          <li><a href="/pages/reclamations/sav.html">SAV</a></li>
+          <li><a href="/pages/reclamations/contact.html">Contact</a></li>
+          <li><a href="/pages/forum/index.html">Forum</a></li>
+        </ul>
+      </div>
     </div>
-    <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+    </div>
   </footer>
 
   <script src="../../assets/js/api.js"></script>
@@ -155,6 +224,7 @@
   <script src="../../assets/js/navbar.js"></script>
   <script src="../../assets/js/search.js"></script>
   <script src="../../assets/js/product.js"></script>
+  <script src="../../assets/js/reviews.js"></script>
 </body>
 
 </html>

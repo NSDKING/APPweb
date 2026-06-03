@@ -75,9 +75,45 @@
         </div>
     </main>
 
-    <footer>
-        <p>© 2026 ShoeBox</p>
-    </footer>
+  <footer id="footer" class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
+          <span class="footer__name">SHOEBOX</span>
+        </div>
+        <p class="footer__tagline">La référence sneakers en France.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Boutique</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/boutique/boutique.html">Tous les produits</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=new">Nouveautés</a></li>
+          <li><a href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Mon compte</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/auth/login.html">Se connecter</a></li>
+          <li><a href="/pages/auth/register.html">Créer un compte</a></li>
+          <li><a href="/pages/shop/cart.html">Mon panier</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Informations</h4>
+        <ul class="footer__col-links">
+          <li><a href="/pages/legal/cgu-cgv.html">CGU / CGV</a></li>
+          <li><a href="/pages/reclamations/sav.html">SAV</a></li>
+          <li><a href="/pages/reclamations/contact.html">Contact</a></li>
+          <li><a href="/pages/forum/index.html">Forum</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+    </div>
+  </footer>
 
     <script>
         // Récupère l'email depuis les paramètres d'URL (?email=...) ou sessionStorage

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messagerie — ShoeBox</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <style>
+    .msg-page { max-width: 900px; margin: 32px auto; padding: 0 16px; }
+    .msg-page h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 24px; }
+    .msg-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .msg-tab { padding: 8px 20px; border: 2px solid #e5e7eb; border-radius: 8px; background: #fff;
+               cursor: pointer; font-weight: 600; transition: all .15s; }
+    .msg-tab--active { background: #111; color: #fff; border-color: #111; }
+    .msg-compose-wrap { background: #f9f9f9; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+    .msg-compose-wrap h2 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+    .msg-compose-wrap input, .msg-compose-wrap textarea {
+      width: 100%; padding: 10px 12px; border: 1.5px solid #e5e7eb; border-radius: 8px;
+      font-size: .9rem; margin-bottom: 10px; box-sizing: border-box; }
+    .msg-compose-wrap textarea { resize: vertical; min-height: 80px; }
+    .msg-send-btn { background: #111; color: #fff; border: none; border-radius: 8px;
+                    padding: 10px 24px; font-weight: 600; cursor: pointer; }
+    .msg-send-btn:disabled { opacity: .5; }
+    .msg-list { display: flex; flex-direction: column; gap: 10px; }
+    .msg-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 14px 18px;
+                cursor: pointer; transition: border-color .15s; }
+    .msg-card:hover { border-color: #111; }
+    .msg-card--unread { border-left: 4px solid #111; }
+    .msg-card__top { display: flex; justify-content: space-between; align-items: center; }
+    .msg-card__from { font-weight: 700; font-size: .95rem; }
+    .msg-card__date { font-size: .8rem; color: #888; }
+    .msg-card__subject { font-size: .9rem; margin-top: 4px; color: #555; }
+    .msg-detail { background: #f9f9f9; border-radius: 12px; padding: 20px; margin-top: 16px; display: none; }
+    .msg-detail__subject { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .msg-detail__meta { font-size: .82rem; color: #888; margin-bottom: 14px; }
+    .msg-detail__body { white-space: pre-wrap; font-size: .92rem; line-height: 1.6; }
+    .msg-back { background: none; border: none; font-size: .9rem; text-decoration: underline;
+                cursor: pointer; margin-bottom: 12px; color: #111; }
+    .msg-empty { text-align: center; color: #888; padding: 40px 0; }
+    .compose-msg { font-size: .85rem; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar">
+    <img src="../../assets/img/logo_ShoeBox.png" width="100" height="100">
+    <ul id="nav-links" class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="/">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html">Boutique</a></li>
+    </ul>
+    <div id="nav-actions" class="navbar__actions">
+      <a href="/pages/shop/cart.html" id="cart-btn" class="navbar__icon-btn navbar__icon-btn--cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="msg-page">
+    <h1>Messagerie interne</h1>
+
+    <div class="msg-tabs">
+      <button class="msg-tab msg-tab--active" id="tab-inbox" onclick="showTab('inbox')">Boîte de réception</button>
+      <button class="msg-tab" id="tab-sent" onclick="showTab('sent')">Envoyés</button>
+      <button class="msg-tab" id="tab-compose" onclick="showTab('compose')">Nouveau message</button>
+    </div>
+
+    <!-- Compose -->
+    <div id="panel-compose" class="msg-compose-wrap" style="display:none;">
+      <h2>Nouveau message</h2>
+      <input type="number" id="compose-receiver" placeholder="ID du destinataire" min="1" />
+      <input type="text" id="compose-subject" placeholder="Sujet" maxlength="200" />
+      <textarea id="compose-body" placeholder="Votre message…"></textarea>
+      <button class="msg-send-btn" id="compose-btn" onclick="sendMessage()">Envoyer</button>
+      <p class="compose-msg" id="compose-msg"></p>
+    </div>
+
+    <!-- Inbox / Sent list -->
+    <div id="panel-inbox">
+      <div id="msg-detail" class="msg-detail">
+        <button class="msg-back" onclick="closeDetail()">← Retour</button>
+        <p class="msg-detail__subject" id="detail-subject"></p>
+        <p class="msg-detail__meta" id="detail-meta"></p>
+        <p class="msg-detail__body" id="detail-body"></p>
+      </div>
+      <div class="msg-list" id="msg-list">
+        <p class="msg-empty" id="msg-empty" style="display:none;">Aucun message.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer__copy">© 2026 ShoeBox Ltd.</p>
+  </footer>
+
+  <script src="../../assets/js/api.js"></script>
+  <script>
+    let currentTab = 'inbox';
+    let messages   = [];
+
+    function showTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('msg-tab--active'));
+      document.getElementById('tab-' + tab).classList.add('msg-tab--active');
+      document.getElementById('panel-compose').style.display = tab === 'compose' ? '' : 'none';
+      document.getElementById('panel-inbox').style.display   = tab !== 'compose' ? '' : 'none';
+      closeDetail();
+      if (tab === 'inbox') loadInbox();
+      if (tab === 'sent')  loadSent();
+    }
+
+    async function loadInbox() {
+      const res = await apiFetch('/messages');
+      if (!res || !res.success) { renderList([]); return; }
+      messages = res.data.messages || res.data || [];
+      renderList(messages);
+    }
+
+    async function loadSent() {
+      const res = await apiFetch('/messages/sent');
+      if (!res || !res.success) { renderList([]); return; }
+      messages = res.data || [];
+      renderList(messages, true);
+    }
+
+    function renderList(list, sent = false) {
+      const container = document.getElementById('msg-list');
+      const empty     = document.getElementById('msg-empty');
+      container.querySelectorAll('.msg-card').forEach(el => el.remove());
+
+      if (!list.length) { empty.style.display = ''; return; }
+      empty.style.display = 'none';
+
+      list.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'msg-card' + (!sent && !m.read_status ? ' msg-card--unread' : '');
+        card.innerHTML = `
+          <div class="msg-card__top">
+            <span class="msg-card__from">${escapeHtml(sent ? (m.receiver_name || 'Destinataire') : (m.sender_name || 'Expéditeur'))}</span>
+            <span class="msg-card__date">${new Date(m.sent_at).toLocaleDateString('fr-FR')}</span>
+          </div>
+          <p class="msg-card__subject">${escapeHtml(m.subject || '(Sans objet)')}</p>`;
+        card.addEventListener('click', () => openDetail(m, sent));
+        container.appendChild(card);
+      });
+    }
+
+    async function openDetail(m, sent) {
+      if (!sent && !m.read_status) {
+        await apiFetch(`/messages/${m.id}/read`, { method: 'PUT' });
+        m.read_status = 1;
+        renderList(messages, sent);
+      }
+      document.getElementById('detail-subject').textContent = m.subject || '(Sans objet)';
+      document.getElementById('detail-meta').textContent =
+        sent ? `À : ${m.receiver_name}` : `De : ${m.sender_name}`;
+      document.getElementById('detail-body').textContent = m.message_body || '';
+      document.getElementById('msg-detail').style.display = '';
+    }
+
+    function closeDetail() {
+      document.getElementById('msg-detail').style.display = 'none';
+    }
+
+    async function sendMessage() {
+      const btn      = document.getElementById('compose-btn');
+      const msgEl    = document.getElementById('compose-msg');
+      const receiver = document.getElementById('compose-receiver').value.trim();
+      const subject  = document.getElementById('compose-subject').value.trim();
+      const body     = document.getElementById('compose-body').value.trim();
+
+      if (!receiver || !subject || !body) {
+        msgEl.textContent = 'Tous les champs sont requis.'; msgEl.style.color = '#c00'; return;
+      }
+
+      btn.disabled = true;
+      const res = await apiFetch('/messages', {
+        method: 'POST',
+        body: JSON.stringify({ receiver_id: +receiver, subject, body }),
+      });
+      btn.disabled = false;
+
+      if (res && res.success) {
+        msgEl.textContent = 'Message envoyé !'; msgEl.style.color = '#2a7a2a';
+        document.getElementById('compose-receiver').value = '';
+        document.getElementById('compose-subject').value  = '';
+        document.getElementById('compose-body').value     = '';
+      } else {
+        msgEl.textContent = res?.message || 'Erreur.'; msgEl.style.color = '#c00';
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, c =>
+        ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    document.addEventListener('DOMContentLoaded', loadInbox);
+  </script>
+</body>
+</html>

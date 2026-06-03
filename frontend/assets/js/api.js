@@ -1,7 +1,22 @@
 const API_BASE = '/api';
 
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp < Math.floor(Date.now() / 1000);
+  } catch { return true; }
+}
+
 async function apiFetch(path, options = {}) {
   const token = localStorage.getItem('token');
+
+  // Nettoyer un token expiré
+  if (token && isTokenExpired(token)) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    return { success: false, message: 'Session expirée. Veuillez vous reconnecter.', expired: true };
+  }
+
   const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 

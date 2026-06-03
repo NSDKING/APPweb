@@ -40,7 +40,17 @@ class Request
 
     public function bearerToken(): ?string
     {
-        $header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+        // Apache peut renommer l'en-tête après un rewrite (.htaccess)
+        $header = $_SERVER['HTTP_AUTHORIZATION']
+               ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+               ?? '';
+
+        // Fallback via apache_request_headers() si disponible
+        if (!$header && function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            $header  = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+        }
+
         if (preg_match('/Bearer\s+(.+)/i', $header, $m)) {
             return $m[1];
         }

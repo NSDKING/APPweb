@@ -393,3 +393,49 @@ footer {
 .toast--error {
     background: #f00;
 }
+
+/* =============================================
+   CODE PROMO
+   ============================================= */
+.promo-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.promo-row input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: .88rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.promo-row input:focus {
+    outline: none;
+    border-color: #f00;
+}
+
+.promo-row button {
+    padding: 8px 16px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: .85rem;
+    white-space: nowrap;
+    transition: background .15s;
+}
+
+.promo-row button:hover { background: #333; }
+.promo-row button:disabled { opacity: .5; cursor: not-allowed; }
+
+.promo-msg {
+    font-size: .8rem;
+    margin-bottom: 8px;
+    min-height: 1rem;
+}

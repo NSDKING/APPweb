@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Codes Promo</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+  <style>
+    .admin-section { max-width: 960px; margin: 32px auto; padding: 0 16px; }
+    .admin-section h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; }
+    .form-card { background: #f9f9f9; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+    .form-card h2 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 12px; }
+    .form-grid label { display: flex; flex-direction: column; gap: 4px; font-size: .82rem; font-weight: 600;
+                        color: #555; text-transform: uppercase; letter-spacing: .04em; }
+    .form-grid input, .form-grid select {
+      padding: 9px 12px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: .9rem; }
+    .btn-primary { background: #111; color: #fff; border: none; border-radius: 8px;
+                   padding: 9px 22px; font-weight: 700; cursor: pointer; }
+    .btn-danger  { background: #dc2626; color: #fff; border: none; border-radius: 6px;
+                   padding: 4px 10px; font-weight: 600; cursor: pointer; font-size: .82rem; }
+    .btn-toggle  { background: #e5e7eb; color: #111; border: none; border-radius: 6px;
+                   padding: 4px 10px; font-weight: 600; cursor: pointer; font-size: .82rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+    th { background: #111; color: #fff; padding: 10px 12px; text-align: left; }
+    td { padding: 9px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .badge-active   { display:inline-block; padding:2px 8px; border-radius:12px; background:#d1fae5; color:#065f46; font-size:.75rem; font-weight:700; }
+    .badge-inactive { display:inline-block; padding:2px 8px; border-radius:12px; background:#fee2e2; color:#991b1b; font-size:.75rem; font-weight:700; }
+    .form-msg { font-size: .85rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <img src="../../assets/img/logo_ShoeBox.png" width="80" height="80">
+    <ul class="navbar__links">
+      <li><a class="navbar__link" href="dashboard.html">Dashboard</a></li>
+      <li><a class="navbar__link" href="products.html">Produits</a></li>
+      <li><a class="navbar__link" href="orders.html">Commandes</a></li>
+      <li><a class="navbar__link" href="users.html">Utilisateurs</a></li>
+      <li><a class="navbar__link" href="forum.html">Forum</a></li>
+      <li><a class="navbar__link" href="promo.html" style="font-weight:700;">Codes promo</a></li>
+    </ul>
+  </nav>
+
+  <main class="admin-section">
+    <h1>Gestion des codes promo</h1>
+
+    <div class="form-card">
+      <h2>Créer un code promo</h2>
+      <div class="form-grid">
+        <label>Code
+          <input type="text" id="p-code" placeholder="SUMMER20" maxlength="50" style="text-transform:uppercase;" />
+        </label>
+        <label>Type de réduction
+          <select id="p-type">
+            <option value="percentage">Pourcentage (%)</option>
+            <option value="fixed">Montant fixe (€)</option>
+          </select>
+        </label>
+        <label>Valeur de la réduction
+          <input type="number" id="p-value" placeholder="20" min="0.01" step="0.01" />
+        </label>
+        <label>Montant minimum (€)
+          <input type="number" id="p-min" placeholder="0" min="0" step="0.01" value="0" />
+        </label>
+        <label>Utilisations max
+          <input type="number" id="p-max" placeholder="Illimité" min="1" />
+        </label>
+        <label>Expiration
+          <input type="datetime-local" id="p-expires" />
+        </label>
+      </div>
+      <button class="btn-primary" onclick="createPromo()">Créer le code</button>
+      <p class="form-msg" id="promo-msg"></p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th><th>Type</th><th>Valeur</th><th>Min. commande</th>
+          <th>Utilisations</th><th>Expiration</th><th>Statut</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="promo-tbody">
+        <tr><td colspan="8" style="text-align:center;color:#888;">Chargement…</td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script src="../../assets/js/api.js"></script>
+  <script>
+    async function loadPromos() {
+      const res = await apiFetch('/admin/promo');
+      const tbody = document.getElementById('promo-tbody');
+      if (!res || !res.success) { tbody.innerHTML = '<tr><td colspan="8">Erreur de chargement</td></tr>'; return; }
+
+      const promos = res.data || [];
+      if (!promos.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#888;">Aucun code promo</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = promos.map(p => {
+        const usages = p.max_uses ? `${p.used_count}/${p.max_uses}` : `${p.used_count}/∞`;
+        const exp    = p.expires_at ? new Date(p.expires_at).toLocaleDateString('fr-FR') : '—';
+        const badge  = p.is_active
+          ? '<span class="badge-active">Actif</span>'
+          : '<span class="badge-inactive">Inactif</span>';
+        const val    = p.discount_type === 'percentage' ? `${p.discount_value}%` : `${p.discount_value} €`;
+
+        return `<tr>
+          <td><strong>${esc(p.code)}</strong></td>
+          <td>${p.discount_type === 'percentage' ? 'Pourcentage' : 'Fixe'}</td>
+          <td>${val}</td>
+          <td>${p.min_order_amount > 0 ? p.min_order_amount + ' €' : '—'}</td>
+          <td>${usages}</td>
+          <td>${exp}</td>
+          <td>${badge}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn-toggle" onclick="togglePromo(${p.id})">${p.is_active ? 'Désactiver' : 'Activer'}</button>
+            <button class="btn-danger" onclick="deletePromo(${p.id})">Supprimer</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function createPromo() {
+      const msg  = document.getElementById('promo-msg');
+      const code = document.getElementById('p-code').value.trim().toUpperCase();
+      const type = document.getElementById('p-type').value;
+      const val  = parseFloat(document.getElementById('p-value').value);
+      const min  = parseFloat(document.getElementById('p-min').value) || 0;
+      const max  = document.getElementById('p-max').value ? +document.getElementById('p-max').value : null;
+      const exp  = document.getElementById('p-expires').value || null;
+
+      if (!code || isNaN(val) || val <= 0) {
+        msg.textContent = 'Code et valeur requis.'; msg.style.color = '#c00'; return;
+      }
+
+      const res = await apiFetch('/admin/promo', {
+        method: 'POST',
+        body: JSON.stringify({ code, discount_type: type, discount_value: val,
+                               min_order_amount: min, max_uses: max, expires_at: exp }),
+      });
+
+      if (res && res.success) {
+        msg.textContent = 'Code créé !'; msg.style.color = '#2a7a2a';
+        document.getElementById('p-code').value = '';
+        document.getElementById('p-value').value = '';
+        loadPromos();
+      } else {
+        msg.textContent = res?.message || 'Erreur.'; msg.style.color = '#c00';
+      }
+    }
+
+    async function deletePromo(id) {
+      if (!confirm('Supprimer ce code promo ?')) return;
+      await apiFetch(`/admin/promo/${id}`, { method: 'DELETE' });
+      loadPromos();
+    }
+
+    async function togglePromo(id) {
+      await apiFetch(`/admin/promo/${id}/toggle`, { method: 'PUT' });
+      loadPromos();
+    }
+
+    function esc(str) {
+      return String(str || '').replace(/[&<>"']/g, c =>
+        ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    document.addEventListener('DOMContentLoaded', loadPromos);
+  </script>
+</body>
+</html>

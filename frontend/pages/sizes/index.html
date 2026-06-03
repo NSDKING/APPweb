@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conversion de pointures — ShoeBox</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <style>
+    .sizes-page { max-width: 900px; margin: 40px auto; padding: 0 16px; }
+    .sizes-page h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+    .sizes-page .subtitle { color: #666; margin-bottom: 32px; }
+
+    .converter-card { background: #f9f9f9; border-radius: 16px; padding: 28px; margin-bottom: 36px; }
+    .converter-card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+    .converter-inputs { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+    .field-group { display: flex; flex-direction: column; gap: 4px; }
+    .field-group label { font-size: .82rem; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: .05em; }
+    .field-group input, .field-group select {
+      padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 1rem; width: 130px; }
+    .convert-btn { background: #111; color: #fff; border: none; border-radius: 8px;
+                   padding: 10px 20px; font-weight: 700; cursor: pointer; }
+    .result-box { margin-top: 16px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 10px;
+                  padding: 16px 20px; display: none; }
+    .result-box .result-row { display: flex; justify-content: space-between; padding: 6px 0;
+                               border-bottom: 1px solid #f0f0f0; font-size: .95rem; }
+    .result-box .result-row:last-child { border-bottom: none; font-weight: 700; }
+
+    .size-table-section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th { background: #111; color: #fff; padding: 10px 14px; text-align: center; }
+    td { padding: 9px 14px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+    tr:nth-child(even) td { background: #fafafa; }
+    tr:hover td { background: #f0f0f0; }
+    .tab-btns { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .tab-btn { padding: 7px 18px; border: 2px solid #e5e7eb; border-radius: 8px; background: #fff;
+               cursor: pointer; font-weight: 600; font-size: .88rem; transition: all .15s; }
+    .tab-btn--active { background: #111; color: #fff; border-color: #111; }
+    .size-table { display: none; }
+    .size-table--active { display: block; }
+    .note { font-size: .82rem; color: #888; margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar">
+    <img src="../../assets/img/logo_ShoeBox.png" width="100" height="100">
+    <ul id="nav-links" class="navbar__links">
+      <li class="navbar__item"><a class="navbar__link" href="/">Accueil</a></li>
+      <li class="navbar__item"><a class="navbar__link" href="/pages/boutique/boutique.html">Boutique</a></li>
+    </ul>
+    <div id="nav-actions" class="navbar__actions">
+      <a href="/pages/shop/cart.html" class="navbar__icon-btn navbar__icon-btn--cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span id="cart-count" class="navbar__cart-count">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="sizes-page">
+    <h1>Guide des tailles & Conversion de pointures</h1>
+    <p class="subtitle">Trouvez facilement votre taille selon les normes internationales.</p>
+
+    <!-- Convertisseur interactif -->
+    <div class="converter-card">
+      <h2>Convertisseur rapide</h2>
+      <div class="converter-inputs">
+        <div class="field-group">
+          <label>Pointure</label>
+          <input type="number" id="conv-value" placeholder="ex : 42" min="30" max="52" step="0.5" />
+        </div>
+        <div class="field-group">
+          <label>Norme d'entrée</label>
+          <select id="conv-from">
+            <option value="eu">EU (Europe)</option>
+            <option value="us_m">US Homme</option>
+            <option value="us_f">US Femme</option>
+            <option value="uk">UK</option>
+            <option value="cm">CM (longueur pied)</option>
+          </select>
+        </div>
+        <button class="convert-btn" onclick="convert()">Convertir</button>
+      </div>
+      <div class="result-box" id="result-box">
+        <div class="result-row"><span>EU</span><span id="r-eu">—</span></div>
+        <div class="result-row"><span>US Homme</span><span id="r-usm">—</span></div>
+        <div class="result-row"><span>US Femme</span><span id="r-usf">—</span></div>
+        <div class="result-row"><span>UK</span><span id="r-uk">—</span></div>
+        <div class="result-row"><span>CM (longueur pied)</span><span id="r-cm">—</span></div>
+      </div>
+    </div>
+
+    <!-- Tableaux de tailles -->
+    <section class="size-table-section">
+      <h2>Tableaux de correspondance</h2>
+      <div class="tab-btns">
+        <button class="tab-btn tab-btn--active" onclick="showTable('homme')">Homme</button>
+        <button class="tab-btn" onclick="showTable('femme')">Femme</button>
+        <button class="tab-btn" onclick="showTable('enfant')">Enfant</button>
+      </div>
+
+      <div id="table-homme" class="size-table size-table--active">
+        <table>
+          <thead>
+            <tr><th>EU</th><th>US (H)</th><th>UK</th><th>CM</th></tr>
+          </thead>
+          <tbody id="tbody-homme"></tbody>
+        </table>
+      </div>
+      <div id="table-femme" class="size-table">
+        <table>
+          <thead>
+            <tr><th>EU</th><th>US (F)</th><th>UK</th><th>CM</th></tr>
+          </thead>
+          <tbody id="tbody-femme"></tbody>
+        </table>
+      </div>
+      <div id="table-enfant" class="size-table">
+        <table>
+          <thead>
+            <tr><th>EU</th><th>US</th><th>UK</th><th>CM</th></tr>
+          </thead>
+          <tbody id="tbody-enfant"></tbody>
+        </table>
+      </div>
+      <p class="note">Les conversions sont indicatives. Des variations d'un demi-point sont possibles selon les marques.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
+  </footer>
+
+  <script src="../../assets/js/api.js"></script>
+  <script>
+    // Données de conversion (EU comme référence)
+    const sizeData = {
+      homme: [
+        { eu: 38, usm: 6,   uk: 5,   cm: 24.0 },
+        { eu: 39, usm: 6.5, uk: 5.5, cm: 24.7 },
+        { eu: 40, usm: 7,   uk: 6,   cm: 25.3 },
+        { eu: 40.5, usm: 7.5, uk: 6.5, cm: 25.7 },
+        { eu: 41, usm: 8,   uk: 7,   cm: 26.0 },
+        { eu: 42, usm: 8.5, uk: 7.5, cm: 26.7 },
+        { eu: 42.5, usm: 9, uk: 8,   cm: 27.0 },
+        { eu: 43, usm: 9.5, uk: 8.5, cm: 27.3 },
+        { eu: 44, usm: 10,  uk: 9,   cm: 28.0 },
+        { eu: 44.5, usm: 10.5, uk: 9.5, cm: 28.3 },
+        { eu: 45, usm: 11,  uk: 10,  cm: 29.0 },
+        { eu: 46, usm: 12,  uk: 11,  cm: 29.7 },
+        { eu: 47, usm: 13,  uk: 12,  cm: 30.3 },
+      ],
+      femme: [
+        { eu: 35, usf: 5,   uk: 2.5, cm: 22.2 },
+        { eu: 35.5, usf: 5.5, uk: 3, cm: 22.5 },
+        { eu: 36, usf: 6,   uk: 3.5, cm: 23.0 },
+        { eu: 36.5, usf: 6.5, uk: 4, cm: 23.3 },
+        { eu: 37, usf: 7,   uk: 4,   cm: 23.7 },
+        { eu: 37.5, usf: 7.5, uk: 4.5, cm: 24.0 },
+        { eu: 38, usf: 8,   uk: 5,   cm: 24.3 },
+        { eu: 38.5, usf: 8.5, uk: 5.5, cm: 24.7 },
+        { eu: 39, usf: 9,   uk: 6,   cm: 25.0 },
+        { eu: 39.5, usf: 9.5, uk: 6.5, cm: 25.3 },
+        { eu: 40, usf: 10,  uk: 7,   cm: 25.7 },
+        { eu: 41, usf: 11,  uk: 7.5, cm: 26.3 },
+        { eu: 42, usf: 12,  uk: 8.5, cm: 27.0 },
+      ],
+      enfant: [
+        { eu: 22, us: 6,   uk: 5,   cm: 13.7 },
+        { eu: 23, us: 7,   uk: 6,   cm: 14.3 },
+        { eu: 24, us: 8,   uk: 7,   cm: 15.0 },
+        { eu: 25, us: 8.5, uk: 7.5, cm: 15.7 },
+        { eu: 26, us: 9,   uk: 8,   cm: 16.3 },
+        { eu: 27, us: 10,  uk: 9,   cm: 17.0 },
+        { eu: 28, us: 11,  uk: 10,  cm: 17.7 },
+        { eu: 29, us: 12,  uk: 11,  cm: 18.3 },
+        { eu: 30, us: 13,  uk: 12,  cm: 19.0 },
+        { eu: 31, us: 1,   uk: 13,  cm: 19.7 },
+        { eu: 32, us: 1.5, uk: 13.5, cm: 20.3 },
+        { eu: 33, us: 2,   uk: 1,   cm: 21.0 },
+        { eu: 34, us: 3,   uk: 2,   cm: 21.7 },
+        { eu: 35, us: 3.5, uk: 2.5, cm: 22.3 },
+      ],
+    };
+
+    function buildTables() {
+      ['homme','femme','enfant'].forEach(cat => {
+        const tbody = document.getElementById('tbody-' + cat);
+        sizeData[cat].forEach(row => {
+          const us = row.usm !== undefined ? row.usm : (row.usf !== undefined ? row.usf : row.us);
+          tbody.innerHTML += `<tr><td>${row.eu}</td><td>${us}</td><td>${row.uk}</td><td>${row.cm.toFixed(1)}</td></tr>`;
+        });
+      });
+    }
+
+    function showTable(cat) {
+      document.querySelectorAll('.size-table').forEach(t => t.classList.remove('size-table--active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-btn--active'));
+      document.getElementById('table-' + cat).classList.add('size-table--active');
+      event.target.classList.add('tab-btn--active');
+    }
+
+    function convert() {
+      const val  = parseFloat(document.getElementById('conv-value').value);
+      const from = document.getElementById('conv-from').value;
+      if (isNaN(val)) { alert('Saisissez une valeur.'); return; }
+
+      // Trouver la correspondance dans toutes les tables
+      let eu = null;
+      const allRows = [...sizeData.homme, ...sizeData.femme, ...sizeData.enfant];
+
+      for (const row of allRows) {
+        const target = from === 'eu' ? row.eu : from === 'us_m' ? row.usm :
+                       from === 'us_f' ? row.usf : from === 'uk' ? row.uk : row.cm;
+        if (target !== undefined && Math.abs(target - val) < 0.01) {
+          eu = row.eu; break;
+        }
+      }
+
+      let r = {};
+      if (eu !== null) {
+        const hRow = sizeData.homme.find(r => r.eu === eu);
+        const fRow = sizeData.femme.find(r => r.eu === eu);
+        r.eu  = eu;
+        r.usm = hRow?.usm ?? '—';
+        r.usf = fRow?.usf ?? '—';
+        r.uk  = hRow?.uk ?? fRow?.uk ?? '—';
+        r.cm  = hRow?.cm ?? fRow?.cm ?? '—';
+      } else {
+        r = { eu: '?', usm: '?', usf: '?', uk: '?', cm: '?' };
+      }
+
+      document.getElementById('r-eu').textContent  = r.eu;
+      document.getElementById('r-usm').textContent = r.usm;
+      document.getElementById('r-usf').textContent = r.usf;
+      document.getElementById('r-uk').textContent  = r.uk;
+      document.getElementById('r-cm').textContent  = r.cm !== '—' && r.cm !== '?' ? r.cm + ' cm' : r.cm;
+      document.getElementById('result-box').style.display = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', buildTables);
+  </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Gestion du Forum</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+  <style>
+    .admin-section { max-width: 1000px; margin: 32px auto; padding: 0 16px; }
+    .admin-section h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; }
+    .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .admin-tab { padding: 8px 20px; border: 2px solid #e5e7eb; border-radius: 8px; background: #fff;
+                 cursor: pointer; font-weight: 600; }
+    .admin-tab--active { background: #111; color: #fff; border-color: #111; }
+    .form-card { background: #f9f9f9; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .form-card h2 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+    .form-card input, .form-card textarea {
+      width: 100%; padding: 9px 12px; border: 1.5px solid #e5e7eb; border-radius: 8px;
+      font-size: .9rem; margin-bottom: 8px; box-sizing: border-box; }
+    .form-card textarea { resize: vertical; min-height: 60px; }
+    .btn-primary { background: #111; color: #fff; border: none; border-radius: 8px;
+                   padding: 9px 20px; font-weight: 700; cursor: pointer; }
+    .btn-danger  { background: #dc2626; color: #fff; border: none; border-radius: 6px;
+                   padding: 5px 12px; font-weight: 600; cursor: pointer; font-size: .83rem; }
+    .btn-warn    { background: #d97706; color: #fff; border: none; border-radius: 6px;
+                   padding: 5px 12px; font-weight: 600; cursor: pointer; font-size: .83rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    th { background: #111; color: #fff; padding: 10px 12px; text-align: left; }
+    td { padding: 9px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: .75rem; font-weight: 700; }
+    .badge-pin  { background: #fef3c7; color: #92400e; }
+    .badge-lock { background: #fee2e2; color: #991b1b; }
+    .badge-ok   { background: #d1fae5; color: #065f46; }
+    .panel { display: none; }
+    .panel--active { display: block; }
+    .form-msg { font-size: .85rem; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <img src="../../assets/img/logo_ShoeBox.png" width="80" height="80">
+    <ul class="navbar__links">
+      <li><a class="navbar__link" href="dashboard.html">Dashboard</a></li>
+      <li><a class="navbar__link" href="products.html">Produits</a></li>
+      <li><a class="navbar__link" href="orders.html">Commandes</a></li>
+      <li><a class="navbar__link" href="users.html">Utilisateurs</a></li>
+      <li><a class="navbar__link" href="forum.html" style="font-weight:700;">Forum</a></li>
+      <li><a class="navbar__link" href="promo.html">Codes promo</a></li>
+    </ul>
+  </nav>
+
+  <main class="admin-section">
+    <h1>Gestion du Forum</h1>
+
+    <div class="admin-tabs">
+      <button class="admin-tab admin-tab--active" onclick="switchTab('categories')">Catégories</button>
+      <button class="admin-tab" onclick="switchTab('threads')">Fils de discussion</button>
+    </div>
+
+    <!-- Catégories -->
+    <div id="panel-categories" class="panel panel--active">
+      <div class="form-card">
+        <h2>Ajouter une catégorie</h2>
+        <input type="text" id="cat-name" placeholder="Nom de la catégorie" maxlength="100" />
+        <textarea id="cat-desc" placeholder="Description (optionnel)" rows="2"></textarea>
+        <button class="btn-primary" onclick="addCategory()">Créer</button>
+        <p class="form-msg" id="cat-msg"></p>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Nom</th><th>Description</th><th>Fils</th><th>Action</th></tr></thead>
+        <tbody id="cat-tbody"><tr><td colspan="5" style="text-align:center;color:#888;">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- Fils de discussion -->
+    <div id="panel-threads" class="panel">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Titre</th><th>Auteur</th><th>Catégorie</th><th>Statut</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="threads-tbody"><tr><td colspan="6" style="text-align:center;color:#888;">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="../../assets/js/api.js"></script>
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('panel--active'));
+      document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('admin-tab--active'));
+      document.getElementById('panel-' + tab).classList.add('panel--active');
+      event.target.classList.add('admin-tab--active');
+      if (tab === 'categories') loadCategories();
+      if (tab === 'threads')    loadThreads();
+    }
+
+    async function loadCategories() {
+      const res = await apiFetch('/admin/forum/categories');
+      const tbody = document.getElementById('cat-tbody');
+      if (!res || !res.success) { tbody.innerHTML = '<tr><td colspan="5">Erreur de chargement</td></tr>'; return; }
+
+      const cats = res.data || [];
+      if (!cats.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;">Aucune catégorie</td></tr>'; return; }
+
+      tbody.innerHTML = cats.map(c => `
+        <tr>
+          <td>${c.id}</td>
+          <td><strong>${esc(c.name)}</strong></td>
+          <td>${esc(c.description || '—')}</td>
+          <td>${c.thread_count || 0}</td>
+          <td><button class="btn-danger" onclick="deleteCategory(${c.id})">Supprimer</button></td>
+        </tr>`).join('');
+    }
+
+    async function addCategory() {
+      const name = document.getElementById('cat-name').value.trim();
+      const desc = document.getElementById('cat-desc').value.trim();
+      const msg  = document.getElementById('cat-msg');
+
+      if (!name) { msg.textContent = 'Le nom est requis.'; msg.style.color = '#c00'; return; }
+
+      const res = await apiFetch('/admin/forum/categories', {
+        method: 'POST', body: JSON.stringify({ name, description: desc }),
+      });
+      if (res && res.success) {
+        msg.textContent = 'Catégorie créée !'; msg.style.color = '#2a7a2a';
+        document.getElementById('cat-name').value = '';
+        document.getElementById('cat-desc').value = '';
+        loadCategories();
+      } else {
+        msg.textContent = res?.message || 'Erreur.'; msg.style.color = '#c00';
+      }
+    }
+
+    async function deleteCategory(id) {
+      if (!confirm('Supprimer cette catégorie et tous ses fils ?')) return;
+      await apiFetch(`/admin/forum/categories/${id}`, { method: 'DELETE' });
+      loadCategories();
+    }
+
+    async function loadThreads() {
+      const res = await apiFetch('/admin/forum/threads');
+      const tbody = document.getElementById('threads-tbody');
+      if (!res || !res.success) { tbody.innerHTML = '<tr><td colspan="6">Erreur de chargement</td></tr>'; return; }
+
+      const threads = res.data || [];
+      if (!threads.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">Aucun fil</td></tr>'; return; }
+
+      tbody.innerHTML = threads.map(t => `
+        <tr>
+          <td>${t.id}</td>
+          <td>${esc(t.title)}</td>
+          <td>${esc(t.author)}</td>
+          <td>${esc(t.category)}</td>
+          <td>
+            ${t.is_pinned ? '<span class="badge badge-pin">Épinglé</span>' : ''}
+            ${t.is_locked ? '<span class="badge badge-lock">Verrouillé</span>' : ''}
+            ${!t.is_pinned && !t.is_locked ? '<span class="badge badge-ok">Normal</span>' : ''}
+          </td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn-warn" onclick="pinThread(${t.id})">${t.is_pinned ? 'Désépingler' : 'Épingler'}</button>
+            <button class="btn-warn" onclick="lockThread(${t.id})">${t.is_locked ? 'Déverrouiller' : 'Verrouiller'}</button>
+            <button class="btn-danger" onclick="deleteThread(${t.id})">Supprimer</button>
+          </td>
+        </tr>`).join('');
+    }
+
+    async function pinThread(id) {
+      await apiFetch(`/admin/forum/threads/${id}/pin`, { method: 'PUT' });
+      loadThreads();
+    }
+
+    async function lockThread(id) {
+      await apiFetch(`/admin/forum/threads/${id}/lock`, { method: 'PUT' });
+      loadThreads();
+    }
+
+    async function deleteThread(id) {
+      if (!confirm('Supprimer ce fil et toutes ses publications ?')) return;
+      await apiFetch(`/admin/forum/threads/${id}`, { method: 'DELETE' });
+      loadThreads();
+    }
+
+    function esc(str) {
+      return String(str || '').replace(/[&<>"']/g, c =>
+        ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    document.addEventListener('DOMContentLoaded', loadCategories);
+  </script>
+</body>
+</html>

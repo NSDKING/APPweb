@@ -86,4 +86,35 @@ $router->put('/api/admin/carousel/{id}',         [\Controllers\Admin\CarouselCon
 $router->delete('/api/admin/carousel/{id}',      [\Controllers\Admin\CarouselController::class, 'destroy']);
 $router->put('/api/admin/carousel/{id}/move',    [\Controllers\Admin\CarouselController::class, 'move']);
 
+// Review routes
+$router->get('/api/products/{id}/reviews',    [\Controllers\ReviewController::class, 'index']);
+$router->post('/api/products/{id}/reviews',   [\Controllers\ReviewController::class, 'store']);
+$router->delete('/api/reviews/{id}',          [\Controllers\ReviewController::class, 'destroy']);
+
+// Promo code routes
+$router->post('/api/promo/validate',          [\Controllers\PromoCodeController::class, 'validate']);
+
+// Message routes
+$router->get('/api/messages',                 [\Controllers\MessageController::class, 'inbox']);
+$router->get('/api/messages/sent',            [\Controllers\MessageController::class, 'sent']);
+$router->get('/api/messages/{id}',            [\Controllers\MessageController::class, 'show']);
+$router->post('/api/messages',                [\Controllers\MessageController::class, 'store']);
+$router->put('/api/messages/{id}/read',       [\Controllers\MessageController::class, 'markRead']);
+
+// Admin promo routes
+$router->get('/api/admin/promo',              [\Controllers\Admin\PromoCodeController::class, 'index']);
+$router->post('/api/admin/promo',             [\Controllers\Admin\PromoCodeController::class, 'store']);
+$router->delete('/api/admin/promo/{id}',      [\Controllers\Admin\PromoCodeController::class, 'destroy']);
+$router->put('/api/admin/promo/{id}/toggle',  [\Controllers\Admin\PromoCodeController::class, 'toggle']);
+
+// Admin forum routes
+$router->get('/api/admin/forum/categories',           [\Controllers\Admin\ForumController::class, 'categories']);
+$router->post('/api/admin/forum/categories',          [\Controllers\Admin\ForumController::class, 'storeCategory']);
+$router->delete('/api/admin/forum/categories/{id}',   [\Controllers\Admin\ForumController::class, 'destroyCategory']);
+$router->get('/api/admin/forum/threads',              [\Controllers\Admin\ForumController::class, 'threads']);
+$router->put('/api/admin/forum/threads/{id}/pin',     [\Controllers\Admin\ForumController::class, 'pin']);
+$router->put('/api/admin/forum/threads/{id}/lock',    [\Controllers\Admin\ForumController::class, 'lock']);
+$router->delete('/api/admin/forum/threads/{id}',      [\Controllers\Admin\ForumController::class, 'destroyThread']);
+$router->delete('/api/admin/forum/posts/{id}',        [\Controllers\Admin\ForumController::class, 'destroyPost']);
+
 $router->dispatch($request);

@@ -1,12 +1,3 @@
-/* =============================================
-   RESET
-   ============================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     font-family: Arial, sans-serif;
     background: #f4f4f4;
@@ -22,75 +13,6 @@ body {
     padding: .75rem 2rem;
     background: #fff;
     border-bottom: 1px solid #ddd;
-}
-
-.navbar__logo {}
-
-.navbar__links {
-    display: flex;
-    gap: .25rem;
-    list-style: none;
-    padding: 0;
-}
-
-.navbar__links a {
-    color: #444;
-    text-decoration: none;
-    padding: .4rem .75rem;
-    border-radius: 6px;
-    font-size: .9rem;
-    transition: background-color 0.2s ease;
-}
-
-.navbar__links a:hover {
-    background-color: #ddd;
-}
-
-.navbar__links a.active {
-    color: #f00;
-    font-weight: 500;
-}
-
-.navbar__actions {
-    display: flex;
-    gap: .5rem;
-}
-
-.navbar__icon-btn {
-    background: none;
-    border: none;
-    color: #ccc;
-    padding: 6px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.navbar__icon-btn:hover {
-    background-color: #ddd;
-}
-
-.navbar__icon-btn--cart {
-    position: relative;
-}
-
-.navbar__cart-count {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: #f44;
-    color: #fff;
-    font-size: .65rem;
-    font-weight: 700;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* =============================================
@@ -243,6 +165,7 @@ body {
     font-size: .9rem;
     outline: none;
     transition: border-color 0.2s;
+    box-sizing: border-box;
 }
 
 .commande-formulaire input[type="text"]:focus {
@@ -308,10 +231,8 @@ footer {
 /* =============================================
    RESPONSIVE
    ============================================= */
-@media (max-width: 850px) {
-    .commande-container {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 800px) {
+
 
     .navbar__links {
         display: none;

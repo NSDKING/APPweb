@@ -124,6 +124,25 @@ a {
   white-space: nowrap;
 }
 
+.navbar__admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  background: #111;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.navbar__admin-btn:hover {
+  background: #c91310;
+}
+
 /* ── Hamburger ── */
 .navbar__hamburger {
   display: none;

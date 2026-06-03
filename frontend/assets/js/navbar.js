@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const authBtn = document.createElement('div');
     authBtn.className = 'navbar__user';
     authBtn.innerHTML = `
+      ${user.role === 'admin' ? `<a href="/pages/admin/dashboard.html" class="navbar__admin-btn">⚙ Admin</a>` : ''}
       <span class="navbar__username">Bonjour, ${user.name.split(' ')[0]}</span>
       <button id="logout-btn" class="navbar__icon-btn navbar__logout">Déconnexion</button>
     `;

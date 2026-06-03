@@ -275,6 +275,21 @@
   color: #a1a1aa;
 }
 
+.admin-badge--success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.admin-badge--warn {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.admin-badge--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .admin-table__actions {
   display: flex;
   gap: 8px;

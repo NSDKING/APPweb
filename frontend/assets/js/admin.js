@@ -27,12 +27,14 @@ document.querySelectorAll('.admin-nav-btn').forEach(btn => {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
 
-    const titles = { products: 'Produits', users: 'Utilisateurs', carousel: 'Carrousel' };
+    const titles = { products: 'Produits', users: 'Utilisateurs', carousel: 'Carrousel', forum: 'Forum', messages: 'Messagerie interne' };
     document.getElementById('admin-page-title').textContent = titles[tab] || '';
 
     if (tab === 'products') loadProducts();
     else if (tab === 'users') loadUsers();
     else if (tab === 'carousel') renderSlidesAdmin();
+    else if (tab === 'forum') loadForumAdmin();
+    else if (tab === 'messages') loadMessagesAdmin();
   });
 });
 
@@ -436,6 +438,138 @@ document.querySelectorAll('[data-close-slide]').forEach(el =>
 document.getElementById('slide-modal').addEventListener('click', e => {
   if (e.target.classList.contains('admin-modal__backdrop')) closeModal('slide-modal');
 });
+
+// ===== FORUM ADMIN =====
+async function loadForumAdmin() {
+  await Promise.all([loadForumCategories(), loadForumThreads()]);
+}
+
+async function loadForumCategories() {
+  const res = await apiFetch('/admin/forum/categories');
+  const tbody = document.getElementById('forum-cat-tbody');
+  if (!res || !res.success) { tbody.innerHTML = '<tr><td colspan="5">Erreur</td></tr>'; return; }
+
+  const cats = res.data || [];
+  if (!cats.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;">Aucune catégorie</td></tr>'; return; }
+
+  tbody.innerHTML = cats.map(c => `
+    <tr>
+      <td>${c.id}</td>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td>${esc(c.description || '—')}</td>
+      <td>${c.thread_count || 0}</td>
+      <td>
+        <button class="admin-btn admin-btn--danger admin-btn--sm" onclick="deleteForumCategory(${c.id})">Supprimer</button>
+      </td>
+    </tr>`).join('');
+}
+
+async function loadForumThreads() {
+  const res = await apiFetch('/admin/forum/threads');
+  const tbody = document.getElementById('forum-threads-tbody');
+  if (!res || !res.success) { tbody.innerHTML = '<tr><td colspan="6">Erreur</td></tr>'; return; }
+
+  const threads = res.data || [];
+  if (!threads.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">Aucun fil</td></tr>'; return; }
+
+  tbody.innerHTML = threads.map(t => `
+    <tr>
+      <td>${t.id}</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(t.title)}</td>
+      <td>${esc(t.author)}</td>
+      <td>${esc(t.category)}</td>
+      <td>
+        ${t.is_pinned ? '<span class="admin-badge admin-badge--warn">Épinglé</span>' : ''}
+        ${t.is_locked ? '<span class="admin-badge admin-badge--danger">Verrouillé</span>' : ''}
+        ${!t.is_pinned && !t.is_locked ? '<span class="admin-badge admin-badge--success">Normal</span>' : ''}
+      </td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="admin-btn admin-btn--ghost admin-btn--sm" onclick="pinThread(${t.id})">${t.is_pinned ? 'Désépingler' : 'Épingler'}</button>
+        <button class="admin-btn admin-btn--ghost admin-btn--sm" onclick="lockThread(${t.id})">${t.is_locked ? 'Déverrouiller' : 'Verrouiller'}</button>
+        <button class="admin-btn admin-btn--danger admin-btn--sm" onclick="deleteThread(${t.id})">Supprimer</button>
+      </td>
+    </tr>`).join('');
+}
+
+document.getElementById('open-add-category')?.addEventListener('click', () => {
+  document.getElementById('cat-modal').hidden = false;
+});
+
+async function submitAddCategory() {
+  const name = document.getElementById('cat-name-input').value.trim();
+  const desc = document.getElementById('cat-desc-input').value.trim();
+  const msg  = document.getElementById('cat-form-msg');
+  if (!name) { msg.textContent = 'Le nom est requis.'; msg.style.color = '#c00'; return; }
+
+  const res = await apiFetch('/admin/forum/categories', {
+    method: 'POST', body: JSON.stringify({ name, description: desc }),
+  });
+  if (res?.success) {
+    msg.textContent = 'Catégorie créée !'; msg.style.color = '#2a7a2a';
+    document.getElementById('cat-name-input').value = '';
+    document.getElementById('cat-desc-input').value = '';
+    document.getElementById('cat-modal').hidden = true;
+    loadForumCategories();
+  } else {
+    msg.textContent = res?.message || 'Erreur.'; msg.style.color = '#c00';
+  }
+}
+
+async function deleteForumCategory(id) {
+  if (!confirm('Supprimer cette catégorie et tous ses fils ?')) return;
+  await apiFetch(`/admin/forum/categories/${id}`, { method: 'DELETE' });
+  loadForumCategories();
+}
+
+async function pinThread(id) {
+  await apiFetch(`/admin/forum/threads/${id}/pin`, { method: 'PUT' });
+  loadForumThreads();
+}
+
+async function lockThread(id) {
+  await apiFetch(`/admin/forum/threads/${id}/lock`, { method: 'PUT' });
+  loadForumThreads();
+}
+
+async function deleteThread(id) {
+  if (!confirm('Supprimer ce fil et toutes ses publications ?')) return;
+  await apiFetch(`/admin/forum/threads/${id}`, { method: 'DELETE' });
+  loadForumThreads();
+}
+
+// ===== MESSAGERIE ADMIN =====
+async function loadMessagesAdmin() {
+  const res = await apiFetch('/admin/messages');
+  const tbody = document.getElementById('messages-tbody');
+  if (!res || !res.success) { tbody.innerHTML = '<tr><td colspan="6">Erreur de chargement</td></tr>'; return; }
+
+  const msgs = res.data || [];
+  if (!msgs.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#888;">Aucun message</td></tr>'; return; }
+
+  tbody.innerHTML = msgs.map(m => `
+    <tr style="cursor:pointer;" onclick="showAdminMessage(${JSON.stringify(m).replace(/"/g, '&quot;')})">
+      <td>${m.id}</td>
+      <td>${esc(m.sender_name || '—')}</td>
+      <td>${esc(m.receiver_name || '—')}</td>
+      <td>${esc(m.subject || '(Sans objet)')}</td>
+      <td>${m.read_status ? '<span class="admin-badge admin-badge--success">Lu</span>' : '<span class="admin-badge admin-badge--warn">Non lu</span>'}</td>
+      <td>${new Date(m.sent_at).toLocaleDateString('fr-FR')}</td>
+    </tr>`).join('');
+}
+
+function showAdminMessage(m) {
+  const detail = document.getElementById('msg-detail-admin');
+  document.getElementById('admin-msg-subject').textContent = m.subject || '(Sans objet)';
+  document.getElementById('admin-msg-meta').textContent = `De : ${m.sender_name}  →  À : ${m.receiver_name}  •  ${new Date(m.sent_at).toLocaleString('fr-FR')}`;
+  document.getElementById('admin-msg-body').textContent = m.message_body || '';
+  detail.style.display = '';
+  detail.scrollIntoView({ behavior: 'smooth' });
+}
+
+function esc(str) {
+  return String(str || '').replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', loadProducts);

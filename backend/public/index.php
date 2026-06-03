@@ -107,6 +107,9 @@ $router->post('/api/admin/promo',             [\Controllers\Admin\PromoCodeContr
 $router->delete('/api/admin/promo/{id}',      [\Controllers\Admin\PromoCodeController::class, 'destroy']);
 $router->put('/api/admin/promo/{id}/toggle',  [\Controllers\Admin\PromoCodeController::class, 'toggle']);
 
+// Admin messages route
+$router->get('/api/admin/messages', [\Controllers\Admin\MessageController::class, 'index']);
+
 // Admin forum routes
 $router->get('/api/admin/forum/categories',           [\Controllers\Admin\ForumController::class, 'categories']);
 $router->post('/api/admin/forum/categories',          [\Controllers\Admin\ForumController::class, 'storeCategory']);

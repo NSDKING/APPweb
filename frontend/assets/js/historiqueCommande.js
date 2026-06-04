@@ -2,16 +2,14 @@
    historiqueCommande.js — Historique des commandes ShoeBox
    ============================================================= */
 
-const API_BASE = 'http://localhost:8000';
-
 // ── Utilitaires ──────────────────────────────────────────────
 
 function getToken() {
-    return localStorage.getItem('shoebox_token') || null;
+    return localStorage.getItem('token') || null;
 }
 
 function getUser() {
-    const raw = localStorage.getItem('shoebox_user');
+    const raw = localStorage.getItem('user');
     try { return raw ? JSON.parse(raw) : null; } catch { return null; }
 }
 
@@ -183,25 +181,19 @@ async function loadOrders() {
     const token = getToken();
     const user = getUser();
 
-    // Pas connecté → affiche les placeholders avec une notice
-    if (!token || !user) {
-        skeleton.style.display = 'none';
-        showToast('Aperçu — connectez-vous pour voir vos vraies commandes.', 'error');
-        list.innerHTML = PLACEHOLDER_ORDERS.map(renderOrder).join('');
-        initAccordion();
+    // Pas connecté → redirection
+    if (!token) {
+        window.location.href = '/pages/auth/login.html';
         return;
     }
 
     // Connecté → appel API
     try {
-        const res = await fetch(`${API_BASE}/api/orders`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!res.ok) throw new Error(`Erreur ${res.status}`);
-
-        const data = await res.json();
-        const orders = data.orders ?? data;
+        const data = await apiFetch('/orders');
+        if (!data || !data.success) throw new Error(data?.message || 'Erreur API');
+        // Response::success wraps in { success, data, message }
+        // data.data = { orders: [...] }
+        const orders = data.data?.orders ?? [];
 
         skeleton.style.display = 'none';
 

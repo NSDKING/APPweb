@@ -28,9 +28,13 @@ class Mailer
             }
         }
 
-        // Fallback : php mail() (fonctionne sur serveur de prod avec sendmail)
-        $boundary = md5(uniqid());
-        $headers  = implode("\r\n", [
+        // Si SMTP non configuré : on tente mail() uniquement en production
+        // En développement on retourne false pour que le lien s'affiche dans l'UI
+        if (($_ENV['APP_ENV'] ?? 'production') !== 'production') {
+            return false;
+        }
+
+        $headers = implode("\r\n", [
             'From: ShoeBox <' . self::cfg('MAIL_FROM', 'noreply@shoebox.fr') . '>',
             'MIME-Version: 1.0',
             'Content-Type: text/html; charset=UTF-8',

@@ -43,6 +43,42 @@ class Router
                 return;
             }
         }
+        // For non-API GET requests, try to serve the corresponding frontend HTML file
+        if ($request->method === 'GET' && !str_starts_with($request->uri, '/api/')) {
+            $frontendDir = realpath(dirname(__DIR__, 3) . '/frontend');
+            if ($frontendDir) {
+                $filePath = realpath($frontendDir . $request->uri);
+                if ($filePath && str_starts_with($filePath, $frontendDir) && is_file($filePath)) {
+                    $ext = strtolower(pa
+                    thinfo($filePath, PATHINFO_EXTENSION));
+                    $mimes = [
+                        'html' => 'text/html; charset=UTF-8',
+                        'css'  => 'text/css',
+                        'js'   => 'application/javascript',
+                        'png'  => 'image/png',
+                        'jpg'  => 'image/jpeg',
+                        'jpeg' => 'image/jpeg',
+                        'svg'  => 'image/svg+xml',
+                        'ico'  => 'image/x-icon',
+                        'woff' => 'font/woff',
+                        'woff2'=> 'font/woff2',
+                    ];
+                    header('Content-Type: ' . ($mimes[$ext] ?? 'application/octet-stream'));
+                    readfile($filePath);
+                    exit;
+                }
+                // Fallback: serve frontend index.html for root requests
+                if ($request->uri === '/') {
+                    $indexPath = $frontendDir . '/index.html';
+                    if (file_exists($indexPath)) {
+                        header('Content-Type: text/html; charset=UTF-8');
+                        readfile($indexPath);
+                        exit;
+                    }
+                }
+            }
+        }
+
         Response::error('Not found', 404);
     }
 }

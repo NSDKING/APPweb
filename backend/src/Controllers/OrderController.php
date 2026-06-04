@@ -1,19 +1,12 @@
 <?php
+namespace Controllers;
 
-namespace App\Controllers;
+use Core\JWT;
+use Core\Request;
+use Core\Response;
+use Models\Order;
+use Models\OrderItem;
 
-use App\Core\Request;
-use App\Core\Response;
-use App\Models\Order;
-use App\Models\OrderItem;
-
-/**
- * OrderController
- * 
- * Gère la création et la récupération des commandes.
- * Route POST /api/orders  → createOrder()
- * Route GET  /api/orders  → getUserOrders()
- */
 class OrderController
 {
     private Order $orderModel;
@@ -25,53 +18,30 @@ class OrderController
         $this->orderItemModel = new OrderItem();
     }
 
-    // ──────────────────────────────────────────────────────────
-    // POST /api/orders
-    // ──────────────────────────────────────────────────────────
-
-    /**
-     * Crée une commande + ses lignes de commande à partir des données
-     * du formulaire de checkout et du panier envoyé par le frontend.
-     *
-     * Body JSON attendu :
-     * {
-     *   "shipping": { "nom": "...", "adresse": "..." },
-     *   "payment":  { "carte_last4": "1234", "expiry": "12/27" },
-     *   "cart":     [ { "product_id": 1, "quantity": 2, "price": 120.00 }, … ],
-     *   "total_amount": 400.00
-     * }
-     */
-    public function createOrder(Request $request, Response $response): void
+    private function auth(Request $request): ?array
     {
-        // Authentification — $request->user est peuplé par AuthMiddleware
-        $user = $request->user ?? null;
+        $token = $request->bearerToken();
+        if (!$token) return null;
+        return JWT::decode($token) ?: null;
+    }
 
-        $body = $request->getJson();
+    // POST /api/orders
+    public function store(Request $request): void
+    {
+        $payload = $this->auth($request);
+        $body    = $request->json();
 
-        // ── Validation minimale ────────────────────────────────
         $errors = [];
+        if (empty($body['shipping']['adresse'])) $errors[] = 'L\'adresse de livraison est requise.';
+        if (empty($body['cart']) || !is_array($body['cart'])) $errors[] = 'Le panier est vide.';
+        if (empty($body['total_amount']) || $body['total_amount'] <= 0) $errors[] = 'Montant invalide.';
 
-        if (empty($body['shipping']['adresse'])) {
-            $errors[] = 'L\'adresse de livraison est requise.';
-        }
-        if (empty($body['cart']) || !is_array($body['cart'])) {
-            $errors[] = 'Le panier est vide ou invalide.';
-        }
-        if (!isset($body['total_amount']) || $body['total_amount'] <= 0) {
-            $errors[] = 'Le montant total est invalide.';
-        }
+        if ($errors) { Response::error(implode(' ', $errors), 422); return; }
 
-        if (!empty($errors)) {
-            $response->json(['message' => implode(' ', $errors)], 422);
-            return;
-        }
-
-        // ── Nettoyage des données ──────────────────────────────
         $shippingAddress = htmlspecialchars(trim($body['shipping']['adresse']), ENT_QUOTES, 'UTF-8');
-        $totalAmount     = round((float) $body['total_amount'], 2);
-        $userId          = $user ? (int) $user['id'] : null;
+        $totalAmount     = round((float)$body['total_amount'], 2);
+        $userId          = $payload ? (int)$payload['user_id'] : null;
 
-        // ── Création de la commande ────────────────────────────
         try {
             $orderId = $this->orderModel->create([
                 'user_id'          => $userId,
@@ -81,18 +51,13 @@ class OrderController
                 'shipping_status'  => 'pending',
             ]);
 
-            if (!$orderId) {
-                throw new \RuntimeException('Échec de la création de la commande en base.');
-            }
+            if (!$orderId) throw new \RuntimeException('Échec création commande.');
 
-            // ── Insertion des lignes ───────────────────────────
             foreach ($body['cart'] as $item) {
-                $productId = (int)   ($item['product_id'] ?? 0);
-                $quantity  = max(1, (int) ($item['quantity']  ?? 1));
-                $price     = round((float) ($item['price']     ?? 0), 2);
-
+                $productId = (int)($item['product_id'] ?? 0);
+                $quantity  = max(1, (int)($item['quantity'] ?? 1));
+                $price     = round((float)($item['price'] ?? 0), 2);
                 if ($productId <= 0 || $price <= 0) continue;
-
                 $this->orderItemModel->create([
                     'order_id'   => $orderId,
                     'product_id' => $productId,
@@ -101,49 +66,29 @@ class OrderController
                 ]);
             }
 
-            // ── Réponse succès ─────────────────────────────────
-            $response->json([
-                'message'  => 'Commande enregistrée avec succès.',
-                'order_id' => $orderId,
-            ], 201);
-
+            Response::success(['order_id' => $orderId], 'Commande enregistrée.', 201);
         } catch (\Exception $e) {
             error_log('[OrderController] ' . $e->getMessage());
-            $response->json(['message' => 'Erreur interne. Veuillez réessayer.'], 500);
+            Response::error('Erreur interne.', 500);
         }
     }
 
-    // ──────────────────────────────────────────────────────────
     // GET /api/orders
-    // ──────────────────────────────────────────────────────────
-
-    /**
-     * Retourne l'historique des commandes de l'utilisateur connecté.
-     * Chaque commande inclut ses lignes (produits).
-     */
-    public function getUserOrders(Request $request, Response $response): void
+    public function index(Request $request): void
     {
-        $user = $request->user ?? null;
-
-        if (!$user) {
-            $response->json(['message' => 'Non authentifié.'], 401);
-            return;
-        }
+        $payload = $this->auth($request);
+        if (!$payload) { Response::error('Connexion requise', 401); return; }
 
         try {
-            $orders = $this->orderModel->findByUser((int) $user['id']);
-
-            // Enrichit chaque commande avec ses lignes
+            $orders = $this->orderModel->findByUser((int)$payload['user_id']);
             foreach ($orders as &$order) {
-                $order['items'] = $this->orderItemModel->findByOrder((int) $order['id']);
+                $order['items'] = $this->orderItemModel->findByOrder((int)$order['id']);
             }
             unset($order);
-
-            $response->json(['orders' => $orders]);
-
+            Response::success(['orders' => $orders]);
         } catch (\Exception $e) {
             error_log('[OrderController] ' . $e->getMessage());
-            $response->json(['message' => 'Impossible de récupérer les commandes.'], 500);
+            Response::error('Impossible de récupérer les commandes.', 500);
         }
     }
 }

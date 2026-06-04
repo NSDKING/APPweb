@@ -1,91 +1,343 @@
 <!DOCTYPE html>
 <html lang="fr">
-<header>
-  <a href="../../index.html">
-    <img src="../../assets/img/logo_ShoeBox.png" alt="Logo du site" class="logo">
-  </a>
-</header>
-
 <head>
-  <meta charset="UTF-8">
-  <title>Connexion / Inscription</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../assets/css/auth.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Créer un compte — ShoeBox</title>
+  <link rel="stylesheet" href="../../assets/css/layout.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .auth-logo { margin-bottom: 24px; text-align: center; }
+    .auth-logo a { text-decoration: none; }
+
+    .auth-card {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 16px;
+      padding: 32px 28px; width: 100%; max-width: 420px;
+    }
+
+    .auth-card h1 { font-size: 1.15rem; font-weight: 800; color: #111; margin-bottom: 20px; }
+
+    .auth-msg {
+      padding: 10px 14px; border-radius: 8px; font-size: .84rem;
+      margin-bottom: 16px; display: none;
+    }
+    .auth-msg--error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; display: block; }
+    .auth-msg--success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; display: block; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .field label {
+      font-size: .75rem; font-weight: 700; color: #555;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+    .field label .req { color: #c91310; margin-left: 2px; }
+
+    .input-wrap { position: relative; }
+    .field input {
+      width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb;
+      border-radius: 9px; font-size: .9rem; outline: none;
+      font-family: inherit; transition: border-color .15s;
+    }
+    .field input:focus { border-color: #c91310; }
+    .field input.has-toggle { padding-right: 42px; }
+
+    .toggle-btn {
+      position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: #bbb;
+      display: flex; align-items: center; padding: 0;
+    }
+    .toggle-btn:hover { color: #555; }
+    .toggle-btn.visible { color: #c91310; }
+
+    /* Indicateurs force mdp */
+    .pw-strength { display: flex; gap: 4px; margin-top: 5px; }
+    .pw-strength-bar {
+      flex: 1; height: 3px; border-radius: 99px; background: #e5e7eb;
+      transition: background .2s;
+    }
+    .pw-strength-bar.weak   { background: #ef4444; }
+    .pw-strength-bar.medium { background: #f59e0b; }
+    .pw-strength-bar.strong { background: #16a34a; }
+
+    .pw-rules { list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
+    .pw-rules li {
+      font-size: .75rem; color: #aaa; display: flex; align-items: center; gap: 5px;
+      transition: color .15s;
+    }
+    .pw-rules li svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .pw-rules li.ok { color: #16a34a; }
+
+    /* Case CGU */
+    .cgu-wrap {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 18px; padding: 12px 14px;
+      background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px;
+    }
+    .cgu-wrap input[type="checkbox"] {
+      width: 17px; height: 17px; accent-color: #c91310;
+      cursor: pointer; flex-shrink: 0; margin-top: 1px;
+    }
+    .cgu-wrap label {
+      font-size: .84rem; color: #444; line-height: 1.5; cursor: pointer;
+    }
+    .cgu-wrap label a { color: #c91310; font-weight: 700; text-decoration: none; }
+    .cgu-wrap label a:hover { text-decoration: underline; }
+    .cgu-wrap.shake { animation: shake .3s; border-color: #c91310; background: #fef2f2; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-4px); }
+      75%      { transform: translateX(4px); }
+    }
+
+    .auth-submit {
+      width: 100%; padding: 12px; background: #c91310; color: #fff;
+      border: none; border-radius: 10px; font-size: .95rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: background .15s;
+    }
+    .auth-submit:hover:not(:disabled) { background: #a81010; }
+    .auth-submit:disabled { opacity: .55; cursor: not-allowed; }
+
+    .auth-footer { text-align: center; margin-top: 18px; font-size: .85rem; color: #666; }
+    .auth-footer a { color: #c91310; font-weight: 700; text-decoration: none; }
+    .auth-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .row-2 { grid-template-columns: 1fr; }
+      .auth-card { padding: 24px 18px; }
+    }
+  </style>
 </head>
-
 <body>
 
-  <div class="container">
+  <div class="auth-logo">
+    <a href="/">
+      <img src="../../assets/img/logo_ShoeBox.png" alt="ShoeBox" style="width:120px;display:block;margin:0 auto;" />
+    </a>
+  </div>
 
-    <!-- REGISTER -->
-    <div id="registerForm">
-      <h2>Créer un compte</h2>
-      <form id="register-form">
-        <div id="register-error" style="color:red;display:none;margin-bottom:8px;"></div>
-        <input type="text" id="reg-nom" placeholder="Nom" required>
-        <input type="text" id="reg-prenom" placeholder="Prénom" required>
-        <input type="email" id="reg-email" placeholder="Email" required>
-        <div style="position:relative;">
-          <input type="password" id="reg-password" class="password" placeholder="Mot de passe" required>
-          <span onclick="togglePassword(this)"
-            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+  <div class="auth-card">
+    <h1>Créer un compte</h1>
+
+    <div class="auth-msg" id="reg-error"></div>
+
+    <form id="register-form" novalidate>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="reg-prenom">Prénom <span class="req">*</span></label>
+          <input type="text" id="reg-prenom" placeholder="Jean" required autocomplete="given-name" />
         </div>
-        <div style="position:relative;">
-          <input type="password" id="reg-confirm" class="password" placeholder="Confirmation de mot de passe" required>
-          <span onclick="togglePassword(this)"
-            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">👁️</span>
+        <div class="field">
+          <label for="reg-nom">Nom <span class="req">*</span></label>
+          <input type="text" id="reg-nom" placeholder="Dupont" required autocomplete="family-name" />
         </div>
-        <button type="submit">S'inscrire</button>
-      </form>
-      <a class="link" href=./login.html>
-        Déjà un compte ? Se connecter
-      </a>
+      </div>
+
+      <div class="field">
+        <label for="reg-email">Adresse e-mail <span class="req">*</span></label>
+        <input type="email" id="reg-email" placeholder="jean.dupont@email.com" required autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="reg-adresse">Adresse de livraison <span class="req">*</span></label>
+        <input type="text" id="reg-adresse" placeholder="12 rue de la Paix, 75001 Paris" required autocomplete="street-address" />
+      </div>
+
+      <div class="field">
+        <label for="reg-password">Mot de passe <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input type="password" id="reg-password" placeholder="8 caractères minimum" required autocomplete="new-password" class="has-toggle" />
+          <button type="button" class="toggle-btn" id="toggle-pw" aria-label="Afficher le mot de passe">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="pw-strength">
+          <div class="pw-strength-bar" id="bar1"></div>
+          <div class="pw-strength-bar" id="bar2"></div>
+          <div class="pw-strength-bar" id="bar3"></div>
+        </div>
+        <ul class="pw-rules">
+          <li id="rule-len">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>
+            8 caractères minimum
+          </li>
+          <li id="rule-upper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>
+            Une lettre majuscule
+          </li>
+          <li id="rule-digit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>
+            Un chiffre
+          </li>
+        </ul>
+      </div>
+
+      <div class="field">
+        <label for="reg-confirm">Confirmer le mot de passe <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input type="password" id="reg-confirm" placeholder="Répétez le mot de passe" required autocomplete="new-password" class="has-toggle" />
+          <button type="button" class="toggle-btn" id="toggle-confirm" aria-label="Afficher">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Case CGU obligatoire -->
+      <div class="cgu-wrap" id="cgu-wrap">
+        <input type="checkbox" id="cgu-check" />
+        <label for="cgu-check">
+          J'ai lu et j'accepte les
+          <a href="/pages/legal/cgu-cgv.html" target="_blank">Conditions Générales d'Utilisation (CGU)</a>
+          et les
+          <a href="/pages/legal/cgu-cgv.html" target="_blank">Conditions Générales de Vente (CGV)</a>
+          de ShoeBox. <span class="req">*</span>
+        </label>
+      </div>
+
+      <button type="submit" class="auth-submit" id="reg-btn">Créer mon compte</button>
+    </form>
+
+    <div class="auth-footer">
+      Déjà un compte ? <a href="./login.html">Se connecter</a>
     </div>
   </div>
 
   <script src="../../assets/js/api.js"></script>
-  <script src="../../assets/js/auth.js"></script>
+  <script>
+    // ── Toggle visibilité mot de passe ────────────────────────────────────────
+    function setupToggle(inputId, btnId) {
+      document.getElementById(btnId).addEventListener('click', function () {
+        const input = document.getElementById(inputId);
+        const show  = input.type === 'password';
+        input.type  = show ? 'text' : 'password';
+        this.classList.toggle('visible', show);
+      });
+    }
+    setupToggle('reg-password', 'toggle-pw');
+    setupToggle('reg-confirm',  'toggle-confirm');
 
+    // ── Indicateurs de force du mot de passe ─────────────────────────────────
+    const bars  = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+    const rules = { len: false, upper: false, digit: false };
 
-  <footer id="footer" class="footer">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="footer__logo-box"><span class="footer__logo-text">SB</span></div>
-          <span class="footer__name">SHOEBOX</span>
-        </div>
-        <p class="footer__tagline">La référence sneakers en France.</p>
-      </div>
-      <div class="footer__col">
-        <h4 class="footer__col-title">Boutique</h4>
-        <ul class="footer__col-links">
-          <li><a href="/pages/boutique/boutique.html">Tous les produits</a></li>
-          <li><a href="/pages/boutique/boutique.html?category=new">Nouveautés</a></li>
-          <li><a href="/pages/boutique/boutique.html?category=promo">Promotions</a></li>
-        </ul>
-      </div>
-      <div class="footer__col">
-        <h4 class="footer__col-title">Mon compte</h4>
-        <ul class="footer__col-links">
-          <li><a href="/pages/auth/login.html">Se connecter</a></li>
-          <li><a href="/pages/auth/register.html">Créer un compte</a></li>
-          <li><a href="/pages/shop/cart.html">Mon panier</a></li>
-        </ul>
-      </div>
-      <div class="footer__col">
-        <h4 class="footer__col-title">Informations</h4>
-        <ul class="footer__col-links">
-          <li><a href="/pages/legal/cgu-cgv.html">CGU / CGV</a></li>
-          <li><a href="/pages/reclamations/sav.html">SAV</a></li>
-          <li><a href="/pages/reclamations/contact.html">Contact</a></li>
-          <li><a href="/pages/forum/index.html">Forum</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer__bottom">
-      <p class="footer__copy">© 2026 ShoeBox Ltd. Tous droits réservés.</p>
-    </div>
-  </footer>
+    const checkIcon  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg>`;
+    const circleIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><circle cx="12" cy="12" r="9"/></svg>`;
+
+    document.getElementById('reg-password').addEventListener('input', function () {
+      const v = this.value;
+      rules.len   = v.length >= 8;
+      rules.upper = /[A-Z]/.test(v);
+      rules.digit = /[0-9]/.test(v);
+
+      setRule('rule-len',   rules.len);
+      setRule('rule-upper', rules.upper);
+      setRule('rule-digit', rules.digit);
+
+      const score = [rules.len, rules.upper, rules.digit].filter(Boolean).length;
+      const levels = ['', 'weak', 'medium', 'strong'];
+      bars.forEach((b, i) => {
+        b.className = 'pw-strength-bar' + (i < score ? ' ' + levels[score] : '');
+      });
+    });
+
+    function setRule(id, ok) {
+      const el = document.getElementById(id);
+      el.classList.toggle('ok', ok);
+      el.querySelector('svg').outerHTML; // force repaint
+      el.innerHTML = (ok ? checkIcon : circleIcon) + el.textContent.trim();
+    }
+
+    // ── Soumission ────────────────────────────────────────────────────────────
+    document.getElementById('register-form').addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const prenom   = document.getElementById('reg-prenom').value.trim();
+      const nom      = document.getElementById('reg-nom').value.trim();
+      const email    = document.getElementById('reg-email').value.trim();
+      const adresse  = document.getElementById('reg-adresse').value.trim();
+      const password = document.getElementById('reg-password').value;
+      const confirm  = document.getElementById('reg-confirm').value;
+      const cgu      = document.getElementById('cgu-check').checked;
+      const errEl    = document.getElementById('reg-error');
+      const btn      = document.getElementById('reg-btn');
+
+      errEl.className = 'auth-msg';
+
+      // Validation client
+      if (!prenom || !nom || !email || !adresse || !password) {
+        errEl.className = 'auth-msg auth-msg--error';
+        errEl.textContent = 'Veuillez remplir tous les champs obligatoires (*).';
+        return;
+      }
+      if (password.length < 8) {
+        errEl.className = 'auth-msg auth-msg--error';
+        errEl.textContent = 'Le mot de passe doit contenir au moins 8 caractères.';
+        return;
+      }
+      if (!/[A-Z]/.test(password)) {
+        errEl.className = 'auth-msg auth-msg--error';
+        errEl.textContent = 'Le mot de passe doit contenir au moins une lettre majuscule.';
+        return;
+      }
+      if (!/[0-9]/.test(password)) {
+        errEl.className = 'auth-msg auth-msg--error';
+        errEl.textContent = 'Le mot de passe doit contenir au moins un chiffre.';
+        return;
+      }
+      if (password !== confirm) {
+        errEl.className = 'auth-msg auth-msg--error';
+        errEl.textContent = 'Les mots de passe ne correspondent pas.';
+        return;
+      }
+      if (!cgu) {
+        const wrap = document.getElementById('cgu-wrap');
+        wrap.classList.add('shake');
+        setTimeout(() => wrap.classList.remove('shake'), 400);
+        errEl.className = 'auth-msg auth-msg--error';
+        errEl.textContent = 'Vous devez accepter les CGU/CGV pour créer un compte.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Création…';
+
+      const res = await apiFetch('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ name: `${prenom} ${nom}`, email, password, adresse }),
+      });
+
+      btn.disabled = false;
+      btn.textContent = 'Créer mon compte';
+
+      if (res?.success) {
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('user', JSON.stringify({
+          name: `${prenom} ${nom}`, email, role: res.data.role ?? 'customer'
+        }));
+        window.location.href = '/';
+      } else {
+        errEl.className = 'auth-msg auth-msg--error';
+        errEl.textContent = res?.message || 'Une erreur est survenue. Réessayez.';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -48,6 +48,18 @@ class User
         return $stmt->execute([$role, $id]);
     }
 
+    public function update(int $id, array $data): bool
+    {
+        $fields = [];
+        $params = [];
+        if (isset($data['name']))    { $fields[] = 'name = ?';    $params[] = $data['name']; }
+        if (isset($data['adresse'])) { $fields[] = 'adresse = ?'; $params[] = $data['adresse']; }
+        if (!$fields) return false;
+        $params[] = $id;
+        $stmt = $this->db->prepare('UPDATE users SET ' . implode(', ', $fields) . ' WHERE id = ?');
+        return $stmt->execute($params);
+    }
+
     public function updatePassword(int $id, string $password): void
     {
         $stmt = $this->db->prepare('UPDATE users SET password_hash = ? WHERE id = ?');

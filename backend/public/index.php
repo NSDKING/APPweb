@@ -86,6 +86,11 @@ $router->put('/api/admin/carousel/{id}',         [\Controllers\Admin\CarouselCon
 $router->delete('/api/admin/carousel/{id}',      [\Controllers\Admin\CarouselController::class, 'destroy']);
 $router->put('/api/admin/carousel/{id}/move',    [\Controllers\Admin\CarouselController::class, 'move']);
 
+// User profile routes
+$router->get('/api/users/me',              [\Controllers\UserController::class, 'me']);
+$router->put('/api/users/me',              [\Controllers\UserController::class, 'update']);
+$router->put('/api/users/me/password',     [\Controllers\UserController::class, 'changePassword']);
+
 // Forum public routes
 $router->get('/api/forum/categories',                    [\Controllers\ForumController::class, 'categories']);
 $router->get('/api/forum/categories/{id}/threads',       [\Controllers\ForumController::class, 'threads']);
